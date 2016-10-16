@@ -1,0 +1,47 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/lienarLayout_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context="com.example.max.trabalhoes2.Interface.Fragment.TabuleiroFragment"
+        android:clipChildren="false"
+        android:orientation="vertical">
+
+        <!--TESTE-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/colorAccent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TESTE"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
+        <!--TESTE-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/colorAccent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TESTE"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+</ScrollView>
