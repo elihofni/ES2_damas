@@ -80,6 +80,8 @@ public class TabuleiroFragment extends Fragment {
         GridLayout board = new GridLayout(getContext());
         //Seta os parametros do gridLayout.
         board.setLayoutParams(params);
+        //board.setBackgroundColor(getResources().getColor(R.color.fundo_tabuleiro_amarelo));
+        board.setBackgroundResource(R.drawable.base_g);
         board.setRowCount(8);
         board.setColumnCount(8);
 
@@ -101,7 +103,7 @@ public class TabuleiroFragment extends Fragment {
     protected int chooseTileColor(int i, int j){
         if(i%2 == 0){
             if(j%2 == 0) {
-                return R.drawable.base_g;
+                return R.drawable.casa_transparente;
             }else{
                 return R.drawable.casa;
             }
@@ -109,7 +111,7 @@ public class TabuleiroFragment extends Fragment {
             if(j%2 == 0){
                 return R.drawable.casa;
             }else{
-                return R.drawable.base_g;
+                return R.drawable.casa_transparente;
             }
         }
 
@@ -136,7 +138,7 @@ public class TabuleiroFragment extends Fragment {
 
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setImageResource(imageId);
-
+        imageView.setAlpha((float) 0.8);
         tile.addView(imageView);
 
         tile.setOnClickListener(onClickTile());
@@ -157,6 +159,7 @@ public class TabuleiroFragment extends Fragment {
         piece.setLayoutParams(params);
         piece.setImageResource(imageId);
         piece.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        piece.setAlpha((float) 0.85);
 
         frameLayout.setOnClickListener(onClickPiece());
 
