@@ -1,5 +1,9 @@
 package regradejogo;
 
+/**
+ * Classe que representa o tabuleiro do jogo.
+ * Realiza, efetivamente, a remoção e alteração de uma peça do tabuleiro.
+ */
 public class Tabuleiro {
     private final int dimenção = 8;
     private Peça[][] tabuleiro;
