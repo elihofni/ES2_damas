@@ -47,6 +47,7 @@ public class Tabuleiro {
      * Remove uma peça do tabuleiro.
      * @param peça peça a ser removida.
      */
+    //Simplesmente remove, sem regras. Quem vai cuidar das regras é a classe Regras.
     public void removePeça(Peça peça){
         //TODO
     }
