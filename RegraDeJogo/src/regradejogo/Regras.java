@@ -42,6 +42,16 @@ public class Regras {
     }
     
     /**
+     * Dada uma peça, retorna todas as peças que podem ser capturadas por ela.
+     * @param peça peça a ter os movimentos analisado.
+     * @return peças que podem ser capturadas.
+     */
+    private List<Peça> capturasPossíveis(Peça peça){
+        //TODO
+        return null;
+    }
+    
+    /**
      * Função que verifica se o jogo terminou.
      * @return true se o jogo acabou, false caso não. 
      */
