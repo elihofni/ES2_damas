@@ -28,4 +28,9 @@ public class Peça {
     public boolean isDama(){
         return dama;
     }
+    
+    @Override
+    public String toString(){
+        return "[" + String.valueOf(time) + ";" + String.valueOf(dama) + "]";
+    }
 }

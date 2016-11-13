@@ -7,6 +7,15 @@ public class Posição {
     private int i;
     private int j;
     
+    public Posição(int i, int j){
+        this.i = i;
+        this.j = j;
+    }
+    
+    public Posição(){
+        
+    }
+    
     public void setI(int i){
         this.i = i;
     }

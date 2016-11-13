@@ -24,8 +24,7 @@ public class Tabuleiro {
     * @param posição linha
     * @return instancia de peça caso exista, null caso não.*/
     public Peça getPeça(Posição posição){
-        //TODO;
-        return null;
+        return tabuleiro[posição.getI()][posição.getJ()];
     }
     
     /**
@@ -34,6 +33,14 @@ public class Tabuleiro {
      * @return posição da peça;
      */
     public Posição getPosição(Peça peça){
+        for(int i = 0; i < dimenção; i++){
+            for(int j = 0; j < dimenção; j++){
+                if(tabuleiro[i][j].equals(peça)){
+                    return new Posição(i, j);
+                }
+            }
+        }
+        
         return null;
     }
     
@@ -44,16 +51,21 @@ public class Tabuleiro {
      */
     //Simplesmente move, sem regras. Quem vai cuidar das regras é a classe Regras.
     public void movePeça(Peça peça, Posição posFinal){
-        //TODO
+        Posição posAtual = getPosição(peça);
+        
+        tabuleiro[posAtual.getI()][posAtual.getJ()] = null;
+        
+        tabuleiro[posFinal.getI()][posFinal.getJ()] = peça;
     }
     
     /**
      * Remove uma peça do tabuleiro.
      * @param peça peça a ser removida.
      */
-    //Simplesmente remove, sem regras. Quem vai cuidar das regras é a classe Regras.
     public void removePeça(Peça peça){
-        //TODO
+        Posição posAtual = getPosição(peça);
+        
+        tabuleiro[posAtual.getI()][posAtual.getJ()] = null;
     }
     
     @Override

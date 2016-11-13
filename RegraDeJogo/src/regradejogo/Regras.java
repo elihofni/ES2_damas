@@ -26,9 +26,24 @@ public class Regras {
     public void moverPeça(Peça peça, Posição posFinal){
         //Fazer lógica, verificar se virou dama e etc...
         
+        List<Posição> posições = jogadasPossiveis(peça);
+        
+        if(!existemPosições(posições)){
+            //levantar exceção.
+        }
+        
         tabuleiro.movePeça(peça, posFinal);
         //Sempre que um movimento for bem sucedido, acionar o callback.
         boardChangedListener.onPieceMoved(posFinal, posFinal);
+    }
+    
+    /**
+     * Verifica se existem jogadas.
+     * @param list lista com posições.
+     * @return retorna true se existe(m) jogada(s), false caso contrário.
+     */
+    public boolean existemPosições(List<Posição> list){
+        return list.isEmpty();
     }
     
     /**
@@ -36,7 +51,17 @@ public class Regras {
      * @param peça peça a ter as jogadas analisadas.
      * @return retorna uma lista com todas as posições válidas para jogada.
      */
-    private List<Posição> jogadasPossíveis(Peça peça){
+    private List<Posição> jogadasPossiveis(Peça peça){
+        //TODO
+        return null;
+    }
+    
+    /**
+     * Dada uma peça, retorna todas as peças que podem ser capturadas por ela.
+     * @param peça peça a ter os movimentos analisado.
+     * @return peças que podem ser capturadas.
+     */
+    private List<Peça> capturasPossíveis(Peça peça){
         //TODO
         return null;
     }
@@ -75,6 +100,15 @@ public class Regras {
         //TODO
         tabuleiro.removePeça(peça);
         boardChangedListener.onPieceRemoved(tabuleiro.getPosição(peça));
+    }
+    
+    /**
+     * retorna uma peça dada a posição.
+     * @param pos
+     * @return retorna uma peça caso exista nessa posição, null caso contrário.
+     */
+    public Peça getPeça(Posição pos){
+        return tabuleiro.getPeça(pos);
     }
     
     /**
