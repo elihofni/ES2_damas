@@ -202,6 +202,13 @@ public class Tabuleiro {
         return 0;
     }
     
+    public boolean ehMaisAlta(Peça peca1, Peça peca2){
+        Posição pos1 = getPosição(peca1);
+        Posição pos2 = getPosição(peca2);
+        
+        return pos1.getI() > pos2.getI();
+    }
+    
     /**
      * Aquele toString de lei pros testes.
      * @return 
