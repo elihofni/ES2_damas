@@ -10,8 +10,7 @@ public class Jogador {
     }
     
     public void realizarJogada(Posição posInicial, Posição posFinal){
-        Peça peça = regras.getPeça(posInicial);
-        regras.moverPeça(peça, posFinal);
+        regras.moverPeça(posInicial, posFinal);
     }
     
 }

@@ -1,5 +1,8 @@
 package regradejogo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 
  */
@@ -30,6 +33,10 @@ public class Posição {
                 
     public int getJ(){
         return j;
+    }
+    
+    public boolean equals(Posição pos){
+        return (this.i == pos.i) && (this.j == pos.j);
     }
     
     @Override
