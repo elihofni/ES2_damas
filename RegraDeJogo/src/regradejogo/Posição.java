@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ * Classe que "empacota" a posição na matriz.
  */
 public class Posição {
     private int i;

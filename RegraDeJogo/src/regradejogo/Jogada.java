@@ -1,7 +1,7 @@
 package regradejogo;
 
 /**
- * Classe que guarda todas as informações de uma jogada
+ * Classe que guarda todas as informações de uma jogada.
  * @author Max
  */
 public class Jogada {
@@ -18,7 +18,7 @@ public class Jogada {
     }
 
     public Jogada() {
-         //To change body of generated methods, choose Tools | Templates.
+         
     }
     
     public boolean houveCaptura(){

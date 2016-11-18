@@ -170,8 +170,8 @@ public class Tabuleiro {
     
     /**
      * Dada duas peças, retorna a inclinação relativa da peca1 sobre a peca2.
-     * @param peca1
-     * @param peca2
+     * @param peca1 peca de referencia.
+     * @param peca2 peca secundária.
      * @return 0 para inclinação a esquerda, 1 para direita.
      */
     public int inclinacaoRelativa(Peça peca1, Peça peca2){
@@ -202,6 +202,12 @@ public class Tabuleiro {
         return 0;
     }
     
+    /**
+     * Verifica se uma peça está numa linha mais alta que a outra.
+     * @param peca1 peca referencia.
+     * @param peca2 peca secundaria.
+     * @return retorna true caso a peca1 esteja acima da peca1, false caso contrário.
+     */
     public boolean ehMaisAlta(Peça peca1, Peça peca2){
         Posição pos1 = getPosição(peca1);
         Posição pos2 = getPosição(peca2);
@@ -231,6 +237,9 @@ public class Tabuleiro {
         return str;
     }
     
+    /**
+     * Classe pra agrupar constantes e facilitar a identificação e manutenção.
+     */
     public class Inclinacao{
         public static final int ESQUERDA = 0;
         public static final int DIREITA = 1;
