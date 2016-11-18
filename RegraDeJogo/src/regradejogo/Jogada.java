@@ -22,7 +22,7 @@ public class Jogada {
     }
     
     public boolean houveCaptura(){
-        return peçaCapturada == null;
+        return peçaCapturada != null;
     }
 
     public Peça getPeçaCapturada() {
