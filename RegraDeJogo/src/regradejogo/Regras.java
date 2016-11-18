@@ -93,7 +93,7 @@ public class Regras {
     }
     
     /**
-     * Dada uma lista de jogada, retorna a jogada que possui tal posição final.
+     * Dada uma lista de jogadas, retorna a jogada que possui tal posição final.
      * @param jogadas Lista de jogadas a serem analisadas.
      * @return 
      */
@@ -193,15 +193,26 @@ public class Regras {
             return capturas;
         }
         
+        List<Jogada> jogadasFiltro = new ArrayList<>();
+        //Se não teve nenhuma captura, tenho que re-verificar as posições para assegurar que nelas não há nenhuma peça.
+        for(Jogada jogada : jogadas){
+            Peça p = tabuleiro.getPeça(jogada.getPosFinal());
+            
+            if(p == null){
+                jogadasFiltro.add(jogada);
+            }
+        }
+        
         /**
          * Se chegou até aqui quer dizer que as duas jogadas candidatas ali em cima eram efetivamente
          * jogadas normais.
          */
-        return jogadas;
+        return jogadasFiltro;
     }
     
     /**
      * Dada uma peça e uma posição futura, verifica se forma uma jogada válida.
+     * Caso na posição futura haja uma peça inimiga, a jogada é considerada válida, pois pode resultar em captura.
      * @param pos posição futura.
      * @param peca peça a ser movida.
      * @return true caso seja valida, false caso não.
@@ -276,7 +287,7 @@ public class Regras {
      * Verifica se a peca1 pode comer a peca2.
      * @param peca1 Peça que irá tentar capturar.
      * @param peca2 Peça a ser capturada.
-     * @return true caso possa, false caso contrário.
+     * @return caso seja possível a captura, retorna a posição final.
      */
     public Posição podeComer(Peça peca1, Peça peca2){
         //Pego a inclinação relativa entre duas pecas.
