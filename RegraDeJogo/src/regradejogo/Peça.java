@@ -1,5 +1,9 @@
 package regradejogo;
 
+/**
+ * Classe que representa uma peça de jogo.
+ * @author Max
+ */
 public class Peça {
     private int time;
     private boolean dama;
