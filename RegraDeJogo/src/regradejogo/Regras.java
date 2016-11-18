@@ -298,7 +298,7 @@ public class Regras {
             if(!tabuleiro.posValida(posFinal)){
                 return null;
             }
-            //Verifico se existe alguma peça ness aposição.
+            //Verifico se existe alguma peça nessa aposição.
             if(tabuleiro.getPeça(posFinal) != null){
                 return null;
             } 
@@ -314,7 +314,7 @@ public class Regras {
             if(!tabuleiro.posValida(posFinal)){
                 return null;
             }
-            //Verifico se existe alguma peça ness aposição.
+            //Verifico se existe alguma peça nessa aposição.
             if(tabuleiro.getPeça(posFinal) != null){
                 return null;
             }
