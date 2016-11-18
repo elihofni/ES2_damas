@@ -43,11 +43,12 @@ public class Regras {
     public void moverPeça(Posição posInicial, Posição posFinal){
         Peça peça = getPeça(posInicial);
         
-        if(tabuleiro.posValida(posInicial)){
+        if(!tabuleiro.posValida(posInicial)){
             throw new PosiçãoInvalidaException("Posição inválida, fora da dimensão do tabuleiro, Index:" + posInicial.toString() + ".");
         }
         
-        if(tabuleiro.posValida(posFinal)){
+        //Teste de sanidade. É impossível chegar uma possição final inválida.
+        if(!tabuleiro.posValida(posFinal)){
             throw new PosiçãoInvalidaException("Posição inválida, fora da dimensão do tabuleiro, Index:" + posFinal.toString() + ".");
         }
         
@@ -55,12 +56,12 @@ public class Regras {
             throw new PosiçãoInvalidaException("Não existe nenhuma peça na posição " + posInicial.toString() + ".");
         }
         
-        List<Jogada> jogadas = jogadasPossiveis(peça);
+        List<Jogada> jogadas = peça.isDama()? jogadasPossiveis(peça) : jogadasPossiveis(peça);
         
         Jogada jogada = getJogada(jogadas, posFinal);
         
         if(jogada == null){
-            throw new JogadaInvalidaException("A posição " + posFinal.toString() + " não é uma jogada válida para esta peça.");
+            throw new JogadaInvalidaException("A posição " + posFinal.toString() + " não é uma jogada válida para esta peça " + tabuleiro.getPosição(peça) + ".");
         }
         
         Peça peçaCapturada = jogada.getPeçaCapturada();
@@ -132,6 +133,10 @@ public class Regras {
         //Analisa as 2 posições possíveis.
         Posição pos1 = new Posição(poisçãoPeça.getI() + varJogador, poisçãoPeça.getJ() - 1);
         Posição pos2 = new Posição(poisçãoPeça.getI() + varJogador, poisçãoPeça.getJ() + 1);
+        
+        //Posições que podem conter inimigos e que estão abaixo da peça.
+        Posição pos3 = new Posição(poisçãoPeça.getI() - varJogador, poisçãoPeça.getJ() - 1);
+        Posição pos4 = new Posição(poisçãoPeça.getI() - varJogador, poisçãoPeça.getJ() + 1);
 
         //Verifica se as posições são válidas.
         if(jogadaValida(pos1, peça)){
@@ -142,6 +147,16 @@ public class Regras {
         if(jogadaValida(pos2, peça)){
             posicoes.add(pos2);
             jogadas.add(new Jogada(null, peça, poisçãoPeça, pos2));
+        }
+        
+        if(jogadaValida(pos3, peça)){
+            posicoes.add(pos3);
+            //jogadas.add(new Jogada(null, peça, poisçãoPeça, pos3));
+        }
+        
+        if(jogadaValida(pos4, peça)){
+            posicoes.add(pos4);
+            //jogadas.add(new Jogada(null, peça, poisçãoPeça, pos3));
         }
         
         //Pega todas as peças que a peça atual pode capturar.
@@ -178,11 +193,11 @@ public class Regras {
         }
         
         //Caso a peça esteja na borda do tabuleiro.
-        if((pos.getI() == tabuleiro.DIMEN - 1) || (pos.getI() == 0)){
+        if((pos.getI() == Tabuleiro.DIMEN - 1) || (pos.getI() == 0)){
             return false;
         }
         
-        if((pos.getJ() == tabuleiro.DIMEN - 1) || (pos.getJ() == 0)){
+        if((pos.getJ() == Tabuleiro.DIMEN - 1) || (pos.getJ() == 0)){
             return false;
         }
         
@@ -235,15 +250,16 @@ public class Regras {
     public Posição podeComer(Peça peca1, Peça peca2){
         //Pego a inclinação relativa entre duas pecas.
         int inclinacao = tabuleiro.inclinacaoRelativa(peca1, peca2);
+        int altura = tabuleiro.ehMaisAlta(peca1, peca2)? -1 : 1;
         
         Posição posFinal;
         
         if(peca1.getTime() == JOGADOR_UM){
             Posição pos = tabuleiro.getPosição(peca2);
             if(inclinacao == Inclinacao.ESQUERDA){
-                posFinal = new Posição(pos.getI() - 1, pos.getJ() - 1);
+                posFinal = new Posição(pos.getI() + altura, pos.getJ() - 1);
             }else{
-                posFinal = new Posição(pos.getI() - 1, pos.getJ() + 1);
+                posFinal = new Posição(pos.getI() + altura, pos.getJ() + 1);
             }
             
             //Verifico se a posição é válida.
@@ -257,9 +273,9 @@ public class Regras {
         }else{
             Posição pos = tabuleiro.getPosição(peca2);
             if(inclinacao == Inclinacao.ESQUERDA){
-                posFinal = new Posição(pos.getI() + 1, pos.getJ() - 1);
+                posFinal = new Posição(pos.getI() + altura, pos.getJ() - 1);
             }else{
-                posFinal = new Posição(pos.getI() + 1, pos.getJ() + 1);
+                posFinal = new Posição(pos.getI() + altura, pos.getJ() + 1);
             }
             
             //Verifico se a posição é válida.
