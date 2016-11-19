@@ -56,5 +56,6 @@ public class CapturaTest {
     
     @Test
     public void captura(){
+        
     }
 }

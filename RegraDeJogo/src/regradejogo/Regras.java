@@ -11,15 +11,16 @@ import regradejogo.Tabuleiro.Inclinacao;
  * Classe responsável por controlar as regras do jogo.
  */
 public class Regras {
-    private Tabuleiro tabuleiro;
-    private int turnoAtual;
-    private BoardChangedListener boardChangedListener;
-    private static final int JOGADOR_UM = 1;
-    private static final int JOGADOR_DOIS = 2;
+    private Tabuleiro tabuleiro; //Instancia do tabuleiro que vai ser regido pelas regras.
+    private int turnoAtual; //Turno atual do jogo.
+    private BoardChangedListener boardChangedListener; //Interface de callback.
+    private static final int JOGADOR_UM = 1; //Constance do jogador 1.
+    private static final int JOGADOR_DOIS = 2; //Constante do jogador 2.
     private int jogadorAtual;//TODO
-    private int nPecasJogador1;
-    private int nPecasJogador2;
+    private int nPecasJogador1; //Quantidade de peças do jogador 1;
+    private int nPecasJogador2; //Quantidade de peças do jogador 2;
     private boolean jogoFinalizado;
+    private List<Peça> peçasAptas; //Todas as peças que podem se mover nesse turno.
     
     public Regras(){
         turnoAtual = 0;
@@ -117,7 +118,59 @@ public class Regras {
     }
     
     /**
-     * Analisa todo o campo da peça(normal) e retorna as posições válidas.
+     * Dada uma peça, retorna todo seu entorno.
+     * @param peça
+     * @return 
+     */
+    public List<Posição> getPosicoesPossiveisPeça(Peça peça){
+        //Pega a posição da peça.
+        Posição poisçãoPeça = tabuleiro.getPosição(peça);
+        
+        /**
+         * A lista posições guarda todas as posições na quais são oriundas de jogadas "normais",
+         * apenas andar pra frente.
+         */
+        List<Posição> posicoes = new ArrayList<>();
+        
+        /**
+         * Váriavel que ajuda a decidir se vai descer o subir na matriz.
+         * Jogador 1 sempre fica em baixo.
+         */
+        int varJogador = (peça.getTime() == 1)? -1 : 1;
+        
+        Posição pos1 = new Posição(poisçãoPeça.getI() + varJogador, poisçãoPeça.getJ() - 1);
+        Posição pos2 = new Posição(poisçãoPeça.getI() + varJogador, poisçãoPeça.getJ() + 1);
+        
+        //Posições que podem conter inimigos e que estão no sentido contrário ao "normal" da peça.
+        Posição pos3 = new Posição(poisçãoPeça.getI() - varJogador, poisçãoPeça.getJ() - 1);
+        Posição pos4 = new Posição(poisçãoPeça.getI() - varJogador, poisçãoPeça.getJ() + 1);
+
+        //Verifica se as posições são válidas.
+        if(posicaoValida(pos1, peça)){
+            posicoes.add(pos1);
+        }
+        
+        if(posicaoValida(pos2, peça)){
+            posicoes.add(pos2);
+        }
+        
+        /**
+         * Jogadas não-normais. Captura para "trás". No mínimo vai ser uma captura, logo não posso adiciona-la
+         * como uma candidata.
+         */
+        if(posicaoValida(pos3, peça)){
+            posicoes.add(pos3);
+        }
+        
+        if(posicaoValida(pos4, peça)){
+            posicoes.add(pos4);
+        }
+        
+        return posicoes;
+    }
+    
+    /**
+     * Analisa todo o campo da peça(sem ser dama) e retorna as posições válidas.
      * @param peça peça a ter as jogadas analisadas.
      * @return retorna uma lista com todas as posições válidas para jogada.
      */
@@ -127,14 +180,15 @@ public class Regras {
             return null;
         }*/
         
-        //Pega a posição da peça.
-        Posição poisçãoPeça = tabuleiro.getPosição(peça);
+        //Se a peça não estiver apta para o turno, retorna uma lista de jogada vazia.
+        /*if(getPeçasAptas().indexOf(peça) == -1){
+            return new ArrayList<>();
+        }*/
         
         /**
-         * A lista posições guarda todas as posições na quais são oriundas de jogadas "normais",
-         * apenas andar pra frente.
+         * Retorno o entorno da peça.
          */
-        List<Posição> posicoes = new ArrayList<>();
+        List<Posição> posicoes = getPosicoesPossiveisPeça(peça);
         /**
          * A lista jogadas é fruto da analise das posições e interpretação do que pode acontecer das jogadas
          * da lista posições.
@@ -142,48 +196,9 @@ public class Regras {
         List<Jogada> jogadas = new ArrayList<>();
         
         /**
-         * Váriavel que ajuda a decidir se vai descer o subir na matriz.
-         * Jogador 1 sempre fica em baixo.
-         */
-        int varJogador = (peça.getTime() == 1)? -1 : 1;
-
-        //Analisa as 2 posições de jogadas "normais" possíveis.
-        Posição pos1 = new Posição(poisçãoPeça.getI() + varJogador, poisçãoPeça.getJ() - 1);
-        Posição pos2 = new Posição(poisçãoPeça.getI() + varJogador, poisçãoPeça.getJ() + 1);
-        
-        //Posições que podem conter inimigos e que estão no sentido contrário ao "normal" da peça.
-        Posição pos3 = new Posição(poisçãoPeça.getI() - varJogador, poisçãoPeça.getJ() - 1);
-        Posição pos4 = new Posição(poisçãoPeça.getI() - varJogador, poisçãoPeça.getJ() + 1);
-
-        //Verifica se as posições são válidas.
-        if(jogadaValida(pos1, peça)){
-            posicoes.add(pos1);
-            //Candidata a ser uma jogada "normal". Pode não ser.
-            jogadas.add(new Jogada(null, peça, poisçãoPeça, pos1));
-        }
-        
-        if(jogadaValida(pos2, peça)){
-            posicoes.add(pos2);
-            //Candidata a ser uma jogada "normal". Pode não ser.
-            jogadas.add(new Jogada(null, peça, poisçãoPeça, pos2));
-        }
-        
-        /**
-         * Jogadas não-normais. Captura para "trás". No mínimo vai ser uma captura, logo não posso adiciona-la
-         * como uma candidata.
-         */
-        if(jogadaValida(pos3, peça)){
-            posicoes.add(pos3);
-        }
-        
-        if(jogadaValida(pos4, peça)){
-            posicoes.add(pos4);
-        }
-        
-        /**
          * Nesse jogo de damas, captura é prioridade. Se existe, pelo menos uma, jogada na qual seja uma captura
          * ela será retornada.
-         * Aquela jogada ali em cima que era condidata a ser uma jogada normal, pode cair aqui dentro de capturas
+         * Aquela jogada ali em cima que era candidata a ser uma jogada normal, pode cair aqui dentro de capturas
          * mas não tem problema.
          */
         List<Jogada> capturas = capturasPossiveis(posicoes, peça);
@@ -193,13 +208,11 @@ public class Regras {
             return capturas;
         }
         
-        List<Jogada> jogadasFiltro = new ArrayList<>();
-        //Se não teve nenhuma captura, tenho que re-verificar as posições para assegurar que nelas não há nenhuma peça.
-        for(Jogada jogada : jogadas){
-            Peça p = tabuleiro.getPeça(jogada.getPosFinal());
-            
-            if(p == null){
-                jogadasFiltro.add(jogada);
+        //Caso não tenha havido nenhuma captura, adicionar as jogadas normais.
+        for(Posição posicao : posicoes){
+            boolean teste2 = peça.getTime() == 1? posicao.getI() < tabuleiro.getPosição(peça).getI() : posicao.getI() > tabuleiro.getPosição(peça).getI();
+            if(!tabuleiro.existePecaPos(posicao) && teste2){
+                jogadas.add(new Jogada(null, peça, tabuleiro.getPosição(peça), posicao));
             }
         }
         
@@ -207,17 +220,17 @@ public class Regras {
          * Se chegou até aqui quer dizer que as duas jogadas candidatas ali em cima eram efetivamente
          * jogadas normais.
          */
-        return jogadasFiltro;
+        return jogadas;
     }
     
     /**
-     * Dada uma peça e uma posição futura, verifica se forma uma jogada válida.
-     * Caso na posição futura haja uma peça inimiga, a jogada é considerada válida, pois pode resultar em captura.
-     * @param pos posição futura.
+     * Dada uma peça e uma posição futura, verifica se é uma posição válida.
+     * Uma posição é dita válida caso esteja vazia ou tenha alguma peça inimiga.
+     * @param pos posição a ser analisada.
      * @param peca peça a ser movida.
      * @return true caso seja valida, false caso não.
      */
-    private boolean jogadaValida(Posição pos, Peça peca){
+    private boolean posicaoValida(Posição pos, Peça peca){
         if(!tabuleiro.posValida(pos)){
             return false;
         }
@@ -360,6 +373,45 @@ public class Regras {
     }
     
     /**
+     * Verifica todas as peças que estão aptas a se moverem no turno.
+     * Peças que podem capturar são prioredade.
+     * @return Lista de peças válidas para o turno.
+     */
+    public List<Peça> getPeçasAptas(){
+        List<Peça> peçasAptasCaptura = new ArrayList<>();
+        List<Peça> peçasJogadaNormal = new ArrayList<>();
+        
+        //Pega todas as peças que estão no tabuleiro.
+        List<Peça> peçasTabuleiro = tabuleiro.getPeças();
+        
+        for(Peça peça : peçasTabuleiro){
+            List<Jogada> jogadas = jogadasPossiveis(peça);
+            if(possuiCaptura(jogadas)){
+                peçasAptasCaptura.add(peça);
+            }else if(!jogadas.isEmpty()){
+                peçasJogadaNormal.add(peça);
+            }
+        }
+        
+        return peçasAptasCaptura.isEmpty()? peçasJogadaNormal : peçasAptasCaptura;
+    }
+    
+        /**
+     * Verifica se uma lista de jogadas possui uma jogada com captura.
+     * @param jogadas lista de jogadas a ser verificada.
+     * @return tre caso exista jogada de captura, false caso contrário.
+     */
+    public boolean possuiCaptura(List<Jogada> jogadas){
+        for(Jogada jogada : jogadas){
+            if(jogada.houveCaptura()){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
      * Função que trata o incremento de turno. Verifica possível numero máximo
      * de turnos e etc.
      */
@@ -433,6 +485,13 @@ public class Regras {
          * @param posição posição na qual a peça foi removida.
          */
         public void onPieceRemoved(Posição posição);
+        
+        /**
+         * Sempre que uma peça virar dama essa função será chamada.
+         * @param i posição i da peça na matriz.
+         * @param j posição j da peça na matriz.
+         */
+        public void virouDama(int i, int j);
     }
     
     public void setOnBoardChangedListener(BoardChangedListener boardChangedListener){
