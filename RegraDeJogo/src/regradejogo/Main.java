@@ -6,7 +6,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Regras regras = new Regras("teste2.txt");
+        /*Regras regras = new Regras("teste2.txt");
         
         System.out.println(regras.getTabuleiro().toString());
         
@@ -24,7 +24,7 @@ public class Main {
         //System.out.println(regras.jogadasPossiveis(peça).toString());
         
         //List<Jogada> jogadas = regras.jogadasPossiveis(peca);
-        //System.out.println(jogadas.toString());
+        //System.out.println(jogadas.toString());*/
     }
     
 }

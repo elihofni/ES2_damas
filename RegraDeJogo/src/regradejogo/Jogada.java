@@ -1,5 +1,7 @@
 package regradejogo;
 
+import java.util.List;
+
 /**
  * Classe que guarda todas as informações de uma jogada.
  * @author Max

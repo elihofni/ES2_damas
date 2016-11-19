@@ -128,6 +128,11 @@ public class Regras {
             return null;
         }*/
         
+        //Se a peça não estiver apta para o turno, retorna uma lista de jogada vazia.
+        if(getPeçasAptas().indexOf(peça) == -1){
+            return new ArrayList<>();
+        }
+        
         //Pega a posição da peça.
         Posição poisçãoPeça = tabuleiro.getPosição(peça);
         
@@ -365,11 +370,38 @@ public class Regras {
      * Peças que podem capturar são prioredade.
      * @return Lista de peças válidas para o turno.
      */
-    private List<Peça> getPeçasAptas(){
-        List<Peça> peçasAptas = new ArrayList<>();
+    public List<Peça> getPeçasAptas(){
+        List<Peça> peçasAptasCaptura = new ArrayList<>();
+        List<Peça> peçasJogadaNormal = new ArrayList<>();
         
+        //Pega todas as peças que estão no tabuleiro.
+        List<Peça> peçasTabuleiro = tabuleiro.getPeças();
         
-        return null;
+        for(Peça peça : peçasTabuleiro){
+            List<Jogada> jogadas = jogadasPossiveis(peça);
+            if(possuiCaptura(jogadas)){
+                peçasAptasCaptura.add(peça);
+            }else if(!jogadas.isEmpty()){
+                peçasJogadaNormal.add(peça);
+            }
+        }
+        
+        return peçasAptasCaptura.isEmpty()? peçasJogadaNormal : peçasAptasCaptura;
+    }
+    
+        /**
+     * Verifica se uma lista de jogadas possui uma jogada com captura.
+     * @param jogadas lista de jogadas a ser verificada.
+     * @return tre caso exista jogada de captura, false caso contrário.
+     */
+    public boolean possuiCaptura(List<Jogada> jogadas){
+        for(Jogada jogada : jogadas){
+            if(jogada.houveCaptura()){
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**
