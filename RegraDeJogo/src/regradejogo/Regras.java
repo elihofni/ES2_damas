@@ -118,21 +118,11 @@ public class Regras {
     }
     
     /**
-     * Analisa todo o campo da peça(sem ser dama) e retorna as posições válidas.
-     * @param peça peça a ter as jogadas analisadas.
-     * @return retorna uma lista com todas as posições válidas para jogada.
+     * Dada uma peça, retorna todo seu entorno.
+     * @param peça
+     * @return 
      */
-    public List<Jogada> jogadasPossiveis(Peça peça){
-        //Se a peça não for do jogador atual.
-        /*if(peça.getTime() != jogadorAtual){
-            return null;
-        }*/
-        
-        //Se a peça não estiver apta para o turno, retorna uma lista de jogada vazia.
-        if(getPeçasAptas().indexOf(peça) == -1){
-            return new ArrayList<>();
-        }
-        
+    public List<Posição> getPosicoesPossiveisPeça(Peça peça){
         //Pega a posição da peça.
         Posição poisçãoPeça = tabuleiro.getPosição(peça);
         
@@ -141,19 +131,13 @@ public class Regras {
          * apenas andar pra frente.
          */
         List<Posição> posicoes = new ArrayList<>();
-        /**
-         * A lista jogadas é fruto da analise das posições e interpretação do que pode acontecer das jogadas
-         * da lista posições.
-         */
-        List<Jogada> jogadas = new ArrayList<>();
         
         /**
          * Váriavel que ajuda a decidir se vai descer o subir na matriz.
          * Jogador 1 sempre fica em baixo.
          */
         int varJogador = (peça.getTime() == 1)? -1 : 1;
-
-        //Analisa as 2 posições de jogadas "normais" possíveis.
+        
         Posição pos1 = new Posição(poisçãoPeça.getI() + varJogador, poisçãoPeça.getJ() - 1);
         Posição pos2 = new Posição(poisçãoPeça.getI() + varJogador, poisçãoPeça.getJ() + 1);
         
@@ -164,14 +148,10 @@ public class Regras {
         //Verifica se as posições são válidas.
         if(posicaoValida(pos1, peça)){
             posicoes.add(pos1);
-            //Candidata a ser uma jogada "normal". Pode não ser.
-            jogadas.add(new Jogada(null, peça, poisçãoPeça, pos1));
         }
         
         if(posicaoValida(pos2, peça)){
             posicoes.add(pos2);
-            //Candidata a ser uma jogada "normal". Pode não ser.
-            jogadas.add(new Jogada(null, peça, poisçãoPeça, pos2));
         }
         
         /**
@@ -186,6 +166,35 @@ public class Regras {
             posicoes.add(pos4);
         }
         
+        return posicoes;
+    }
+    
+    /**
+     * Analisa todo o campo da peça(sem ser dama) e retorna as posições válidas.
+     * @param peça peça a ter as jogadas analisadas.
+     * @return retorna uma lista com todas as posições válidas para jogada.
+     */
+    public List<Jogada> jogadasPossiveis(Peça peça){
+        //Se a peça não for do jogador atual.
+        /*if(peça.getTime() != jogadorAtual){
+            return null;
+        }*/
+        
+        //Se a peça não estiver apta para o turno, retorna uma lista de jogada vazia.
+        /*if(getPeçasAptas().indexOf(peça) == -1){
+            return new ArrayList<>();
+        }*/
+        
+        /**
+         * Retorno o entorno da peça.
+         */
+        List<Posição> posicoes = getPosicoesPossiveisPeça(peça);
+        /**
+         * A lista jogadas é fruto da analise das posições e interpretação do que pode acontecer das jogadas
+         * da lista posições.
+         */
+        List<Jogada> jogadas = new ArrayList<>();
+        
         /**
          * Nesse jogo de damas, captura é prioridade. Se existe, pelo menos uma, jogada na qual seja uma captura
          * ela será retornada.
@@ -199,13 +208,11 @@ public class Regras {
             return capturas;
         }
         
-        List<Jogada> jogadasFiltro = new ArrayList<>();
-        //Se não teve nenhuma captura, tenho que re-verificar as posições para assegurar que nelas não há nenhuma peça.
-        for(Jogada jogada : jogadas){
-            Peça p = tabuleiro.getPeça(jogada.getPosFinal());
-            
-            if(p == null){
-                jogadasFiltro.add(jogada);
+        //Caso não tenha havido nenhuma captura, adicionar as jogadas normais.
+        for(Posição posicao : posicoes){
+            boolean teste2 = peça.getTime() == 1? posicao.getI() < tabuleiro.getPosição(peça).getI() : posicao.getI() > tabuleiro.getPosição(peça).getI();
+            if(!tabuleiro.existePecaPos(posicao) && teste2){
+                jogadas.add(new Jogada(null, peça, tabuleiro.getPosição(peça), posicao));
             }
         }
         
@@ -213,7 +220,7 @@ public class Regras {
          * Se chegou até aqui quer dizer que as duas jogadas candidatas ali em cima eram efetivamente
          * jogadas normais.
          */
-        return jogadasFiltro;
+        return jogadas;
     }
     
     /**
