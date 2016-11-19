@@ -4,30 +4,20 @@
  * and open the template in the editor.
  */
 
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import regradejogo.Peça;
-import regradejogo.Posição;
-import regradejogo.Regras;
 
 /**
  *
  * @author Max
  */
-public class CapturaTest {
+public class TestesDeFunção {
     
-    private Regras regras;
-    private Peça peça;
-    private List<Peça> capturas;
-    private List<Peça> oraculo;
-    
-    public CapturaTest() {
+    public TestesDeFunção() {
     }
     
     @BeforeClass
@@ -40,12 +30,11 @@ public class CapturaTest {
     
     @Before
     public void setUp() {
-        regras = new Regras();
-        oraculo = new ArrayList<>();
     }
     
     @After
     public void tearDown() {
+        
     }
 
     // TODO add test methods here.
@@ -55,7 +44,7 @@ public class CapturaTest {
     // public void hello() {}
     
     @Test
-    public void captura(){
+    public void testGetPeçasTabuleiro(){
         
     }
 }
