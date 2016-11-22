@@ -60,7 +60,7 @@ public class Regras {
         
         //Se for dama, a função que lida com a jogada é diferente.
         //TODO: Função que retorna as jogadas da dama.
-        List<Jogada> jogadas = peça.isDama()? jogadasPossiveis(peça) : jogadasPossiveis(peça);
+        List<Jogada> jogadas = peça.isDama()? jogadasPossiveis(peça) : jogadasPossiveisDama(peça);
         
         //Verifica se a posição final da jogada está contida nas jogadas possíveis.
         Jogada jogada = getJogada(jogadas, posFinal);
@@ -116,7 +116,7 @@ public class Regras {
         return list.isEmpty();
     }
     
-    public List<Jogada> getPosicoesPossiveisDama(Peça peça){
+    public List<Jogada> jogadasPossiveisDama(Peça peça){
         Posição posDama = tabuleiro.getPosição(peça);
         
         List<Posição> posicoes = new ArrayList<>();

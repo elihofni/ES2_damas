@@ -132,12 +132,12 @@ public class MovimentaçãoTest {
         regras = new Regras("./testesMovimentacaoDama/testeDama1.txt");
         
         peça = regras.getPeça(new Posição(3, 3));
-        pos = getPosiçoes(regras.getPosicoesPossiveisDama(peça));
+        pos = getPosiçoes(regras.jogadasPossiveisDama(peça));
         
         //System.out.println(pos.toString());
         
         //System.out.println(regras.getTabuleiro().getDiagonal(new Posição(3, 3), -1, 1).toString());
         
-        System.out.println(getPosiçoes(regras.getPosicoesPossiveisDama(peça)));
+        System.out.println(getPosiçoes(regras.jogadasPossiveisDama(peça)));
     }
 }
