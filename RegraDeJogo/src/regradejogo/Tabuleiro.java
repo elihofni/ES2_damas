@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Classe que representa o tabuleiro do jogo.
@@ -194,11 +192,11 @@ public class Tabuleiro {
      */
     public int bordaSupInf(Posição pos){
         if((pos.getI() == DIMEN - 1)){
-            return 2;
+            return 1;
         }
         
         if((pos.getI() == 0)){
-            return 1;
+            return 2;
         }
         
         return 0;
@@ -215,25 +213,6 @@ public class Tabuleiro {
         Posição pos2 = getPosição(peca2);
         
         return pos1.getI() > pos2.getI();
-    }
-    
-    /**
-     * Retorna todas as peças que estão no tabuleiro.
-     * @return Lista com todas as peças do tabuleiro.
-     */
-    public List<Peça> getPeças(){
-        List<Peça> peças = new ArrayList<>();
-        
-        for(int i = 0; i < DIMEN; i++){
-            for(int j = 0; j < DIMEN; j++){
-                Peça peça = getPeça(new Posição(i, j));
-                if(peça != null){
-                    peças.add(peça);
-                }
-            }
-        }
-        
-        return peças;
     }
     
     /**
