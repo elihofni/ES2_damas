@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -12,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import regradejogo.Jogada;
 import regradejogo.Peça;
 import regradejogo.Posição;
 import regradejogo.Regras;
@@ -24,8 +26,8 @@ public class CapturaTest {
     
     private Regras regras;
     private Peça peça;
-    private List<Peça> capturas;
-    private List<Peça> oraculo;
+    private List<Posição> resultado;
+    private List<Posição> oraculo;
     
     public CapturaTest() {
     }
@@ -40,8 +42,6 @@ public class CapturaTest {
     
     @Before
     public void setUp() {
-        regras = new Regras();
-        oraculo = new ArrayList<>();
     }
     
     @After
@@ -54,8 +54,27 @@ public class CapturaTest {
     // @Test
     // public void hello() {}
     
-    @Test
-    public void captura(){
+    private List<Posição> getPosiçoes(List<Jogada> jogadas){
+        List<Posição> posicoes = new ArrayList<>();
+        for(Jogada jogada : jogadas){
+            posicoes.add(jogada.getPosFinal());
+        }
         
+        return posicoes;
+    }
+    
+    @Test
+    public void capturaSequencia() throws IOException{
+        /**
+         * Cenário 1.
+         */
+        regras = new Regras("./testesCaptura/testeCaptura7.txt");
+        //oraculo = new ArrayList<>();
+        //oraculo.add(new Posição(5, 0));
+        peça = regras.getPeça(new Posição(7, 2));
+        //resultado = getPosiçoes(regras.jogadasPossiveis(peça));
+        //assertEquals(oraculo.toString(), resultado.toString());
+        
+        System.out.println(getPosiçoes(regras.capturasSeguidas(new ArrayList<>(), regras.jogadasPossiveis(peça).get(0), peça.getTime(), new ArrayList<>())).toString());
     }
 }
