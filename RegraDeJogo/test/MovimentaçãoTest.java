@@ -11,6 +11,8 @@ import regradejogo.Jogada;
 import regradejogo.Peça;
 import regradejogo.Posição;
 import regradejogo.Regras;
+import regradejogo.Tabuleiro;
+import regradejogo.Tabuleiro.Inclinacao;
 
 /**
  *
@@ -113,5 +115,29 @@ public class MovimentaçãoTest {
         peça = regras.getPeça(new Posição(3, 3));
         pos = getPosiçoes(regras.jogadasPossiveis(peça));
         assertEquals(jogadasOraculo.toString(), pos.toString());
+        
+        /**
+         * Cenário 6.
+         */
+        regras = new Regras("./testesCaptura/testeCaptura6.txt");
+        jogadasOraculo = new ArrayList<>();
+        jogadasOraculo.add(new Posição(5, 0));
+        peça = regras.getPeça(new Posição(7, 2));
+        pos = getPosiçoes(regras.jogadasPossiveis(peça));
+        assertEquals(jogadasOraculo.toString(), pos.toString());
+    }
+    
+    @Test
+    public void jogadasPossiveisDama() throws IOException{
+        regras = new Regras("./testesMovimentacaoDama/testeDama1.txt");
+        
+        peça = regras.getPeça(new Posição(3, 3));
+        pos = getPosiçoes(regras.getPosicoesPossiveisDama(peça));
+        
+        //System.out.println(pos.toString());
+        
+        //System.out.println(regras.getTabuleiro().getDiagonal(new Posição(3, 3), -1, 1).toString());
+        
+        System.out.println(getPosiçoes(regras.getPosicoesPossiveisDama(peça)));
     }
 }

@@ -45,6 +45,10 @@ public class Tabuleiro {
                     tabuleiro[i][j] = new Peça(1, false);
                 }else if(string.equals("2")){
                     tabuleiro[i][j] = new Peça(2, false);
+                }else if(string.equals("3")){
+                    tabuleiro[i][j] = new Peça(1, true);
+                }else if(string.equals("4")){
+                    tabuleiro[i][j] = new Peça(2, true);
                 }
                 j++;
             }
@@ -134,6 +138,29 @@ public class Tabuleiro {
     }
     
     /**
+     * Dada uma posição retorna todas as posições na diagonal.
+     * (1, 1) = esquerda descendo
+     * (-1, -1) = esquerda subindo.
+     * (1, -1) = direita subindo.
+     * (-1, 1) = direita descendo.
+     * @param posReferencia posição de referencia
+     * @param inclinacao inclinação da diagonal
+     * @param sentido sentido
+     * @return 
+     */
+    public List<Posição> getDiagonal(Posição posReferencia, int inclinacao, int sentido){
+        List<Posição> posicoes = new ArrayList<>();
+        
+        Posição pos = new Posição(posReferencia.getI() + sentido, posReferencia.getJ() + inclinacao);
+        while(posValida(pos) && !existePecaPos(pos)){
+            posicoes.add(pos);
+            pos = new Posição(pos.getI() + sentido, pos.getJ() + inclinacao);
+        }
+        
+        return posicoes;
+    }
+    
+    /**
      * Remove uma peça do tabuleiro.
      * @param peça peça a ser removida.
      */
@@ -176,10 +203,7 @@ public class Tabuleiro {
      * @param peca2 peca secundária.
      * @return 0 para inclinação a esquerda, 1 para direita.
      */
-    public int inclinacaoRelativa(Peça peca1, Peça peca2){
-        Posição posPeca1 = getPosição(peca1);
-        Posição posPeca2 = getPosição(peca2);
-        
+    public int inclinacaoRelativa(Posição posPeca1, Posição posPeca2){
         if(posPeca1.getJ() > posPeca2.getJ()){
             return 0;
         }
@@ -210,10 +234,7 @@ public class Tabuleiro {
      * @param peca2 peca secundaria.
      * @return retorna true caso a peca1 esteja acima da peca1, false caso contrário.
      */
-    public boolean ehMaisAlta(Peça peca1, Peça peca2){
-        Posição pos1 = getPosição(peca1);
-        Posição pos2 = getPosição(peca2);
-        
+    public boolean ehMaisAlta(Posição pos1, Posição pos2){
         return pos1.getI() > pos2.getI();
     }
     

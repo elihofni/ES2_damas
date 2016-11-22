@@ -20,7 +20,6 @@ public class Regras {
     private int nPecasJogador1; //Quantidade de peças do jogador 1;
     private int nPecasJogador2; //Quantidade de peças do jogador 2;
     private boolean jogoFinalizado;
-    private List<Peça> peçasAptas; //Todas as peças que podem se mover nesse turno.
     
     public Regras(){
         turnoAtual = 0;
@@ -117,6 +116,130 @@ public class Regras {
         return list.isEmpty();
     }
     
+    public List<Jogada> getPosicoesPossiveisDama(Peça peça){
+        Posição posDama = tabuleiro.getPosição(peça);
+        
+        List<Posição> posicoes = new ArrayList<>();
+        List<Posição> diagonalEsquerda = new ArrayList<>();
+        List<Posição> diagonalDireita = new ArrayList<>();
+        
+        Posição pos = new Posição(posDama.getI()-1, posDama.getJ()-1);
+        while(posicaoValida(pos, peça.getTime())){
+            diagonalEsquerda.add(pos);
+            pos = new Posição(pos.getI()-1, pos.getJ()-1);
+        }
+        
+        Posição pos2 = new Posição(posDama.getI()+1, posDama.getJ()+1);
+        while(posicaoValida(pos2, peça.getTime())){
+            diagonalEsquerda.add(pos2);
+            pos2 = new Posição(pos2.getI()+1, pos2.getJ()+1);
+        }
+        
+        Posição pos3 = new Posição(posDama.getI()-1, posDama.getJ()+1);
+        while(posicaoValida(pos3, peça.getTime())){
+            diagonalDireita.add(pos3);
+            pos3 = new Posição(pos3.getI()-1, pos3.getJ()+1);
+        }
+        
+        Posição pos4 = new Posição(posDama.getI()+1, posDama.getJ()-1);
+        while(posicaoValida(pos4, peça.getTime())){
+            diagonalDireita.add(pos4);
+            pos4 = new Posição(pos4.getI()+1, pos4.getJ()-1);
+        }
+        
+        List<Jogada> capturasDireita = capturasPossiveis(diagonalDireita, peça);
+        List<Jogada> capturasEsquerda = capturasPossiveis(diagonalEsquerda, peça);
+        
+        List<Jogada> listAux = new ArrayList<>();
+        
+        for(Jogada jogada : capturasDireita){
+            listAux.add(jogada);
+            boolean aux = jogada.getPosInicial().getI() > jogada.getPosFinal().getI();
+            List<Posição> p;
+            if(aux){
+                p = tabuleiro.getDiagonal(jogada.getPosFinal(), 1, -1);
+            }else{
+                p = tabuleiro.getDiagonal(jogada.getPosFinal(), -1, 1);
+            }
+            
+            for(Posição pAux : p){
+                listAux.add(new Jogada(jogada.getPeçaCapturada(), jogada.getPeçaMovida(), jogada.getPosInicial(), pAux));
+            }
+        }
+        
+        for(Jogada jogada : capturasEsquerda){
+            listAux.add(jogada);
+            boolean aux = jogada.getPosInicial().getI() > jogada.getPosFinal().getI();
+            List<Posição> p;
+            if(aux){
+                p = tabuleiro.getDiagonal(jogada.getPosFinal(), -1, -1);
+            }else{
+                p = tabuleiro.getDiagonal(jogada.getPosFinal(), 1, 1);
+            }
+            
+            for(Posição pAux : p){
+                listAux.add(new Jogada(jogada.getPeçaCapturada(), jogada.getPeçaMovida(), jogada.getPosInicial(), pAux));
+            }
+        }
+
+        List<Jogada> jogadas = new ArrayList<>();
+        posicoes.addAll(diagonalDireita);
+        posicoes.addAll(diagonalEsquerda);
+        if(listAux.isEmpty()){
+            for(Posição p : posicoes){
+                jogadas.add(new Jogada(null, peça, posDama, p));
+            }
+            return jogadas;
+        }
+        
+        return listAux;
+    }
+    
+    /**
+     * Essa função simula uma peça em uma posição qualquer e retorna as jogadas possiveis.
+     * @param posição posição a ser analisada
+     * @return lista com as posições possiveis.
+     */
+    private List<Posição> getPosicoesPossiveisPos(Posição posição, int time){
+        /**
+         * A lista posições guarda todas as posições na quais são oriundas de jogadas "normais",
+         * apenas andar pra frente.
+         */
+        List<Posição> posicoes = new ArrayList<>();
+        
+        /**
+         * Váriavel que ajuda a decidir se vai descer o subir na matriz.
+         * Jogador 1 sempre fica em baixo.
+         */
+        int varJogador = (time == 1)? -1 : 1;
+        
+        Posição pos1 = new Posição(posição.getI() + varJogador, posição.getJ() - 1);
+        Posição pos2 = new Posição(posição.getI() + varJogador, posição.getJ() + 1);
+        
+        //Posições que podem conter inimigos e que estão no sentido contrário ao "normal" da peça.
+        Posição pos3 = new Posição(posição.getI() - varJogador, posição.getJ() - 1);
+        Posição pos4 = new Posição(posição.getI() - varJogador, posição.getJ() + 1);
+
+        //Verifica se as posições são válidas.
+        if(posicaoValida(pos1, time)){
+            posicoes.add(pos1);
+        }
+        
+        if(posicaoValida(pos2, time)){
+            posicoes.add(pos2);
+        }
+        
+        if(posicaoValida(pos3, time)){
+            posicoes.add(pos3);
+        }
+        
+        if(posicaoValida(pos4, time)){
+            posicoes.add(pos4);
+        }
+        
+        return posicoes;
+    }
+    
     /**
      * Dada uma peça, retorna todo seu entorno.
      * @param peça
@@ -146,11 +269,11 @@ public class Regras {
         Posição pos4 = new Posição(poisçãoPeça.getI() - varJogador, poisçãoPeça.getJ() + 1);
 
         //Verifica se as posições são válidas.
-        if(posicaoValida(pos1, peça)){
+        if(posicaoValida(pos1, peça.getTime())){
             posicoes.add(pos1);
         }
         
-        if(posicaoValida(pos2, peça)){
+        if(posicaoValida(pos2, peça.getTime())){
             posicoes.add(pos2);
         }
         
@@ -158,11 +281,11 @@ public class Regras {
          * Jogadas não-normais. Captura para "trás". No mínimo vai ser uma captura, logo não posso adiciona-la
          * como uma candidata.
          */
-        if(posicaoValida(pos3, peça)){
+        if(posicaoValida(pos3, peça.getTime())){
             posicoes.add(pos3);
         }
         
-        if(posicaoValida(pos4, peça)){
+        if(posicaoValida(pos4, peça.getTime())){
             posicoes.add(pos4);
         }
         
@@ -185,9 +308,7 @@ public class Regras {
             return new ArrayList<>();
         }*/
         
-        /**
-         * Retorno o entorno da peça.
-         */
+        //Pega o entorno da peça.
         List<Posição> posicoes = getPosicoesPossiveisPeça(peça);
         /**
          * A lista jogadas é fruto da analise das posições e interpretação do que pode acontecer das jogadas
@@ -230,7 +351,7 @@ public class Regras {
      * @param peca peça a ser movida.
      * @return true caso seja valida, false caso não.
      */
-    private boolean posicaoValida(Posição pos, Peça peca){
+    private boolean posicaoValida(Posição pos, int time){
         if(!tabuleiro.posValida(pos)){
             return false;
         }
@@ -243,7 +364,7 @@ public class Regras {
         }
         
         //Se a peça na posição for do seu time, jogada inválida.
-        if(peca2.getTime() == peca.getTime()){
+        if(peca2.getTime() == time){
             return false;
         }
         
@@ -260,13 +381,31 @@ public class Regras {
     }
     
     /**
-     * Dada uma peça, retorna todas as peças que podem ser capturadas por ela.
-     * @param peça peça a ter os movimentos analisado.
-     * @return peças que podem ser capturadas.
+     * Dada uma lista de posições, retorna todas as capturas possíveis.
+     * @param pos lista de posições a serem analisadas.
+     * @param peca time da peça que quer caputrar.
+     * @return jogadas.
      */
-    private List<Peça> capturasPossiveis(Peça peça){
-        //TODO
-        return null;
+    public List<Jogada> capturasPossiveis(List<Posição> posicoes, Posição pos, int time){
+        List<Jogada> jogadas = new ArrayList<>();
+        
+        for(Posição posicao : posicoes){
+            Peça p = tabuleiro.getPeça(posicao);
+            
+            //Se existe alguma peça nessa posição.
+            if(p != null){
+                //Se não for do time da peça que quer capturar, então é do time inimigo.
+                if(p.getTime() != time){
+                    Posição posFinal = podeComer(pos, tabuleiro.getPosição(p));
+                    if(posFinal != null){
+                        //TODO: Função que verifica capturas seguidas.
+                        jogadas.add(new Jogada(p, null, pos, posFinal));
+                    }
+                }
+            }
+        }
+        
+        return jogadas;
     }
     
     /**
@@ -287,6 +426,7 @@ public class Regras {
                 if(p.getTime() != peca.getTime()){
                     Posição posFinal = podeComer(peca, p);
                     if(posFinal != null){
+                        //TODO: Função que verifica capturas seguidas.
                         jogadas.add(new Jogada(p, peca, tabuleiro.getPosição(peca), posFinal));
                     }
                 }
@@ -297,51 +437,150 @@ public class Regras {
     }
     
     /**
+     * Função recursiva que retorna todas as capturas em sequencia.
+     * @param jogadas
+     * @param jogada
+     * @param time
+     * @param rastro
+     * @return 
+     */
+    public List<Jogada> capturasSeguidas(List<Jogada> jogadas, Jogada jogada, int time, List<Posição> rastro){
+        List<Posição> posicoes = getPosicoesPossiveisPos(jogada.getPosFinal(), time);
+        List<Jogada> capturas = capturasPossiveis(posicoes, jogada.getPosFinal(), time);
+        
+        if(!possuiCapturaValida(capturas, rastro)){
+            return jogadas;
+        }
+        
+        for(Jogada captura : capturas){
+            if(!inPosList(rastro, captura.getPosFinal())){
+                jogadas.add(jogada);
+                rastro.add(jogada.getPosInicial());
+                capturasSeguidas(jogadas, captura, time, rastro);
+            }
+        }
+        
+        return jogadas;
+        
+        //rastro.add(jogada.getPosInicial());
+        
+        /*if(capturas.size() > 1){
+            Jogada jogada1 = capturas.get(0);
+            Jogada jogada2 = capturas.get(1);
+            if(!inPosList(rastro, jogada1.getPosFinal())){
+                jogadas.add(jogada);
+                capturasSeguidas(jogadas, jogada1, time, rastro);
+            }
+            
+            if(!inPosList(rastro, jogada2.getPosFinal())){
+                jogadas.add(jogada);
+                rastro.add(jogada.getPosFinal());
+                capturasSeguidas(jogadas, jogada2, time, rastro);
+            }
+        }
+        
+        if(capturas.size() == 1){
+            Jogada jogada1 = capturas.get(0);
+            if(!inPosList(rastro, jogada1.getPosFinal())){
+                rastro.add(jogada.getPosFinal());
+                jogadas.add(jogada);
+                capturasSeguidas(jogadas, jogada1, time, rastro);
+            }
+        }
+        
+        return jogadas;*/
+    }
+    
+    private boolean possuiCapturaValida(List<Jogada> capturas, List<Posição> rastros){
+        if(rastros.isEmpty()){
+            return true;
+        }
+        
+        for(Posição rastro : rastros){
+            for(Jogada captura : capturas){
+                Posição pos = captura.getPosFinal();
+                if(!pos.equals(rastro)){
+                    return true;
+                }   
+            }
+        }
+        
+        return false;
+    }
+    
+    private boolean inPosList(List<Posição> list, Posição pos){
+        for(Posição posição : list){
+            if(posição.equals(pos)){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
      * Verifica se a peca1 pode comer a peca2.
      * @param peca1 Peça que irá tentar capturar.
      * @param peca2 Peça a ser capturada.
      * @return caso seja possível a captura, retorna a posição final.
      */
     public Posição podeComer(Peça peca1, Peça peca2){
+        Posição pos1 = tabuleiro.getPosição(peca1);
+        Posição pos2 = tabuleiro.getPosição(peca2);
         //Pego a inclinação relativa entre duas pecas.
-        int inclinacao = tabuleiro.inclinacaoRelativa(peca1, peca2);
+        int inclinacao = tabuleiro.inclinacaoRelativa(pos1, pos2);
         //Variável que auxilia no cálculo da posição final.
-        int altura = tabuleiro.ehMaisAlta(peca1, peca2)? -1 : 1;
+        int altura = tabuleiro.ehMaisAlta(pos1, pos2)? -1 : 1;
         
         Posição posFinal;
         
-        if(peca1.getTime() == JOGADOR_UM){
-            Posição pos = tabuleiro.getPosição(peca2);
-            if(inclinacao == Inclinacao.ESQUERDA){
-                posFinal = new Posição(pos.getI() + altura, pos.getJ() - 1);
-            }else{
-                posFinal = new Posição(pos.getI() + altura, pos.getJ() + 1);
-            }
-            
-            //Verifico se a posição é válida.
-            if(!tabuleiro.posValida(posFinal)){
-                return null;
-            }
-            //Verifico se existe alguma peça nessa aposição.
-            if(tabuleiro.getPeça(posFinal) != null){
-                return null;
-            } 
+        Posição pos = tabuleiro.getPosição(peca2);
+        if(inclinacao == Inclinacao.ESQUERDA){
+            posFinal = new Posição(pos.getI() + altura, pos.getJ() - 1);
         }else{
-            Posição pos = tabuleiro.getPosição(peca2);
-            if(inclinacao == Inclinacao.ESQUERDA){
-                posFinal = new Posição(pos.getI() + altura, pos.getJ() - 1);
-            }else{
-                posFinal = new Posição(pos.getI() + altura, pos.getJ() + 1);
-            }
-            
-            //Verifico se a posição é válida.
-            if(!tabuleiro.posValida(posFinal)){
-                return null;
-            }
-            //Verifico se existe alguma peça nessa aposição.
-            if(tabuleiro.getPeça(posFinal) != null){
-                return null;
-            }
+            posFinal = new Posição(pos.getI() + altura, pos.getJ() + 1);
+        }
+
+        //Verifico se a posição é válida.
+        if(!tabuleiro.posValida(posFinal)){
+            return null;
+        }
+        //Verifico se existe alguma peça nessa aposição.
+        if(tabuleiro.getPeça(posFinal) != null){
+            return null;
+        }
+        
+        return posFinal;
+    }
+    
+    /**
+     * Dada duas posições verifica se uma hipotética peça pode comer a outra.
+     * @param pos1 posição da peça que quer capturar.
+     * @param pos2 posição da peça a ser capturada.
+     * @return retorna a posição final caso possa comer, null caso não possa.
+     */
+    public Posição podeComer(Posição pos1, Posição pos2){
+        //Pego a inclinação relativa entre duas pecas.
+        int inclinacao = tabuleiro.inclinacaoRelativa(pos1, pos2);
+        //Variável que auxilia no cálculo da posição final.
+        int altura = tabuleiro.ehMaisAlta(pos1, pos2)? -1 : 1;
+        
+        Posição posFinal;
+        
+        //Posição pos = tabuleiro.getPosição(peca2);
+        if(inclinacao == Inclinacao.ESQUERDA){
+            posFinal = new Posição(pos2.getI() + altura, pos2.getJ() - 1);
+        }else{
+            posFinal = new Posição(pos2.getI() + altura, pos2.getJ() + 1);
+        }
+
+        //Verifico se a posição é válida.
+        if(!tabuleiro.posValida(posFinal)){
+            return null;
+        }
+        //Verifico se existe alguma peça nessa aposição.
+        if(tabuleiro.getPeça(posFinal) != null){
+            return null;
         }
         
         return posFinal;
@@ -396,7 +635,7 @@ public class Regras {
         return peçasAptasCaptura.isEmpty()? peçasJogadaNormal : peçasAptasCaptura;
     }
     
-        /**
+    /**
      * Verifica se uma lista de jogadas possui uma jogada com captura.
      * @param jogadas lista de jogadas a ser verificada.
      * @return tre caso exista jogada de captura, false caso contrário.
