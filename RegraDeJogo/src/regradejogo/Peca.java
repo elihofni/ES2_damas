@@ -1,19 +1,19 @@
 package regradejogo;
 
 /**
- * Classe que representa uma peça de jogo.
+ * Classe que representa uma peca de jogo.
  * @author Max
  */
-public class Peça {
+public class Peca {
     private int time;
     private boolean dama;
     
-    public Peça(int time, boolean dama){
+    public Peca(int time, boolean dama){
         this.time = time;
         this.dama = dama;
     }
     
-    public Peça(){
+    public Peca(){
         
     }
     
