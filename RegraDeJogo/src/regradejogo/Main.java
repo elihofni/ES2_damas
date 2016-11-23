@@ -15,7 +15,7 @@ public class Main {
         //System.out.println(regras.getTabuleiro().toString());
         
         //regras.moverPeça(new Posição(6, 1), new Posição(7, 0));
-        Peça peça = regras.getPeça(new Posição(4, 2));
+        Peca peça = regras.getPeca(new Posicao(4, 2));
         System.out.println(regras.jogadasPossiveis(peça).toString());
         
         //System.out.println(regras.getTabuleiro().toString());

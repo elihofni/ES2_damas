@@ -3,70 +3,69 @@ package regradejogo;
 import java.util.List;
 
 /**
- * Classe que guarda todas as informações de uma jogada.
+ * Classe que guarda todas as informacões de uma jogada.
+ *
  * @author Max
  */
 public class Jogada {
-    private Peça peçaCapturada;
-    private Peça peçaMovida;
-    private Posição posInicial;
-    private Posição posFinal;
 
-    public Jogada(Peça peçaCapturada, Peça peçaMovida, Posição posInicial, Posição posFinal) {
-        this.peçaCapturada = peçaCapturada;
-        this.peçaMovida = peçaMovida;
+    private Peca pecaCapturada;
+    private Peca pecaMovida;
+    private Posicao posInicial;
+    private Posicao posFinal;
+
+    public Jogada(Peca pecaCapturada, Peca pecaMovida, Posicao posInicial, Posicao posFinal) {
+        this.pecaCapturada = pecaCapturada;
+        this.pecaMovida = pecaMovida;
         this.posInicial = posInicial;
         this.posFinal = posFinal;
     }
 
     public Jogada() {
-         
-    }
-    
-    public boolean houveCaptura(){
-        return peçaCapturada != null;
+
     }
 
-    public Peça getPeçaCapturada() {
-        return peçaCapturada;
+    public boolean houveCaptura() {
+        return pecaCapturada != null;
     }
 
-    public void setPeçaCapturada(Peça peçaCapturada) {
-        this.peçaCapturada = peçaCapturada;
+    public Peca getPecaCapturada() {
+        return pecaCapturada;
     }
 
-    public Peça getPeçaMovida() {
-        return peçaMovida;
+    public void setPecaCapturada(Peca pecaCapturada) {
+        this.pecaCapturada = pecaCapturada;
     }
 
-    public void setPeçaMovida(Peça peçaMovida) {
-        this.peçaMovida = peçaMovida;
+    public Peca getPecaMovida() {
+        return pecaMovida;
     }
 
-    public Posição getPosInicial() {
+    public void setPecaMovida(Peca pecaMovida) {
+        this.pecaMovida = pecaMovida;
+    }
+
+    public Posicao getPosInicial() {
         return posInicial;
     }
 
-    public void setPosInicial(Posição posInicial) {
+    public void setPosInicial(Posicao posInicial) {
         this.posInicial = posInicial;
     }
 
-    public Posição getPosFinal() {
+    public Posicao getPosFinal() {
         return posFinal;
     }
 
-    public void setPosFinal(Posição posFinal) {
+    public void setPosFinal(Posicao posFinal) {
         this.posFinal = posFinal;
     }
 
     @Override
     public String toString() {
-        String posCapturada = peçaCapturada == null? "null" : peçaCapturada.toString();
-        String posMovida = peçaMovida == null? "null" : peçaMovida.toString();
-        return "Jogada{" + "peçaCapturada=" + posCapturada + ", peçaMovida=" + posMovida + ", posInicial=" + posInicial.toString() + ", posFinal=" + posFinal.toString() + '}';
+        String posCapturada = pecaCapturada == null ? "null" : pecaCapturada.toString();
+        String posMovida = pecaMovida == null ? "null" : pecaMovida.toString();
+        return "Jogada{" + "pecaCapturada=" + posCapturada + ", pecaMovida=" + posMovida + ", posInicial=" + posInicial.toString() + ", posFinal=" + posFinal.toString() + '}';
     }
-    
-    
-    
-    
+
 }

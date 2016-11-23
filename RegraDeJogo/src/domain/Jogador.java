@@ -11,9 +11,9 @@ public class Jogador {
     }
     
     public void realizarJogada(int iIni, int jIni, int iFim, int jFim){
-        Posição posIni = new Posição(iIni, jIni);
-        Posição posFim = new Posição(iFim, jFim);
-        regras.moverPeça(posIni, posFim);
+        Posicao posIni = new Posicao(iIni, jIni);
+        Posicao posFim = new Posicao(iFim, jFim);
+        regras.moverPeca(posIni, posFim);
     }
     
 }

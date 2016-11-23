@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Exceções;
+package Excecoes;
 
 /**
  *
  * @author Max
  */
-public class PosiçãoInvalidaException extends IllegalArgumentException {
+public class PosicaoInvalidaException extends IllegalArgumentException {
     
-    public PosiçãoInvalidaException(String msg){
+    public PosicaoInvalidaException(String msg){
         super(msg);
     }
 }

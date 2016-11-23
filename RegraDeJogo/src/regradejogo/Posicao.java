@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe que "empacota" a posição na matriz.
+ * Classe que "empacota" a posicão na matriz.
  */
-public class Posição {
+public class Posicao {
     private int i;
     private int j;
     
-    public Posição(int i, int j){
+    public Posicao(int i, int j){
         this.i = i;
         this.j = j;
     }
     
-    public Posição(){
+    public Posicao(){
         
     }
     
@@ -35,7 +35,7 @@ public class Posição {
         return j;
     }
     
-    public boolean equals(Posição pos){
+    public boolean equals(Posicao pos){
         return (this.i == pos.i) && (this.j == pos.j);
     }
     

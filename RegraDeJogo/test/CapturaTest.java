@@ -14,8 +14,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import regradejogo.Jogada;
-import regradejogo.Peça;
-import regradejogo.Posição;
+import regradejogo.Peca;
+import regradejogo.Posicao;
 import regradejogo.Regras;
 
 /**
@@ -25,9 +25,9 @@ import regradejogo.Regras;
 public class CapturaTest {
     
     private Regras regras;
-    private Peça peça;
-    private List<Posição> resultado;
-    private List<Posição> oraculo;
+    private Peca peca;
+    private List<Posicao> resultado;
+    private List<Posicao> oraculo;
     
     public CapturaTest() {
     }
@@ -54,8 +54,8 @@ public class CapturaTest {
     // @Test
     // public void hello() {}
     
-    private List<Posição> getPosiçoes(List<Jogada> jogadas){
-        List<Posição> posicoes = new ArrayList<>();
+    private List<Posicao> getPosicoes(List<Jogada> jogadas){
+        List<Posicao> posicoes = new ArrayList<>();
         for(Jogada jogada : jogadas){
             posicoes.add(jogada.getPosFinal());
         }
@@ -71,10 +71,10 @@ public class CapturaTest {
         regras = new Regras("./testesCaptura/testeCaptura7.txt");
         //oraculo = new ArrayList<>();
         //oraculo.add(new Posição(5, 0));
-        peça = regras.getPeça(new Posição(7, 2));
+        peca = regras.getPeca(new Posicao(7, 2));
         //resultado = getPosiçoes(regras.jogadasPossiveis(peça));
         //assertEquals(oraculo.toString(), resultado.toString());
         
-        System.out.println(getPosiçoes(regras.capturasSeguidas(new ArrayList<>(), regras.jogadasPossiveis(peça).get(0), peça.getTime(), new ArrayList<>())).toString());
+        System.out.println(getPosicoes(regras.capturasSeguidas(new ArrayList<>(), regras.jogadasPossiveis(peca).get(0), peca.getTime(), new ArrayList<>())).toString());
     }
 }

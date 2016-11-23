@@ -8,8 +8,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import regradejogo.Jogada;
-import regradejogo.Peça;
-import regradejogo.Posição;
+import regradejogo.Peca;
+import regradejogo.Posicao;
 import regradejogo.Regras;
 import regradejogo.Tabuleiro;
 import regradejogo.Tabuleiro.Inclinacao;
@@ -18,13 +18,13 @@ import regradejogo.Tabuleiro.Inclinacao;
  *
  * @author Max
  */
-public class MovimentaçãoTest {
+public class MovimentacaoTest {
     private Regras regras;
-    private List<Posição> jogadasOraculo;
-    private Peça peça;
-    private List<Posição> pos;
+    private List<Posicao> jogadasOraculo;
+    private Peca peca;
+    private List<Posicao> pos;
     
-    public MovimentaçãoTest() {
+    public MovimentacaoTest() {
     }
     
     @BeforeClass
@@ -49,8 +49,8 @@ public class MovimentaçãoTest {
     // @Test
     // public void hello() {}
     
-    private List<Posição> getPosiçoes(List<Jogada> jogadas){
-        List<Posição> posicoes = new ArrayList<>();
+    private List<Posicao> getPosicoes(List<Jogada> jogadas){
+        List<Posicao> posicoes = new ArrayList<>();
         for(Jogada jogada : jogadas){
             posicoes.add(jogada.getPosFinal());
         }
@@ -69,10 +69,10 @@ public class MovimentaçãoTest {
          */
         regras = new Regras("./testesCaptura/testeCaptura1.txt");
         jogadasOraculo = new ArrayList<>();
-        jogadasOraculo.add(new Posição(6, 1));
-        jogadasOraculo.add(new Posição(2, 5));
-        peça = regras.getPeça(new Posição(4, 3));
-        pos = getPosiçoes(regras.jogadasPossiveis(peça));
+        jogadasOraculo.add(new Posicao(6, 1));
+        jogadasOraculo.add(new Posicao(2, 5));
+        peca = regras.getPeca(new Posicao(4, 3));
+        pos = getPosicoes(regras.jogadasPossiveis(peca));
         assertEquals(jogadasOraculo.toString(), pos.toString());
         
         /**
@@ -80,9 +80,9 @@ public class MovimentaçãoTest {
          */
         regras = new Regras("./testesCaptura/testeCaptura2.txt");
         jogadasOraculo = new ArrayList<>();
-        jogadasOraculo.add(new Posição(5, 0));
-        peça = regras.getPeça(new Posição(7, 2));
-        pos = getPosiçoes(regras.jogadasPossiveis(peça));
+        jogadasOraculo.add(new Posicao(5, 0));
+        peca = regras.getPeca(new Posicao(7, 2));
+        pos = getPosicoes(regras.jogadasPossiveis(peca));
         assertEquals(jogadasOraculo.toString(), pos.toString());
         
         /**
@@ -90,10 +90,10 @@ public class MovimentaçãoTest {
          */
         regras = new Regras("./testesCaptura/testeCaptura3.txt");
         jogadasOraculo = new ArrayList<>();
-        jogadasOraculo.add(new Posição(1, 5));
-        jogadasOraculo.add(new Posição(5, 5));
-        peça = regras.getPeça(new Posição(3, 3));
-        pos = getPosiçoes(regras.jogadasPossiveis(peça));
+        jogadasOraculo.add(new Posicao(1, 5));
+        jogadasOraculo.add(new Posicao(5, 5));
+        peca = regras.getPeca(new Posicao(3, 3));
+        pos = getPosicoes(regras.jogadasPossiveis(peca));
         assertEquals(jogadasOraculo.toString(), pos.toString());
         
         /**
@@ -101,9 +101,9 @@ public class MovimentaçãoTest {
          */
         regras = new Regras("./testesCaptura/testeCaptura4.txt");
         jogadasOraculo = new ArrayList<>();
-        jogadasOraculo.add(new Posição(4, 4));
-        peça = regras.getPeça(new Posição(3, 3));
-        pos = getPosiçoes(regras.jogadasPossiveis(peça));
+        jogadasOraculo.add(new Posicao(4, 4));
+        peca = regras.getPeca(new Posicao(3, 3));
+        pos = getPosicoes(regras.jogadasPossiveis(peca));
         assertEquals(jogadasOraculo.toString(), pos.toString());
         
         /**
@@ -111,9 +111,9 @@ public class MovimentaçãoTest {
          */
         regras = new Regras("./testesCaptura/testeCaptura5.txt");
         jogadasOraculo = new ArrayList<>();
-        jogadasOraculo.add(new Posição(1, 1));
-        peça = regras.getPeça(new Posição(3, 3));
-        pos = getPosiçoes(regras.jogadasPossiveis(peça));
+        jogadasOraculo.add(new Posicao(1, 1));
+        peca = regras.getPeca(new Posicao(3, 3));
+        pos = getPosicoes(regras.jogadasPossiveis(peca));
         assertEquals(jogadasOraculo.toString(), pos.toString());
         
         /**
@@ -121,9 +121,9 @@ public class MovimentaçãoTest {
          */
         regras = new Regras("./testesCaptura/testeCaptura6.txt");
         jogadasOraculo = new ArrayList<>();
-        jogadasOraculo.add(new Posição(5, 0));
-        peça = regras.getPeça(new Posição(7, 2));
-        pos = getPosiçoes(regras.jogadasPossiveis(peça));
+        jogadasOraculo.add(new Posicao(5, 0));
+        peca = regras.getPeca(new Posicao(7, 2));
+        pos = getPosicoes(regras.jogadasPossiveis(peca));
         assertEquals(jogadasOraculo.toString(), pos.toString());
     }
     
@@ -131,13 +131,13 @@ public class MovimentaçãoTest {
     public void jogadasPossiveisDama() throws IOException{
         regras = new Regras("./testesMovimentacaoDama/testeDama1.txt");
         
-        peça = regras.getPeça(new Posição(3, 3));
-        pos = getPosiçoes(regras.jogadasPossiveisDama(peça));
+        peca = regras.getPeca(new Posicao(3, 3));
+        pos = getPosicoes(regras.jogadasPossiveisDama(peca));
         
         //System.out.println(pos.toString());
         
         //System.out.println(regras.getTabuleiro().getDiagonal(new Posição(3, 3), -1, 1).toString());
         
-        System.out.println(getPosiçoes(regras.jogadasPossiveisDama(peça)));
+        System.out.println(getPosicoes(regras.jogadasPossiveisDama(peca)));
     }
 }
