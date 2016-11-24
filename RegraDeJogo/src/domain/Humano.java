@@ -4,8 +4,8 @@ import regradejogo.*;
 
 public class Humano extends Jogador {
 
-    public Humano(Regras regras) {
-        super(regras);
+    public Humano(Regras regras,int time) {
+        super(regras,time);
     }
     
 }

@@ -17,7 +17,7 @@ public class Regras {
     private BoardChangedListener boardChangedListener; //Interface de callback.
     public static final int JOGADOR_UM = 1; //Constance do jogador 1.
     public static final int JOGADOR_DOIS = 2; //Constante do jogador 2.
-    private int jogadorAtual;//TODO
+    private int jogadorAtual;//Define quem joga no turno atual
     private int nPecasJogador1; //Quantidade de peças do jogador 1;
     private int nPecasJogador2; //Quantidade de peças do jogador 2;
     private boolean jogoFinalizado;
@@ -36,10 +36,13 @@ public class Regras {
         jogadorAtual = 1;
     }
     
-    public Regras(InputStream nomeArquivo) throws IOException{
-        turnoAtual = 0;
-        tabuleiro = new Tabuleiro(nomeArquivo);
-        jogadorAtual = 1;
+
+    public Regras(Tabuleiro tabuleiro, int turnoAtual, int jogadorAtual, int nPecasJogador1, int nPecasJogador2) {
+        this.tabuleiro = tabuleiro;
+        this.turnoAtual = turnoAtual;
+        this.jogadorAtual = jogadorAtual;
+        this.nPecasJogador1 = nPecasJogador1;
+        this.nPecasJogador2 = nPecasJogador2;
     }
     
     /**
@@ -82,8 +85,16 @@ public class Regras {
         jogadorAtual = jogadorAtual == 1? JOGADOR_DOIS : JOGADOR_UM;
         
         //Verifica se houve captura na jogada.
-        if(jogada.houveCaptura()){
+        if (jogada.houveCaptura()) {
             removerPeca(jogada.getPecaCapturada());
+
+            //Se for o caso do jogador comer uma peça e houver outra a ser comida, a vez continua com 
+            if (getPecasAptasParaCapturaDoJogadorAtual().isEmpty()) {
+                trocaJogadorAtual();
+            }
+
+        } else {
+            trocaJogadorAtual();
         }
         
         //Caso tenha chegado na borda.
@@ -738,5 +749,57 @@ public class Regras {
         public static final int TERMINO_DE_PECAS = 0;
         public static final int MAXIMO_DE_TURNOS = 1;
         public static final int TRAVADO = 2;
+    }
+    
+    public int getnPecasJogador1() {
+        return nPecasJogador1;
+    }
+
+    public int getnPecasJogador2() {
+        return nPecasJogador2;
+    }
+
+    public boolean isJogoFinalizado() {
+        return jogoFinalizado;
+    }
+
+    public Regras copia() {
+
+        return new Regras(tabuleiro.copia(), turnoAtual, jogadorAtual, nPecasJogador1, nPecasJogador2);
+    }
+
+    public List<Peca> getPeçasAptasDoJogadorAtual() {
+        List<Peca> pecas = getPecasAptas();
+        List<Peca> returnList = new ArrayList<>();
+        for (Peca peca : pecas) {
+            if (peca.getTime() == jogadorAtual) {
+                returnList.add(peca);
+            }
+        }
+        return returnList;
+    }
+
+    private List<Peca> getPecasAptasParaCapturaDoJogadorAtual() {
+        List<Peca> pecasAptasCaptura = new ArrayList<>();
+
+        //Pega todas as peças que estão no tabuleiro.
+        List<Peca> pecasTabuleiro = tabuleiro.getPecas();
+
+        for (Peca peca : pecasTabuleiro) {
+            List<Jogada> jogadas = jogadasPossiveis(peca);
+            if (possuiCaptura(jogadas) && peca.getTime() == jogadorAtual) {
+                pecasAptasCaptura.add(peca);
+            }
+        }
+
+        return pecasAptasCaptura;
+    }
+
+    private void trocaJogadorAtual() {
+        if (jogadorAtual == JOGADOR_UM) {
+            jogadorAtual = JOGADOR_DOIS;
+        } else {
+            jogadorAtual = JOGADOR_UM;
+        }
     }
 }
