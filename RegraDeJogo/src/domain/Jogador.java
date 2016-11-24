@@ -4,10 +4,13 @@ import regradejogo.*;
 
 public class Jogador {
     //Instancia de Regra na qual o jogador está respeitando.
-    private final Regras regras;
+    protected final Regras regras;
+    protected final int time;
     
-    public Jogador(Regras regras){
+    public Jogador(Regras regras,int time){
         this.regras = regras;
+        this.time = time;
+        
     }
     
     public void realizarJogada(int iIni, int jIni, int iFim, int jFim){
@@ -15,5 +18,11 @@ public class Jogador {
         Posicao posFim = new Posicao(iFim, jFim);
         regras.moverPeca(posIni, posFim);
     }
+
+    public int getTime() {
+        return time;
+    }
+    
+    
     
 }

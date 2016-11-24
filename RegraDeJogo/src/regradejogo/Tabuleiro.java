@@ -20,6 +20,10 @@ public class Tabuleiro {
     public Tabuleiro() {
         inicializaTabuleiro();
     }
+    
+    public Tabuleiro(Peca[][] tabuleiro) {
+        this.tabuleiro = tabuleiro;
+    }
 
     /**
      * Construtor que carrega o jogo a partir de um arquivo.
@@ -305,5 +309,18 @@ public class Tabuleiro {
 
         public static final int ESQUERDA = 0;
         public static final int DIREITA = 1;
+    }
+    
+    Tabuleiro copia() {
+        
+        Peca[][] tabuleiroPecas = new Peca[DIMEN][DIMEN];
+        for(int i = 0; i < DIMEN; i++){
+        
+            for(int j = 0; j < DIMEN; j++){
+                tabuleiroPecas[i][j] = tabuleiro[i][j];            
+            }            
+        }        
+        
+        return new Tabuleiro(tabuleiroPecas);
     }
 }
