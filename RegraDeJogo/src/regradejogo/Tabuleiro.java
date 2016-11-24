@@ -1,10 +1,14 @@
 package regradejogo;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +36,41 @@ public class Tabuleiro {
         tabuleiro = new Peca[DIMEN][DIMEN];
 
         BufferedReader br = new BufferedReader(new FileReader(nomeArquivo));
+
+        String line = br.readLine();
+
+        int i = 0;
+        int j = 0;
+        while (line != null) {
+            String[] strVetor = line.split(" ");
+            j = 0;
+            for (String string : strVetor) {
+                if (string.equals("0")) {
+                    tabuleiro[i][j] = null;
+                } else if (string.equals("1")) {
+                    tabuleiro[i][j] = new Peca(1, false);
+                } else if (string.equals("2")) {
+                    tabuleiro[i][j] = new Peca(2, false);
+                } else if (string.equals("3")) {
+                    tabuleiro[i][j] = new Peca(1, true);
+                } else if (string.equals("4")) {
+                    tabuleiro[i][j] = new Peca(2, true);
+                }
+                j++;
+            }
+
+            i++;
+
+            line = br.readLine();
+        }
+
+        br.close();
+    }
+    
+    public Tabuleiro(InputStream inputStream) throws FileNotFoundException, IOException {
+        tabuleiro = new Peca[DIMEN][DIMEN];
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
         String line = br.readLine();
 

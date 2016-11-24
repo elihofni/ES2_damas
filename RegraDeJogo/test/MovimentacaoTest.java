@@ -1,3 +1,4 @@
+import domain.Jogador;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +139,10 @@ public class MovimentacaoTest {
         
         //System.out.println(regras.getTabuleiro().getDiagonal(new Posição(3, 3), -1, 1).toString());
         
-        System.out.println(getPosicoes(regras.jogadasPossiveisDama(peca)));
+        Jogador jogador = new Jogador(regras);
+        Posicao pecaPos = regras.getTabuleiro().getPosicao(peca);
+        jogador.realizarJogada(pecaPos.getI(), pecaPos.getJ(), 6, 6);
+        
+        //System.out.println(getPosicoes(regras.jogadasPossiveisDama(peca)));
     }
 }
