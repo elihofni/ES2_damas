@@ -3,6 +3,7 @@ package regradejogo;
 import Excecoes.JogadaInvalidaException;
 import Excecoes.PosicaoInvalidaException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import regradejogo.Tabuleiro.Inclinacao;
@@ -35,6 +36,7 @@ public class Regras {
         jogadorAtual = 1;
     }
     
+
     public Regras(Tabuleiro tabuleiro, int turnoAtual, int jogadorAtual, int nPecasJogador1, int nPecasJogador2) {
         this.tabuleiro = tabuleiro;
         this.turnoAtual = turnoAtual;
@@ -68,7 +70,7 @@ public class Regras {
         
         //Se for dama, a função que lida com a jogada é diferente.
         //TODO: Função que retorna as jogadas da dama.
-        List<Jogada> jogadas = peca.isDama()? jogadasPossiveis(peca) : jogadasPossiveisDama(peca);
+        List<Jogada> jogadas = peca.isDama()? jogadasPossiveisDama(peca) : jogadasPossiveis(peca);
         
         //Verifica se a posição final da jogada está contida nas jogadas possíveis.
         Jogada jogada = getJogada(jogadas, posFinal);
@@ -80,12 +82,14 @@ public class Regras {
         
         tabuleiro.movePeca(peca, posFinal);
         
+        jogadorAtual = jogadorAtual == 1? JOGADOR_DOIS : JOGADOR_UM;
+        
         //Verifica se houve captura na jogada.
         if (jogada.houveCaptura()) {
             removerPeca(jogada.getPecaCapturada());
 
             //Se for o caso do jogador comer uma peça e houver outra a ser comida, a vez continua com 
-            if (getPecasAptasParaCapturaDoJogadorAtual().size() == 0) {
+            if (getPecasAptasParaCapturaDoJogadorAtual().isEmpty()) {
                 trocaJogadorAtual();
             }
 
@@ -133,6 +137,10 @@ public class Regras {
     }
     
     public List<Jogada> jogadasPossiveisDama(Peca peca){
+        if(peca.getTime() != jogadorAtual){
+            return new ArrayList<>();
+        }
+        
         Posicao posDama = tabuleiro.getPosicao(peca);
         
         List<Posicao> posicoes = new ArrayList<>();
@@ -181,6 +189,8 @@ public class Regras {
             for(Posicao pAux : p){
                 listAux.add(new Jogada(jogada.getPecaCapturada(), jogada.getPecaMovida(), jogada.getPosInicial(), pAux));
             }
+            
+            break;
         }
         
         for(Jogada jogada : capturasEsquerda){
@@ -196,6 +206,8 @@ public class Regras {
             for(Posicao pAux : p){
                 listAux.add(new Jogada(jogada.getPecaCapturada(), jogada.getPecaMovida(), jogada.getPosInicial(), pAux));
             }
+            
+            break;
         }
 
         List<Jogada> jogadas = new ArrayList<>();
@@ -262,6 +274,10 @@ public class Regras {
      * @return 
      */
     public List<Posicao> getPosicoesPossiveisPeca(Peca peca){
+        if(peca.getTime() != jogadorAtual){
+            return new ArrayList<>();
+        }
+        
         //Pega a posição da peça.
         Posicao poiscaoPeca = tabuleiro.getPosicao(peca);
         
@@ -477,34 +493,6 @@ public class Regras {
         }
         
         return jogadas;
-        
-        //rastro.add(jogada.getPosInicial());
-        
-        /*if(capturas.size() > 1){
-            Jogada jogada1 = capturas.get(0);
-            Jogada jogada2 = capturas.get(1);
-            if(!inPosList(rastro, jogada1.getPosFinal())){
-                jogadas.add(jogada);
-                capturasSeguidas(jogadas, jogada1, time, rastro);
-            }
-            
-            if(!inPosList(rastro, jogada2.getPosFinal())){
-                jogadas.add(jogada);
-                rastro.add(jogada.getPosFinal());
-                capturasSeguidas(jogadas, jogada2, time, rastro);
-            }
-        }
-        
-        if(capturas.size() == 1){
-            Jogada jogada1 = capturas.get(0);
-            if(!inPosList(rastro, jogada1.getPosFinal())){
-                rastro.add(jogada.getPosFinal());
-                jogadas.add(jogada);
-                capturasSeguidas(jogadas, jogada1, time, rastro);
-            }
-        }
-        
-        return jogadas;*/
     }
     
     private boolean possuiCapturaValida(List<Jogada> capturas, List<Posicao> rastros){
@@ -691,16 +679,16 @@ public class Regras {
             return;
         }
         
+        if(boardChangedListener != null){
+            boardChangedListener.onPieceRemoved(tabuleiro.getPosicao(peca));
+        }
+        
         tabuleiro.removePeca(peca);
         
         if(peca.getTime() == JOGADOR_UM){
             nPecasJogador1--;
         }else{
             nPecasJogador2--;
-        }
-
-        if(boardChangedListener != null){
-            boardChangedListener.onPieceRemoved(tabuleiro.getPosicao(peca));
         }
     }
     
@@ -715,6 +703,10 @@ public class Regras {
     
     public Tabuleiro getTabuleiro(){
         return tabuleiro;
+    }
+    
+    public int getJogadorAtual(){
+        return jogadorAtual;
     }
     
     /**
@@ -765,10 +757,6 @@ public class Regras {
 
     public int getnPecasJogador2() {
         return nPecasJogador2;
-    }
-
-    public int getJogadorAtual() {
-        return jogadorAtual;
     }
 
     public boolean isJogoFinalizado() {

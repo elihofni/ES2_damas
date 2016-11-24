@@ -1,5 +1,6 @@
 package regradejogo;
 
+import domain.Jogador;
 import domain.Bot;
 import domain.Humano;
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class Main {
         //regras.moverPeça(new Posição(4, 3), new Posição(6, 1));
         //System.out.println(regras.getTabuleiro().toString());
         //regras.moverPeça(new Posição(6, 1), new Posição(7, 0));
+
         //System.out.println(regras.getTabuleiro().toString());
         //Peça peça = regras.getPeça(new Posição(5, 2));
         //System.out.println(regras.jogadasPossiveis(peça).toString());
