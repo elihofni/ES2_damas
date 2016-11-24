@@ -8,7 +8,6 @@ package domain;
 import java.util.List;
 import regradejogo.Jogada;
 import regradejogo.Peca;
-import regradejogo.Peca;
 import regradejogo.Regras;
 
 /**

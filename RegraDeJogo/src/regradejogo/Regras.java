@@ -82,15 +82,22 @@ public class Regras {
         
         tabuleiro.movePeca(peca, posFinal);
         
-        jogadorAtual = jogadorAtual == 1? JOGADOR_DOIS : JOGADOR_UM;
+        //jogadorAtual = jogadorAtual == 1? JOGADOR_DOIS : JOGADOR_UM;
         
         //Verifica se houve captura na jogada.
         if (jogada.houveCaptura()) {
             removerPeca(jogada.getPecaCapturada());
 
             //Se for o caso do jogador comer uma peça e houver outra a ser comida, a vez continua com 
-            if (getPecasAptasParaCapturaDoJogadorAtual().isEmpty()) {
+            /*if (!getPecasAptasParaCapturaDoJogadorAtual().isEmpty()) {
                 trocaJogadorAtual();
+            }*/
+            
+            if(!peca.isDama()){
+                List<Jogada> capturasPecaAtual = jogadasPossiveis(peca);
+                if(!possuiCaptura(capturasPecaAtual)){
+                    trocaJogadorAtual();
+                }
             }
 
         } else {
