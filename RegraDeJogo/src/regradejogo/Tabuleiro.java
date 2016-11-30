@@ -255,8 +255,8 @@ public class Tabuleiro {
     /**
      * Dada duas peças, retorna a inclinação relativa da peca1 sobre a peca2.
      *
-     * @param peca1 peca de referencia.
-     * @param peca2 peca secundária.
+     * @param posPeca1 posicao de referencia.
+     * @param posPeca2 posicao secundária.
      * @return 0 para inclinação a esquerda, 1 para direita.
      */
     public int inclinacaoRelativa(Posicao posPeca1, Posicao posPeca2) {
@@ -269,7 +269,6 @@ public class Tabuleiro {
 
     /**
      * Dada uma posição, diz se está na borda inferior ou superior.
-     *
      * @param pos posição a ser analisada.
      * @return 0 caso não esteja na borda, 1 caso esteja na borda inferior e 2
      * na superior.
@@ -287,11 +286,10 @@ public class Tabuleiro {
     }
 
     /**
-     * Verifica se uma peça está numa linha mais alta que a outra.
-     *
-     * @param peca1 peca referencia.
-     * @param peca2 peca secundaria.
-     * @return retorna true caso a peca1 esteja acima da peca1, false caso
+     * Verifica se uma posicao está numa linha mais alta que a outra.
+     * @param pos1 posicao de referencia.
+     * @param pos2 posicao secundaria.
+     * @return retorna true caso a pos1 esteja acima da pos2, false caso
      * contrário.
      */
     public boolean ehMaisAlta(Posicao pos1, Posicao pos2) {
@@ -300,7 +298,6 @@ public class Tabuleiro {
 
     /**
      * Retorna todas as peças que estão no tabuleiro.
-     *
      * @return Lista com todas as peças do tabuleiro.
      */
     public List<Peca> getPecas() {
@@ -311,6 +308,28 @@ public class Tabuleiro {
                 Peca peca = getPeca(new Posicao(i, j));
                 if (peca != null) {
                     pecas.add(peca);
+                }
+            }
+        }
+
+        return pecas;
+    }
+    
+    /**
+     * Retorna todas as pecas, de um jogador específico, que se encontram atualmente no tabuleiro.
+     * @param time
+     * @return 
+     */
+    public List<Peca> getPecasJogador(int time){
+        List<Peca> pecas = new ArrayList<>();
+
+        for (int i = 0; i < DIMEN; i++) {
+            for (int j = 0; j < DIMEN; j++) {
+                Peca peca = getPeca(new Posicao(i, j));
+                if (peca != null) {
+                    if(peca.getTime() == time){
+                        pecas.add(peca);
+                    }
                 }
             }
         }

@@ -1,5 +1,6 @@
-package domain;
+package regradejogo;
 
+import regradejogo.Jogador;
 import regradejogo.*;
 
 public class Humano extends Jogador {
