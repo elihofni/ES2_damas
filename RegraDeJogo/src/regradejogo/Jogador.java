@@ -1,5 +1,7 @@
-package domain;
+package regradejogo;
 
+import java.util.ArrayList;
+import java.util.List;
 import regradejogo.*;
 
 public class Jogador {
@@ -17,6 +19,20 @@ public class Jogador {
         Posicao posIni = new Posicao(iIni, jIni);
         Posicao posFim = new Posicao(iFim, jFim);
         regras.moverPeca(posIni, posFim);
+    }
+    
+    public List<Jogada> getJogadasPossiveis(Posicao pos){
+        Peca peca = regras.getPeca(pos);
+        
+        if(peca != null){
+            if(regras.getPecasAptasDoJogadorAtual().indexOf(peca) == -1){
+                return new ArrayList<>();
+            }
+            
+            return regras.jogadasPossiveis(peca);
+        }
+        
+        return new ArrayList<>();
     }
 
     public int getTime() {

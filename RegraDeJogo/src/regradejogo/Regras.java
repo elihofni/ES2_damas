@@ -21,6 +21,7 @@ public class Regras {
     private int nPecasJogador1; //Quantidade de peças do jogador 1;
     private int nPecasJogador2; //Quantidade de peças do jogador 2;
     private boolean jogoFinalizado;
+    private List<Peca> pecasAptasCapturas;
     
     public Regras(){
         turnoAtual = 0;
@@ -28,12 +29,14 @@ public class Regras {
         jogadorAtual = JOGADOR_UM;
         nPecasJogador1 = 8;
         nPecasJogador2 = 8;
+        pecasAptasCapturas = getPecasAptasDoJogadorAtual();
     }
     
     public Regras(String nomeArquivo) throws IOException{
         turnoAtual = 0;
         tabuleiro = new Tabuleiro(nomeArquivo);
         jogadorAtual = 1;
+        pecasAptasCapturas = getPecasAptasDoJogadorAtual();
     }
     
 
@@ -43,6 +46,7 @@ public class Regras {
         this.jogadorAtual = jogadorAtual;
         this.nPecasJogador1 = nPecasJogador1;
         this.nPecasJogador2 = nPecasJogador2;
+        pecasAptasCapturas = getPecasAptasDoJogadorAtual();
     }
     
     /**
@@ -52,6 +56,8 @@ public class Regras {
      */
     public void moverPeca(Posicao posInicial, Posicao posFinal){
         Peca peca = getPeca(posInicial);
+        
+        pecasAptasCapturas = getPecasAptasDoJogadorAtual();
         
         //Teste de sanidade. Impossível chegar uma posição inválida a partir da interface.
         if(!tabuleiro.posValida(posInicial)){
@@ -67,10 +73,9 @@ public class Regras {
         if(peca == null){
             throw new PosicaoInvalidaException("Nao existe nenhuma peca na posicao " + posInicial.toString() + ".");
         }
+        List<Jogada> jogadas;
         
-        //Se for dama, a função que lida com a jogada é diferente.
-        //TODO: Função que retorna as jogadas da dama.
-        List<Jogada> jogadas = peca.isDama()? jogadasPossiveisDama(peca) : jogadasPossiveis(peca);
+        jogadas = peca.isDama()? jogadasPossiveisDama(peca) : jogadasPossiveis(peca);
         
         //Verifica se a posição final da jogada está contida nas jogadas possíveis.
         Jogada jogada = getJogada(jogadas, posFinal);
@@ -82,16 +87,9 @@ public class Regras {
         
         tabuleiro.movePeca(peca, posFinal);
         
-        //jogadorAtual = jogadorAtual == 1? JOGADOR_DOIS : JOGADOR_UM;
-        
         //Verifica se houve captura na jogada.
         if (jogada.houveCaptura()) {
             removerPeca(jogada.getPecaCapturada());
-
-            //Se for o caso do jogador comer uma peça e houver outra a ser comida, a vez continua com 
-            /*if (!getPecasAptasParaCapturaDoJogadorAtual().isEmpty()) {
-                trocaJogadorAtual();
-            }*/
             
             if(!peca.isDama()){
                 List<Jogada> capturasPecaAtual = jogadasPossiveis(peca);
@@ -117,6 +115,10 @@ public class Regras {
         if(boardChangedListener != null){
             boardChangedListener.onPieceMoved(posFinal, posFinal);
         }
+    }
+    
+    public List<Peca> getPecassssss(){
+        return this.pecasAptasCapturas;
     }
     
     /**
@@ -347,6 +349,12 @@ public class Regras {
             return new ArrayList<>();
         }*/
         
+        /*if(!pecasAptasCapturas.isEmpty()){
+            if(pecasAptasCapturas.indexOf(peca) == -1){
+                return new ArrayList<>();
+            }
+        }*/
+        
         //Pega o entorno da peça.
         List<Posicao> posicoes = getPosicoesPossiveisPeca(peca);
         /**
@@ -381,6 +389,23 @@ public class Regras {
          * jogadas normais.
          */
         return jogadas;
+    }
+    
+    /**
+     * Retorna todas as peças que estão áptas a jogar nesse turno.
+     * @return lista de todas as peças que possuem captura no turno
+     */
+    public List<Peca> getPecasCaptura2(){
+        List<Peca> pecasJogador = tabuleiro.getPecasJogador(jogadorAtual);
+        List<Peca> pecasAptas = new ArrayList<>();
+        
+        for(Peca peca : pecasJogador){
+            if(Peca.possuiCaptura(peca, this)){
+                pecasAptas.add(peca);
+            }
+        }
+        
+        return pecasAptas;
     }
     
     /**
@@ -627,7 +652,7 @@ public class Regras {
      * Peças que podem capturar são prioredade.
      * @return Lista de peças válidas para o turno.
      */
-    public List<Peca> getPecasAptas(){
+    public List<Peca> getPecasCaptura(){
         List<Peca> pecasAptasCaptura = new ArrayList<>();
         List<Peca> pecasJogadaNormal = new ArrayList<>();
         
@@ -775,8 +800,8 @@ public class Regras {
         return new Regras(tabuleiro.copia(), turnoAtual, jogadorAtual, nPecasJogador1, nPecasJogador2);
     }
 
-    public List<Peca> getPeçasAptasDoJogadorAtual() {
-        List<Peca> pecas = getPecasAptas();
+    public List<Peca> getPecasAptasDoJogadorAtual() {
+        List<Peca> pecas = getPecasCaptura();
         List<Peca> returnList = new ArrayList<>();
         for (Peca peca : pecas) {
             if (peca.getTime() == jogadorAtual) {
@@ -786,7 +811,7 @@ public class Regras {
         return returnList;
     }
 
-    private List<Peca> getPecasAptasParaCapturaDoJogadorAtual() {
+    public List<Peca> getPecasAptasParaCapturaDoJogadorAtual() {
         List<Peca> pecasAptasCaptura = new ArrayList<>();
 
         //Pega todas as peças que estão no tabuleiro.

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain;
+package regradejogo;
 
+import regradejogo.Jogador;
 import java.util.List;
 import regradejogo.Jogada;
 import regradejogo.Peca;
@@ -116,7 +117,7 @@ public class Bot extends Jogador {
             int minMax;
             if (regra.getJogadorAtual() == time) {
                 Jogada jogadaCandidata = null;
-                List<Peca> pecasAptas = regra.getPeçasAptasDoJogadorAtual();
+                List<Peca> pecasAptas = regra.getPecasAptasDoJogadorAtual();
                 for (Peca peca : pecasAptas) {
                     List<Jogada> jogadasPossiveis = regra.jogadasPossiveis(peca);
                     for (Jogada jogada : jogadasPossiveis) {                        
@@ -145,7 +146,7 @@ public class Bot extends Jogador {
                             }
                 return alpha;
             } else {
-                List<Peca> pecasAptas = regra.getPeçasAptasDoJogadorAtual();
+                List<Peca> pecasAptas = regra.getPecasAptasDoJogadorAtual();
                 for (Peca peca : pecasAptas) {
                     List<Jogada> jogadasPossiveis = regra.jogadasPossiveis(peca);
                     for (Jogada jogada : jogadasPossiveis) {

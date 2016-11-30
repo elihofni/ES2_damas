@@ -1,8 +1,5 @@
 package regradejogo;
 
-import domain.Jogador;
-import domain.Bot;
-import domain.Humano;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -16,15 +13,11 @@ public class Main {
         jogarHumanoVsHumano(regras);
 
         //System.out.println(regras.getTabuleiro().toString());
-        //regras.moverPeça(new Posição(4, 3), new Posição(6, 1));
+        //regras.moverPeca(new Posicao(5, 2), new Posicao(4, 3));
+        //regras.moverPeca(new Posicao(2, 1), new Posicao(3, 2));
         //System.out.println(regras.getTabuleiro().toString());
-        //regras.moverPeça(new Posição(6, 1), new Posição(7, 0));
-
-        //System.out.println(regras.getTabuleiro().toString());
-        //Peça peça = regras.getPeça(new Posição(5, 2));
-        //System.out.println(regras.jogadasPossiveis(peça).toString());
-        //List<Jogada> jogadas = regras.jogadasPossiveis(peca);
-        //System.out.println(jogadas.toString());
+        //System.out.println(regras.getPecasAptasParaCapturaDoJogadorAtual().toString());
+        //System.out.println(regras.getJogadorAtual());
     }
 
     public static void jogarHumanoVsHumano(Regras regras) {
@@ -50,7 +43,7 @@ public class Main {
         int yPeca = Integer.parseInt(strPos[1]);
         Peca peca = regras.getPeca(new Posicao(xPeca, yPeca));
         System.out.println("Sugestão de jogadas");
-        System.out.println(regras.jogadasPossiveis(peca).toString());
+        System.out.println(humanoPl.getJogadasPossiveis(regras.getTabuleiro().getPosicao(peca)).toString());
         System.out.println("digite a posição de destino da peça separada por ; ");
         String posDestino = in.next();
         String[] strPosDestino = posDestino.split(";");
@@ -61,6 +54,8 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e);
         }
+        
+        //System.out.println(regras.getPecassssss().toString());
     }
 
     public static void jogarHumanoVsBot(Regras regras) {
