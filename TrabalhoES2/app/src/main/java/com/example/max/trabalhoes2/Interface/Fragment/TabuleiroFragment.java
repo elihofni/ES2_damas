@@ -14,6 +14,8 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.example.max.trabalhoes2.R;
 
 import java.io.IOException;
@@ -21,7 +23,6 @@ import java.util.List;
 
 import Excecoes.JogadaInvalidaException;
 import Excecoes.PosicaoInvalidaException;
-import domain.Jogador;
 import livroandroid.lib.utils.FileUtils;
 import regradejogo.*;
 
@@ -31,13 +32,14 @@ import regradejogo.*;
  */
 public class TabuleiroFragment extends Fragment {
 
-    private int pieceTeam1 = R.drawable.pt_peao;
-    private int pieceTeam2 = R.drawable.democratas_peao;
-    private int damaTime1 = R.drawable.pt_dama;
-    private int damaTime2 = R.drawable.democratas_dama;
+    private int pieceTeam1 = R.drawable.pt_peao_2;
+    private int pieceTeam2 = R.drawable.psdb_peao;
+    private int damaTime1 = R.drawable.pt_dama_2;
+    private int damaTime2 = R.drawable.psdb_dama;
     private View lastSelectedPiece;
     private int boardSize = 8;
     private Jogador jogador;
+    private int turno;
 
     private Regras regras;
 
@@ -55,14 +57,16 @@ public class TabuleiroFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_tabuleiro, container, false);
 
+        TextView turnoText = (TextView) view.findViewById(R.id.turno);
+        TextView jogadorText = (TextView) view.findViewById(R.id.jogador);
+
         try {
-            //System.out.println(FileUtils.readRawFileString(getContext(), R.raw.testedama1, "UTF-8"));
-            //regras = new Regras(FileUtils.readRawFile(getContext(), R.raw.testedama1));
             regras = new Regras();
             regras.setOnBoardChangedListener(new Regras.BoardChangedListener() {
                 @Override
                 public void onPieceMoved(Posicao posicao, Posicao posicao1) {
-
+                    jogadorText.setText(String.valueOf(regras.getJogadorAtual()));
+                    turnoText.setText(String.valueOf(jogador.getTurno()));
                 }
 
                 @Override
@@ -82,11 +86,11 @@ public class TabuleiroFragment extends Fragment {
 
                 @Override
                 public void virouDama(int i, int i1) {
-
+                    //trocaImgPeca(tabuleiroPecas[i][i1], regras.getJogadorAtual() == 1 ? damaTime2 : damaTime1);
                 }
             });
 
-            jogador = new Jogador(regras);
+            jogador = new Jogador(regras, 1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -243,7 +247,7 @@ public class TabuleiroFragment extends Fragment {
                 lastSelectedPiece = v;
                 Peca peca = regras.getPeca(getPosicaoView(v));
                 if(peca != null) {
-                    List<Jogada> jogadas = peca.isDama() ? regras.jogadasPossiveisDama(peca) : regras.jogadasPossiveis(peca);
+                    List<Jogada> jogadas = peca.isDama() ? regras.jogadasPossiveisDama(peca) : jogador.getJogadasPossiveis(getPosicaoView(v));
                     marcaJogadas(jogadas);
                 }
             }
@@ -255,13 +259,6 @@ public class TabuleiroFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //FrameLayout view = (FrameLayout) board.getChildAt(10);
-                //ImageView image = (ImageView) view.getChildAt(0);
-
-                //image.setImageResource(R.drawable.casa_transparente);
-
-                //System.out.println(board.indexOfChild(v));
-
                 if(lastSelectedPiece != null){
                     Posicao posicao = getPosicaoTile(v);
                     Posicao posicao1 = getPosicaoView(lastSelectedPiece);
@@ -274,7 +271,10 @@ public class TabuleiroFragment extends Fragment {
                         tabuleiroPecas[posicao.getI()][posicao.getJ()] = tabuleiroPecas[posicao1.getI()][posicao1.getJ()];
                         tabuleiroPecas[posicao1.getI()][posicao1.getJ()] = null;
 
+                        System.out.println(regras.getPecassssss().toString());
+
                         animMovePiece(lastSelectedPiece, v);
+                        turno++;
                         lastSelectedPiece = null;
                     }catch(JogadaInvalidaException e){
 
@@ -349,5 +349,12 @@ public class TabuleiroFragment extends Fragment {
         }
 
         return null;
+    }
+
+    private void trocaImgPeca(View view, int img){
+        FrameLayout frameLayout = (FrameLayout) view;
+        ImageView imageview = (ImageView) frameLayout.getChildAt(0);
+
+        imageview.setImageResource(img);
     }
 }
