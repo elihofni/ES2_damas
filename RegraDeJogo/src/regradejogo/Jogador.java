@@ -29,10 +29,14 @@ public class Jogador {
                 return new ArrayList<>();
             }
             
-            return regras.jogadasPossiveis(peca);
+            return peca.isDama()? regras.jogadasPossiveisDama(peca) : regras.jogadasPossiveis(peca);
         }
         
         return new ArrayList<>();
+    }
+    
+    public int getTurno(){
+        return regras.getTurno();
     }
 
     public int getTime() {

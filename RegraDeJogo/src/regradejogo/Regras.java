@@ -106,6 +106,8 @@ public class Regras {
         int borda = tabuleiro.bordaSupInf(jogada.getPosFinal());
         if(borda == peca.getTime()){
             viraDama(peca);
+            Posicao pos = tabuleiro.getPosicao(peca);
+            boardChangedListener.virouDama(pos.getI(), pos.getJ());
         }
         
         incrementaTurno();
@@ -700,6 +702,10 @@ public class Regras {
      */
     private void viraDama(Peca peca){
         peca.setDama(true);
+    }
+    
+    protected int getTurno(){
+        return turnoAtual;
     }
     
     /**
