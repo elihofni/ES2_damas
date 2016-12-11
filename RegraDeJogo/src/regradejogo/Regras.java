@@ -87,13 +87,6 @@ public class Regras {
         
         tabuleiro.movePeca(peca, posFinal);
         
-        //Caso tenha chegado na borda.
-        int borda = tabuleiro.bordaSupInf(jogada.getPosFinal());
-        if(borda == peca.getTime()){
-            Posicao pos = tabuleiro.getPosicao(peca);
-            boardChangedListener.virouDama(pos.getI(), pos.getJ());
-        }
-        
         //Verifica se houve captura na jogada.
         if (jogada.houveCaptura()) {
             removerPeca(jogada.getPecaCapturada());
@@ -103,8 +96,6 @@ public class Regras {
                 if(!possuiCaptura(capturasPecaAtual)){
                     trocaJogadorAtual();
                 }
-            }else{
-                 trocaJogadorAtual();
             }
 
         } else {
@@ -112,7 +103,7 @@ public class Regras {
         }
         
         //Caso tenha chegado na borda.
-        borda = tabuleiro.bordaSupInf(jogada.getPosFinal());
+        int borda = tabuleiro.bordaSupInf(jogada.getPosFinal());
         if(borda == peca.getTime()){
             viraDama(peca);
             Posicao pos = tabuleiro.getPosicao(peca);
@@ -124,7 +115,7 @@ public class Regras {
         
         //Sempre que um movimento for bem sucedido, acionar o callback.
         if(boardChangedListener != null){
-            boardChangedListener.onPieceMoved(posInicial, posFinal);
+            boardChangedListener.onPieceMoved(posFinal, posFinal);
         }
     }
     
@@ -752,7 +743,7 @@ public class Regras {
         return tabuleiro;
     }
     
-    protected int getJogadorAtual(){
+    public int getJogadorAtual(){
         return jogadorAtual;
     }
     
@@ -782,7 +773,6 @@ public class Regras {
         
         /**
          * Sempre que uma peça virar dama essa função será chamada.
-         * Função é chamada antes do movimento da peca.
          * @param i posição i da peça na matriz.
          * @param j posição j da peça na matriz.
          */

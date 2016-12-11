@@ -72,10 +72,9 @@ public class TabuleiroFragment extends Fragment {
         tabuleiroView.setOnClickTabuleiro(new TabuleiroView.OnClickTabuleiro() {
             @Override
             public void onClickPeca(Pos pos) {
-                List<Jogada> jogadas = jogador.getJogadasPossiveis(new Posicao(pos.getI(), pos.getJ()));
+                List<Posicao> posicoes = jogador.getPosPossiveis(new Posicao(pos.getI(), pos.getJ()));
 
-                for(Jogada jogada : jogadas){
-                    Posicao posicao = jogada.getPosFinal();
+                for(Posicao posicao : posicoes){
                     tabuleiroView.marcaPosicao(posicao.getI(), posicao.getJ());
                 }
             }
