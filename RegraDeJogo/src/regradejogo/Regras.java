@@ -775,6 +775,7 @@ public class Regras {
         
         /**
          * Sempre que uma peça virar dama essa função será chamada.
+         * Função é chamada antes do movimento da peca.
          * @param i posição i da peça na matriz.
          * @param j posição j da peça na matriz.
          */
