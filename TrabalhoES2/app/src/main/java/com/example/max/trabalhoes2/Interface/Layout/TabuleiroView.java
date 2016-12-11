@@ -9,6 +9,8 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -67,6 +69,7 @@ public class TabuleiroView extends GridLayout {
      * Animação de movimento das peças.
      */
     private int duracaoAnimMovimento = 500;
+    private Animation removerPeca = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
 
     /**
      * Interface de Callback.
@@ -158,6 +161,10 @@ public class TabuleiroView extends GridLayout {
         this.duracaoAnimMovimento = duracaoAnimMovimento;
     }
 
+    public void setRemoverPeca(Animation removerPeca) {
+        this.removerPeca = removerPeca;
+    }
+
     private void criaTabuleiro(){
         int tableSize = larguraTabuleiro();
         //Parametros do gridLayout.
@@ -181,12 +188,27 @@ public class TabuleiroView extends GridLayout {
             throw new IllegalArgumentException("Posicao [" + String.valueOf(i) + ";" + String.valueOf(j) + "] inválida.");
         }
 
-        //TODO animação de sumir.
-
         View view = tabuleiroPecas[i][j];
-        this.removeView(view);
 
-        tabuleiroPecas[i][j] = null;
+        removerPeca.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                removeView(view);
+                tabuleiroPecas[i][j] = null;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        view.startAnimation(removerPeca);
     }
 
     /**

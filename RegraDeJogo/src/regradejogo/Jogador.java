@@ -57,6 +57,31 @@ public class Jogador {
         return new ArrayList<>();
     }
     
+    public List<Posicao> getPosPossiveis(Posicao pos){
+        Peca peca = regras.getPeca(pos);
+        
+        List<Jogada> jogadas;
+        
+        if(peca != null){
+            if(regras.getPecasAptasDoJogadorAtual().indexOf(peca) == -1){
+                return new ArrayList<>();
+            }
+            
+            jogadas =  peca.isDama()? regras.jogadasPossiveisDama(peca) : regras.jogadasPossiveis(peca);
+            
+            List<Posicao> posicoes = new ArrayList<>();
+            
+            for(Jogada jogada : jogadas){
+                Posicao posicao = jogada.getPosFinal();
+                posicoes.add(posicao);
+            }
+            
+            return posicoes;
+        }
+        
+        return new ArrayList<>();
+    }
+    
     public int getTurno(){
         return regras.getTurno();
     }
