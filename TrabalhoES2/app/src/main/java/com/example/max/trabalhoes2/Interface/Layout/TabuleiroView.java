@@ -70,6 +70,7 @@ public class TabuleiroView extends GridLayout {
      */
     private int duracaoAnimMovimento = 500;
     private Animation removerPeca = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+    private Animation virarDama = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
 
     /**
      * Interface de Callback.
@@ -483,6 +484,32 @@ public class TabuleiroView extends GridLayout {
         animMovimentoPeca(ultimaPecaSelecionada, casa);
 
         ultimaPecaSelecionada = null;
+    }
+
+    public void trocaImagemPeca(Pos pos, int time){
+        FrameLayout view = (FrameLayout) tabuleiroPecas[pos.getI()][pos.getJ()];
+        ImageView imageView = (ImageView) view.getChildAt(0);
+
+        int img = (time == JOGADOR_UM)? damaJogadorUm : damaJogadorDois;
+
+        virarDama.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                imageView.setImageResource(img);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        imageView.startAnimation(virarDama);
     }
 
     /**

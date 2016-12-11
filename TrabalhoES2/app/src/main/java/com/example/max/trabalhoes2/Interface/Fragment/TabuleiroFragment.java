@@ -64,8 +64,9 @@ public class TabuleiroFragment extends Fragment {
             }
 
             @Override
-            public void virouDama(int i, int i1) {
-                //TODO
+            public void virouDama(int i, int i1, int i2) {
+                Pos pos = new Pos(i, i1);
+                tabuleiroView.trocaImagemPeca(pos, i2);
             }
         });
 
@@ -73,6 +74,8 @@ public class TabuleiroFragment extends Fragment {
             @Override
             public void onClickPeca(Pos pos) {
                 List<Posicao> posicoes = jogador.getPosPossiveis(new Posicao(pos.getI(), pos.getJ()));
+
+                //tabuleiroView.trocaImagemPeca(pos);
 
                 for(Posicao posicao : posicoes){
                     tabuleiroView.marcaPosicao(posicao.getI(), posicao.getJ());
