@@ -85,15 +85,14 @@ public class Regras {
             throw new JogadaInvalidaException("A posicao " + posFinal.toString() + " nao e uma jogada valida para esta peca " + tabuleiro.getPosicao(peca) + ".");
         }
         
+        tabuleiro.movePeca(peca, posFinal);
+        
         //Caso tenha chegado na borda.
         int borda = tabuleiro.bordaSupInf(jogada.getPosFinal());
         if(borda == peca.getTime()){
-            viraDama(peca);
             Posicao pos = tabuleiro.getPosicao(peca);
             boardChangedListener.virouDama(pos.getI(), pos.getJ());
         }
-        
-        tabuleiro.movePeca(peca, posFinal);
         
         //Verifica se houve captura na jogada.
         if (jogada.houveCaptura()) {
@@ -110,6 +109,14 @@ public class Regras {
 
         } else {
             trocaJogadorAtual();
+        }
+        
+        //Caso tenha chegado na borda.
+        borda = tabuleiro.bordaSupInf(jogada.getPosFinal());
+        if(borda == peca.getTime()){
+            viraDama(peca);
+            Posicao pos = tabuleiro.getPosicao(peca);
+            boardChangedListener.virouDama(pos.getI(), pos.getJ());
         }
         
         incrementaTurno();
