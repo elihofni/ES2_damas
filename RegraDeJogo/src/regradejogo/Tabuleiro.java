@@ -20,6 +20,11 @@ public class Tabuleiro {
 
     public static final int DIMEN = 8;
     private Peca[][] tabuleiro;
+    public static int DAMA_TIME1 = 3;
+    public static int DAMA_TIME2 = 4;
+    public static int PECA_TIME1 = 1;
+    public static int PECA_TIME2 = 2;
+    public static int VAZIO = 0;
 
     public Tabuleiro() {
         inicializaTabuleiro();
@@ -364,7 +369,6 @@ public class Tabuleiro {
      * Classe pra agrupar constantes e facilitar a identificação e manutenção.
      */
     public class Inclinacao {
-
         public static final int ESQUERDA = 0;
         public static final int DIREITA = 1;
     }

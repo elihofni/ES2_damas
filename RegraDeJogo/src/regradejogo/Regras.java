@@ -46,7 +46,7 @@ public class Regras {
         this.jogadorAtual = jogadorAtual;
         this.nPecasJogador1 = nPecasJogador1;
         this.nPecasJogador2 = nPecasJogador2;
-        pecasAptasCapturas = getPecasAptasDoJogadorAtual();
+        this.pecasAptasCapturas = getPecasAptasDoJogadorAtual();
     }
     
     /**
@@ -54,7 +54,7 @@ public class Regras {
      * @param posInicial posição que a peça a ser movida está.
      * @param posFinal posição destino.
      */
-    public void moverPeca(Posicao posInicial, Posicao posFinal){
+    protected void moverPeca(Posicao posInicial, Posicao posFinal){
         Peca peca = getPeca(posInicial);
         
         pecasAptasCapturas = getPecasAptasDoJogadorAtual();
@@ -85,6 +85,14 @@ public class Regras {
             throw new JogadaInvalidaException("A posicao " + posFinal.toString() + " nao e uma jogada valida para esta peca " + tabuleiro.getPosicao(peca) + ".");
         }
         
+        //Caso tenha chegado na borda.
+        int borda = tabuleiro.bordaSupInf(jogada.getPosFinal());
+        if(borda == peca.getTime()){
+            viraDama(peca);
+            Posicao pos = tabuleiro.getPosicao(peca);
+            boardChangedListener.virouDama(pos.getI(), pos.getJ());
+        }
+        
         tabuleiro.movePeca(peca, posFinal);
         
         //Verifica se houve captura na jogada.
@@ -96,18 +104,12 @@ public class Regras {
                 if(!possuiCaptura(capturasPecaAtual)){
                     trocaJogadorAtual();
                 }
+            }else{
+                 trocaJogadorAtual();
             }
 
         } else {
             trocaJogadorAtual();
-        }
-        
-        //Caso tenha chegado na borda.
-        int borda = tabuleiro.bordaSupInf(jogada.getPosFinal());
-        if(borda == peca.getTime()){
-            viraDama(peca);
-            Posicao pos = tabuleiro.getPosicao(peca);
-            boardChangedListener.virouDama(pos.getI(), pos.getJ());
         }
         
         incrementaTurno();
@@ -115,11 +117,11 @@ public class Regras {
         
         //Sempre que um movimento for bem sucedido, acionar o callback.
         if(boardChangedListener != null){
-            boardChangedListener.onPieceMoved(posFinal, posFinal);
+            boardChangedListener.onPieceMoved(posInicial, posFinal);
         }
     }
     
-    public List<Peca> getPecassssss(){
+    protected List<Peca> getPecassssss(){
         return this.pecasAptasCapturas;
     }
     
@@ -128,7 +130,7 @@ public class Regras {
      * @param jogadas Lista de jogadas a serem analisadas.
      * @return 
      */
-    private Jogada getJogada(List<Jogada> jogadas, Posicao posFinal){
+    protected Jogada getJogada(List<Jogada> jogadas, Posicao posFinal){
         for(Jogada jogada : jogadas){
             if(jogada.getPosFinal().equals(posFinal)){
                 return jogada;
@@ -147,7 +149,7 @@ public class Regras {
         return list.isEmpty();
     }
     
-    public List<Jogada> jogadasPossiveisDama(Peca peca){
+    protected List<Jogada> jogadasPossiveisDama(Peca peca){
         if(peca.getTime() != jogadorAtual){
             return new ArrayList<>();
         }
@@ -284,7 +286,7 @@ public class Regras {
      * @param peca
      * @return 
      */
-    public List<Posicao> getPosicoesPossiveisPeca(Peca peca){
+    protected List<Posicao> getPosicoesPossiveisPeca(Peca peca){
         if(peca.getTime() != jogadorAtual){
             return new ArrayList<>();
         }
@@ -340,7 +342,7 @@ public class Regras {
      * @param peca peça a ter as jogadas analisadas.
      * @return retorna uma lista com todas as posições válidas para jogada.
      */
-    public List<Jogada> jogadasPossiveis(Peca peca){
+    protected List<Jogada> jogadasPossiveis(Peca peca){
         //Se a peça não for do jogador atual.
         /*if(peça.getTime() != jogadorAtual){
             return null;
@@ -397,7 +399,7 @@ public class Regras {
      * Retorna todas as peças que estão áptas a jogar nesse turno.
      * @return lista de todas as peças que possuem captura no turno
      */
-    public List<Peca> getPecasCaptura2(){
+    protected List<Peca> getPecasCaptura2(){
         List<Peca> pecasJogador = tabuleiro.getPecasJogador(jogadorAtual);
         List<Peca> pecasAptas = new ArrayList<>();
         
@@ -417,7 +419,7 @@ public class Regras {
      * @param peca peça a ser movida.
      * @return true caso seja valida, false caso não.
      */
-    private boolean posicaoValida(Posicao pos, int time){
+    protected boolean posicaoValida(Posicao pos, int time){
         if(!tabuleiro.posValida(pos)){
             return false;
         }
@@ -452,7 +454,7 @@ public class Regras {
      * @param peca time da peça que quer caputrar.
      * @return jogadas.
      */
-    public List<Jogada> capturasPossiveis(List<Posicao> posicoes, Posicao pos, int time){
+    protected List<Jogada> capturasPossiveis(List<Posicao> posicoes, Posicao pos, int time){
         List<Jogada> jogadas = new ArrayList<>();
         
         for(Posicao posicao : posicoes){
@@ -480,7 +482,7 @@ public class Regras {
      * @param peca time da peça que quer caputrar.
      * @return jogadas.
      */
-    public List<Jogada> capturasPossiveis(List<Posicao> pos, Peca peca){
+    protected List<Jogada> capturasPossiveis(List<Posicao> pos, Peca peca){
         List<Jogada> jogadas = new ArrayList<>();
         
         for(Posicao posicao : pos){
@@ -510,7 +512,7 @@ public class Regras {
      * @param rastro
      * @return 
      */
-    public List<Jogada> capturasSeguidas(List<Jogada> jogadas, Jogada jogada, int time, List<Posicao> rastro){
+    protected List<Jogada> capturasSeguidas(List<Jogada> jogadas, Jogada jogada, int time, List<Posicao> rastro){
         List<Posicao> posicoes = getPosicoesPossiveisPos(jogada.getPosFinal(), time);
         List<Jogada> capturas = capturasPossiveis(posicoes, jogada.getPosFinal(), time);
         
@@ -562,7 +564,7 @@ public class Regras {
      * @param peca2 Peça a ser capturada.
      * @return caso seja possível a captura, retorna a posição final.
      */
-    public Posicao podeComer(Peca peca1, Peca peca2){
+    protected Posicao podeComer(Peca peca1, Peca peca2){
         Posicao pos1 = tabuleiro.getPosicao(peca1);
         Posicao pos2 = tabuleiro.getPosicao(peca2);
         //Pego a inclinação relativa entre duas pecas.
@@ -597,7 +599,7 @@ public class Regras {
      * @param pos2 posição da peça a ser capturada.
      * @return retorna a posição final caso possa comer, null caso não possa.
      */
-    public Posicao podeComer(Posicao pos1, Posicao pos2){
+    protected Posicao podeComer(Posicao pos1, Posicao pos2){
         //Pego a inclinação relativa entre duas pecas.
         int inclinacao = tabuleiro.inclinacaoRelativa(pos1, pos2);
         //Variável que auxilia no cálculo da posição final.
@@ -654,7 +656,7 @@ public class Regras {
      * Peças que podem capturar são prioredade.
      * @return Lista de peças válidas para o turno.
      */
-    public List<Peca> getPecasCaptura(){
+    protected List<Peca> getPecasCaptura(){
         List<Peca> pecasAptasCaptura = new ArrayList<>();
         List<Peca> pecasJogadaNormal = new ArrayList<>();
         
@@ -678,7 +680,7 @@ public class Regras {
      * @param jogadas lista de jogadas a ser verificada.
      * @return tre caso exista jogada de captura, false caso contrário.
      */
-    public boolean possuiCaptura(List<Jogada> jogadas){
+    protected boolean possuiCaptura(List<Jogada> jogadas){
         for(Jogada jogada : jogadas){
             if(jogada.houveCaptura()){
                 return true;
@@ -735,15 +737,15 @@ public class Regras {
      * @param pos
      * @return retorna uma peça caso exista nessa posição, null caso contrário.
      */
-    public Peca getPeca(Posicao pos){
+    protected Peca getPeca(Posicao pos){
         return tabuleiro.getPeca(pos);
     }
     
-    public Tabuleiro getTabuleiro(){
+    protected Tabuleiro getTabuleiro(){
         return tabuleiro;
     }
     
-    public int getJogadorAtual(){
+    protected int getJogadorAtual(){
         return jogadorAtual;
     }
     
