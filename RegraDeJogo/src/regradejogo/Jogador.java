@@ -46,6 +46,10 @@ public class Jogador {
     public List<Jogada> getJogadasPossiveis(Posicao pos){
         Peca peca = regras.getPeca(pos);
         
+        if(peca.isDama()){
+            return regras.jogadasPossiveisDama(peca);
+        }
+        
         if(peca != null){
             if(regras.getPecasAptasDoJogadorAtual().indexOf(peca) == -1){
                 return new ArrayList<>();
@@ -59,6 +63,16 @@ public class Jogador {
     
     public List<Posicao> getPosPossiveis(Posicao pos){
         Peca peca = regras.getPeca(pos);
+        
+        if(peca.isDama()){
+            List<Jogada> jogadas = regras.jogadasPossiveisDama(peca);
+            List<Posicao> posicoes = new ArrayList<>();
+            for(Jogada jogada : jogadas){
+                posicoes.add(jogada.getPosFinal());
+            }
+            
+            return posicoes;
+        }
         
         List<Jogada> jogadas;
         

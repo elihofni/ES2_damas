@@ -43,7 +43,7 @@ public class Main {
         int yPeca = Integer.parseInt(strPos[1]);
         Peca peca = regras.getPeca(new Posicao(xPeca, yPeca));
         System.out.println("Sugestão de jogadas");
-        System.out.println(humanoPl.getJogadasPossiveis(regras.getTabuleiro().getPosicao(peca)).toString());
+        System.out.println(humanoPl.getPosPossiveis(regras.getTabuleiro().getPosicao(peca)).toString());
         System.out.println("digite a posição de destino da peça separada por ; ");
         String posDestino = in.next();
         String[] strPosDestino = posDestino.split(";");
