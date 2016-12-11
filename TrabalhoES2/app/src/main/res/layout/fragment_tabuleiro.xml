@@ -8,7 +8,7 @@
         android:id="@+id/lienarLayout_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="com.example.max.trabalhoes2.Interface.Fragment.TabuleiroFragment"
+        tools:context="com.example.max.trabalhoes2.Interface.Fragment.TabuleiroFragment2"
         android:background="#fff899"
         android:clipChildren="false"
         android:orientation="vertical">

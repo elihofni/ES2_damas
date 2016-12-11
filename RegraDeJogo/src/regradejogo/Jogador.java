@@ -21,6 +21,28 @@ public class Jogador {
         regras.moverPeca(posIni, posFim);
     }
     
+    public int consultarPosicao(int i, int j){
+        Peca peca = regras.getTabuleiro().getPeca(new Posicao(i, j));
+        
+        if(peca == null){
+            return Tabuleiro.VAZIO;
+        }
+        
+        if(peca.getTime() == 1 && !peca.isDama()){
+            return Tabuleiro.PECA_TIME1;
+        }
+        
+        if(peca.getTime() == 2 && !peca.isDama()){
+            return Tabuleiro.PECA_TIME2;
+        }
+        
+        if(peca.getTime() == 1 && peca.isDama()){
+            return Tabuleiro.DAMA_TIME1;
+        }
+        
+        return Tabuleiro.DAMA_TIME2;
+    }
+    
     public List<Jogada> getJogadasPossiveis(Posicao pos){
         Peca peca = regras.getPeca(pos);
         
