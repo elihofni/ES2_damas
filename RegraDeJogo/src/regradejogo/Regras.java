@@ -85,8 +85,6 @@ public class Regras {
             throw new JogadaInvalidaException("A posicao " + posFinal.toString() + " nao e uma jogada valida para esta peca " + tabuleiro.getPosicao(peca) + ".");
         }
         
-        tabuleiro.movePeca(peca, posFinal);
-        
         //Verifica se houve captura na jogada.
         if (jogada.houveCaptura()) {
             removerPeca(jogada.getPecaCapturada());
@@ -104,15 +102,18 @@ public class Regras {
         
         //Caso tenha chegado na borda.
         int borda = tabuleiro.bordaSupInf(jogada.getPosFinal());
-        if(borda == peca.getTime()){
+        if(borda == peca.getTime() && !peca.isDama()){
             viraDama(peca);
             Posicao pos = tabuleiro.getPosicao(peca);
-            boardChangedListener.virouDama(pos.getI(), pos.getJ());
+            int timeAtual = jogadorAtual == JOGADOR_UM? JOGADOR_DOIS : JOGADOR_UM;
+            boardChangedListener.virouDama(pos.getI(), pos.getJ(), timeAtual);
         }
+        
+        tabuleiro.movePeca(peca, posFinal);
         
         incrementaTurno();
         verificaFimDeJogo();
-        
+
         //Sempre que um movimento for bem sucedido, acionar o callback.
         if(boardChangedListener != null){
             boardChangedListener.onPieceMoved(posFinal, posFinal);
@@ -776,7 +777,7 @@ public class Regras {
          * @param i posição i da peça na matriz.
          * @param j posição j da peça na matriz.
          */
-        public void virouDama(int i, int j);
+        public void virouDama(int i, int j, int time);
     }
     
     public void setOnBoardChangedListener(BoardChangedListener boardChangedListener){

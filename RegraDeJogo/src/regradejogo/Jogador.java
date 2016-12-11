@@ -64,6 +64,7 @@ public class Jogador {
     public List<Posicao> getPosPossiveis(Posicao pos){
         Peca peca = regras.getPeca(pos);
         
+        //Gambiarra.
         if(peca.isDama()){
             List<Jogada> jogadas = regras.jogadasPossiveisDama(peca);
             List<Posicao> posicoes = new ArrayList<>();
