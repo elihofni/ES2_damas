@@ -24,15 +24,12 @@
     </FrameLayout>
 
 
-    <ScrollView
+    <HorizontalScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scrollbars="horizontal"
-        android:scrollbarStyle="outsideOverlay"
-        android:overScrollMode="always">
+        android:layout_height="wrap_content">
 
         <include layout="@layout/modos_jogo" />
-    </ScrollView>
+    </HorizontalScrollView>
 
     <Button
         android:layout_width="wrap_content"
