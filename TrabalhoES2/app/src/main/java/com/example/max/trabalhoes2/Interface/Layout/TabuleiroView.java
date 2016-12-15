@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * View personalizada que representa um tabuleiro de jogo de damas.
  * IMPORTANTE
- * Essa classe não sabe nada de regras. Ela somente move, e desenha, peças e tabuleiro.
+ * Essa classe não sabe nada de regras. Ela somente move e desenha, peças e tabuleiro.
  */
 public class TabuleiroView extends GridLayout {
     /**

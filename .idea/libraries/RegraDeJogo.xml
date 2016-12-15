@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="RegraDeJogo">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/TrabalhoES2/RegraDeJogo/RegraDeJogo.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
