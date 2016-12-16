@@ -7,12 +7,12 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Regras regras = new Regras("teste.txt");
+        Regras regras = new Regras("teste3.txt");
 
         //jogarHumanoVsBot(regras);
         //jogarHumanoVsHumano(regras);
-        Jogador jogador = new Humano(regras, Regras.JOGADOR_UM);
-        System.out.println(jogador.getPosPossiveis(new Posicao(4, 5)).toString());
+        //Jogador jogador = new Humano(regras, Regras.JOGADOR_UM);
+        //System.out.println(jogador.getPosPossiveis(new Posicao(3, 0)).toString());
         //System.out.println(regras.jogadasPossiveisDama(regras.getTabuleiro().getPeca(new Posicao(2, 6))).toString());
 
         //System.out.println(regras.getTabuleiro().toString());

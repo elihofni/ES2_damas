@@ -210,9 +210,9 @@ public class Regras {
      * @return 
      */
     protected List<Jogada> jogadasPossiveisDama(Peca peca){
-        /*if(peca.getTime() != jogadorAtual){
+        if(peca.getTime() != jogadorAtual){
             return new ArrayList<>();
-        }*/
+        }
         
         Posicao posDama = tabuleiro.getPosicao(peca);
         
@@ -373,9 +373,9 @@ public class Regras {
      * @return 
      */
     protected List<Posicao> getPosicoesPossiveisPeca(Peca peca){
-        /*if(peca.getTime() != jogadorAtual){
+        if(peca.getTime() != jogadorAtual){
             return new ArrayList<>();
-        }*/
+        }
         
         //Pega a posição da peça.
         Posicao poiscaoPeca = tabuleiro.getPosicao(peca);
