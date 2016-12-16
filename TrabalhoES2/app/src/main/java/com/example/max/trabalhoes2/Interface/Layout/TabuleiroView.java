@@ -199,7 +199,7 @@ public class TabuleiroView extends GridLayout {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                removeView(view);
+                view.setVisibility(View.GONE);
                 tabuleiroPecas[i][j] = null;
             }
 
