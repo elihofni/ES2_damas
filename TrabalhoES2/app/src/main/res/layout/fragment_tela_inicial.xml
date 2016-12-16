@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context="com.example.max.trabalhoes2.Interface.Fragment.TelaInicialFragment">
 
@@ -23,21 +24,171 @@
             android:layout_gravity="center" />
     </FrameLayout>
 
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/TelaInicial_modo_JxJ"
+        android:layout_gravity="center_horizontal"
+        card_view:cardBackgroundColor="@color/colorPrimary"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="3dp"
+        android:elevation="3dp" >
 
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:src="@drawable/jog_vs_jog"
+            android:scaleType="centerCrop">
+        </ImageView>
 
-        <include layout="@layout/modos_jogo" />
-    </HorizontalScrollView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jogador VS Jogador"
+            android:textAppearance="@style/TituloModoJogo"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="10dp" />
+    </android.support.v7.widget.CardView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="bottom|center"
-        android:background="@drawable/botao_play"
-        android:textAppearance="@style/Titulo_Padrao1"
-        android:text="JOGAR"/>
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/TelaInicial_modo_JxIA1"
+        android:layout_gravity="center_horizontal"
+        card_view:cardBackgroundColor="@color/colorRoxo"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="3dp"
+        android:elevation="3dp" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:src="@drawable/jog_vs_ia3"
+            android:scaleType="centerCrop">
+        </ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jogador VS Sindicatos"
+            android:textAppearance="@style/TituloModoJogo"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[FÁCIL]"
+            android:textAppearance="@style/TituloModoJogo"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/TelaInicial_modo_JxIA2"
+        android:layout_gravity="center_horizontal"
+        card_view:cardBackgroundColor="@color/colorAmarelo"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="3dp"
+        android:elevation="3dp" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:src="@drawable/jog_vs_ia2"
+            android:scaleType="centerCrop">
+        </ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jogador VS Congresso"
+            android:textAppearance="@style/TituloModoJogo"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[MÉDIO]"
+            android:textAppearance="@style/TituloModoJogo"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/TelaInicial_modo_JxIA3"
+        android:layout_gravity="center_horizontal"
+        card_view:cardBackgroundColor="@color/colorPlay"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="3dp"
+        android:elevation="3dp" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:src="@drawable/jog_vs_ia4"
+            android:scaleType="centerCrop">
+        </ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jogador VS Justiça STF"
+            android:textAppearance="@style/TituloModoJogo"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[DIFÍCIL]"
+            android:textAppearance="@style/TituloModoJogo"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp" />
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/TelaInicial_modo_IAxIA"
+        android:layout_gravity="center_horizontal"
+        card_view:cardBackgroundColor="@color/colorAccent"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="3dp"
+        android:elevation="3dp" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:src="@drawable/ia_vs_ia"
+            android:scaleType="centerCrop">
+        </ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Congresso VS Justiça STF"
+            android:textAppearance="@style/TituloModoJogo"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[IA x IA]"
+            android:textAppearance="@style/TituloModoJogo"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp" />
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>
