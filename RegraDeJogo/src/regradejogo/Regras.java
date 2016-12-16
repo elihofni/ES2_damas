@@ -148,10 +148,71 @@ public class Regras {
         return list.isEmpty();
     }
     
-    protected List<Jogada> jogadasPossiveisDama(Peca peca){
-        if(peca.getTime() != jogadorAtual){
-            return new ArrayList<>();
+    /**
+     * Filtra a diagonal da dama
+     * @param peca
+     * @return 
+     */
+    private List<Posicao> filtraJogadas(List<Posicao> posicoes){
+        Posicao posicaoFinal = null;
+        
+        for(int i = 0; i < posicoes.size() - 2; i++){
+            Posicao posProx2 = posicoes.get(i + 2);
+            Posicao posProx = posicoes.get(i + 1);
+            
+            if(tabuleiro.existePecaPos(posProx) && tabuleiro.existePecaPos(posProx2)){
+                posicaoFinal = posicoes.get(i);
+                break;
+            }
         }
+        
+        if(posicaoFinal == null){
+            return posicoes;
+        }
+        
+        List<Posicao> filtrada = new ArrayList<>();
+        
+        for(Posicao posicao : posicoes){
+            if(posicao.equals(posicaoFinal)){
+                return filtrada;
+            }
+            
+            filtrada.add(posicao);
+        }
+        
+        return filtrada;
+                
+    }
+    
+    /**
+     * Retorna todas as posições pertencentes a uma diagonal da dama.
+     * @param i inclinação i
+     * @param j inclinação j
+     * @param posDama posicao da dama
+     * @param time time da dama
+     * @return retorna uma lista com todas as posicoes da diagonal.
+     */
+    private List<Posicao> getDiagonal(int i, int j, Posicao posDama, int time){
+        List<Posicao> diagonal = new ArrayList<>();
+        
+        Posicao pos = new Posicao(posDama.getI()+i, posDama.getJ()+j);
+        while(posicaoValida(pos, time)){
+            diagonal.add(pos);
+            pos = new Posicao(pos.getI()+i, pos.getJ()+j);
+        }
+        
+        return diagonal;
+    }
+    
+    /**
+     * Retorna todas as jogadas possíveis da dama.
+     * @param peca
+     * @return 
+     */
+    protected List<Jogada> jogadasPossiveisDama(Peca peca){
+        /*if(peca.getTime() != jogadorAtual){
+            return new ArrayList<>();
+        }*/
         
         Posicao posDama = tabuleiro.getPosicao(peca);
         
@@ -159,11 +220,31 @@ public class Regras {
         List<Posicao> diagonalEsquerda = new ArrayList<>();
         List<Posicao> diagonalDireita = new ArrayList<>();
         
-        Posicao pos = new Posicao(posDama.getI()-1, posDama.getJ()-1);
+        //TODO fazer função para filtrar diagonal superior e inferior.
+        //Esquerda Superior
+        List<Posicao> diagEsqSup = filtraJogadas(getDiagonal(-1, -1, posDama, peca.getTime()));
+        
+        //Esquerda Inferior
+        List<Posicao> diagEsqInf = filtraJogadas(getDiagonal(+1, +1, posDama, peca.getTime()));
+        
+        //Direita Superior
+        List<Posicao> diagDirSup = filtraJogadas(getDiagonal(-1, +1, posDama, peca.getTime()));
+        
+        //Direita Inferior
+        List<Posicao> diagDirInf = filtraJogadas(getDiagonal(+1, -1, posDama, peca.getTime()));
+        
+        diagonalEsquerda.addAll(diagEsqInf);
+        diagonalEsquerda.addAll(diagEsqSup);
+        diagonalDireita.addAll(diagDirInf);
+        diagonalDireita.addAll(diagDirSup);
+        
+        /*Posicao pos = new Posicao(posDama.getI()-1, posDama.getJ()-1);
         while(posicaoValida(pos, peca.getTime())){
             diagonalEsquerda.add(pos);
             pos = new Posicao(pos.getI()-1, pos.getJ()-1);
         }
+        
+        diagonalEsquerda = filtraJogadas(diagonalEsquerda);
         
         Posicao pos2 = new Posicao(posDama.getI()+1, posDama.getJ()+1);
         while(posicaoValida(pos2, peca.getTime())){
@@ -171,17 +252,23 @@ public class Regras {
             pos2 = new Posicao(pos2.getI()+1, pos2.getJ()+1);
         }
         
+        diagonalEsquerda = filtraJogadas(diagonalEsquerda);
+        
         Posicao pos3 = new Posicao(posDama.getI()-1, posDama.getJ()+1);
         while(posicaoValida(pos3, peca.getTime())){
             diagonalDireita.add(pos3);
             pos3 = new Posicao(pos3.getI()-1, pos3.getJ()+1);
         }
         
+        diagonalDireita = filtraJogadas(diagonalDireita);
+        
         Posicao pos4 = new Posicao(posDama.getI()+1, posDama.getJ()-1);
         while(posicaoValida(pos4, peca.getTime())){
             diagonalDireita.add(pos4);
             pos4 = new Posicao(pos4.getI()+1, pos4.getJ()-1);
         }
+        
+        diagonalDireita = filtraJogadas(diagonalDireita);*/
         
         List<Jogada> capturasDireita = capturasPossiveis(diagonalDireita, peca);
         List<Jogada> capturasEsquerda = capturasPossiveis(diagonalEsquerda, peca);
@@ -286,9 +373,9 @@ public class Regras {
      * @return 
      */
     protected List<Posicao> getPosicoesPossiveisPeca(Peca peca){
-        if(peca.getTime() != jogadorAtual){
+        /*if(peca.getTime() != jogadorAtual){
             return new ArrayList<>();
-        }
+        }*/
         
         //Pega a posição da peça.
         Posicao poiscaoPeca = tabuleiro.getPosicao(peca);
@@ -424,6 +511,10 @@ public class Regras {
         }
         
         Peca peca2 = tabuleiro.getPeca(pos);
+        
+        if(peca2 != null){
+            return false;
+        }
         
         //Se não tem nenhuma peça na posição, jogada é válida.
         if(peca2 == null){
