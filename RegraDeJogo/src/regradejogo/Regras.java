@@ -156,6 +156,10 @@ public class Regras {
     private List<Posicao> filtraJogadas(List<Posicao> posicoes){
         Posicao posicaoFinal = null;
         
+        if(posicoes.isEmpty()){
+            return posicoes;
+        }
+        
         for(int i = 0; i < posicoes.size() - 2; i++){
             Posicao posProx2 = posicoes.get(i + 2);
             Posicao posProx = posicoes.get(i + 1);
@@ -167,21 +171,27 @@ public class Regras {
         }
         
         if(posicaoFinal == null){
-            return posicoes;
+            posicaoFinal = posicoes.get(posicoes.size() - 1);
         }
         
         List<Posicao> filtrada = new ArrayList<>();
         
         for(Posicao posicao : posicoes){
+            boolean existePeca = tabuleiro.existePecaPos(posicao);
             if(posicao.equals(posicaoFinal)){
+                if(!existePeca){
+                   filtrada.add(posicao);
+                }
                 return filtrada;
             }
             
-            filtrada.add(posicao);
+            
+            if(!existePeca){
+                filtrada.add(posicao);
+            }
         }
         
-        return filtrada;
-                
+        return filtrada;     
     }
     
     /**
@@ -196,7 +206,7 @@ public class Regras {
         List<Posicao> diagonal = new ArrayList<>();
         
         Posicao pos = new Posicao(posDama.getI()+i, posDama.getJ()+j);
-        while(posicaoValida(pos, time)){
+        while(tabuleiro.posValida(pos)){
             diagonal.add(pos);
             pos = new Posicao(pos.getI()+i, pos.getJ()+j);
         }
@@ -210,9 +220,9 @@ public class Regras {
      * @return 
      */
     protected List<Jogada> jogadasPossiveisDama(Peca peca){
-        if(peca.getTime() != jogadorAtual){
+        /*if(peca.getTime() != jogadorAtual){
             return new ArrayList<>();
-        }
+        }*/
         
         Posicao posDama = tabuleiro.getPosicao(peca);
         
@@ -512,9 +522,9 @@ public class Regras {
         
         Peca peca2 = tabuleiro.getPeca(pos);
         
-        if(peca2 != null){
+        /*if(peca2 != null){
             return false;
-        }
+        }*/
         
         //Se não tem nenhuma peça na posição, jogada é válida.
         if(peca2 == null){

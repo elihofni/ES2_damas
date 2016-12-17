@@ -75,8 +75,6 @@ public class TabuleiroFragment extends Fragment {
             public void onClickPeca(Pos pos) {
                 List<Posicao> posicoes = jogador.getPosPossiveis(new Posicao(pos.getI(), pos.getJ()));
 
-                //tabuleiroView.trocaImagemPeca(pos);
-
                 for(Posicao posicao : posicoes){
                     tabuleiroView.marcaPosicao(posicao.getI(), posicao.getJ());
                 }

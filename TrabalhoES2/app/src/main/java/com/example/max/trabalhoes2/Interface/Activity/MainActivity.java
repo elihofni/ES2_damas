@@ -15,9 +15,9 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState == null) {
             //TabuleiroFragment2 tabuleiroFragment = new TabuleiroFragment2();
-            //TabuleiroFragment tabuleiroFragment = new TabuleiroFragment();
-            TelaInicialFragment telaInicialFragment = new TelaInicialFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.container_main, telaInicialFragment).commit();
+            TabuleiroFragment tabuleiroFragment = new TabuleiroFragment();
+            //TelaInicialFragment telaInicialFragment = new TelaInicialFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.container_main, tabuleiroFragment).commit();
         }
     }
 }
