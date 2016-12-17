@@ -149,49 +149,62 @@ public class Regras {
     }
     
     /**
+     * Função que verifica se uma diagonal possui mais de uma peça
+     * @param posicoes lista com as posições da diagonal.
+     * @return retorna a posição da segunda peça, null caso tenha apenas uma peça.
+     */
+    private Posicao getLimiteDama(List<Posicao> posicoes, int time){
+        Posicao ultimaPosValida = null;
+        int count = 0;
+        
+        if(posicoes.size() == 1){
+            boolean possuiPeca = tabuleiro.existePecaPos(posicoes.get(0));
+            
+            return possuiPeca? null : posicoes.get(0);
+        }
+        
+        for(int i = 0; i < posicoes.size(); i++){
+            Posicao pos = posicoes.get(i);
+            if(tabuleiro.existePecaPos(pos)){
+                if(tabuleiro.getPeca(pos).getTime() == time){
+                    return ultimaPosValida;
+                }
+                count++;
+                if(count == 2){
+                    return ultimaPosValida;
+                }
+            }else{
+                ultimaPosValida = pos;
+            }
+        }
+        
+        return ultimaPosValida;
+    }
+    
+    /**
      * Filtra a diagonal da dama
      * @param peca
      * @return 
      */
-    private List<Posicao> filtraJogadas(List<Posicao> posicoes){
-        Posicao posicaoFinal = null;
+    private List<Posicao> filtraJogadas(List<Posicao> posicoes, int time){
+        Posicao limite = getLimiteDama(posicoes, time);
         
-        if(posicoes.isEmpty()){
-            return posicoes;
-        }
-        
-        for(int i = 0; i < posicoes.size() - 2; i++){
-            Posicao posProx2 = posicoes.get(i + 2);
-            Posicao posProx = posicoes.get(i + 1);
-            
-            if(tabuleiro.existePecaPos(posProx) && tabuleiro.existePecaPos(posProx2)){
-                posicaoFinal = posicoes.get(i);
-                break;
-            }
-        }
-        
-        if(posicaoFinal == null){
-            posicaoFinal = posicoes.get(posicoes.size() - 1);
+        if(limite == null){
+            return new ArrayList<>();
         }
         
         List<Posicao> filtrada = new ArrayList<>();
         
-        for(Posicao posicao : posicoes){
-            boolean existePeca = tabuleiro.existePecaPos(posicao);
-            if(posicao.equals(posicaoFinal)){
-                if(!existePeca){
-                   filtrada.add(posicao);
-                }
+        for(Posicao pos : posicoes){
+            if(pos.equals(limite)){
+                filtrada.add(pos);
                 return filtrada;
             }
             
-            
-            if(!existePeca){
-                filtrada.add(posicao);
-            }
+            filtrada.add(pos);
         }
         
-        return filtrada;     
+        return filtrada;   
     }
     
     /**
@@ -220,9 +233,9 @@ public class Regras {
      * @return 
      */
     protected List<Jogada> jogadasPossiveisDama(Peca peca){
-        /*if(peca.getTime() != jogadorAtual){
+        if(peca.getTime() != jogadorAtual){
             return new ArrayList<>();
-        }*/
+        }
         
         Posicao posDama = tabuleiro.getPosicao(peca);
         
@@ -232,53 +245,25 @@ public class Regras {
         
         //TODO fazer função para filtrar diagonal superior e inferior.
         //Esquerda Superior
-        List<Posicao> diagEsqSup = filtraJogadas(getDiagonal(-1, -1, posDama, peca.getTime()));
+        List<Posicao> diagEsqSup = filtraJogadas(getDiagonal(-1, -1, posDama, peca.getTime()), peca.getTime());
         
         //Esquerda Inferior
-        List<Posicao> diagEsqInf = filtraJogadas(getDiagonal(+1, +1, posDama, peca.getTime()));
+        List<Posicao> diagEsqInf = filtraJogadas(getDiagonal(+1, +1, posDama, peca.getTime()), peca.getTime());
         
         //Direita Superior
-        List<Posicao> diagDirSup = filtraJogadas(getDiagonal(-1, +1, posDama, peca.getTime()));
+        List<Posicao> diagDirSup = filtraJogadas(getDiagonal(-1, +1, posDama, peca.getTime()), peca.getTime());
         
         //Direita Inferior
-        List<Posicao> diagDirInf = filtraJogadas(getDiagonal(+1, -1, posDama, peca.getTime()));
+        List<Posicao> diagDirInf = filtraJogadas(getDiagonal(+1, -1, posDama, peca.getTime()), peca.getTime());
+        
+        //Fazer função que verifica se existem mais de uma peça na diagonal.
+        //Definir range da dama.
+        //Se tiver, rodar o filtro.
         
         diagonalEsquerda.addAll(diagEsqInf);
         diagonalEsquerda.addAll(diagEsqSup);
         diagonalDireita.addAll(diagDirInf);
         diagonalDireita.addAll(diagDirSup);
-        
-        /*Posicao pos = new Posicao(posDama.getI()-1, posDama.getJ()-1);
-        while(posicaoValida(pos, peca.getTime())){
-            diagonalEsquerda.add(pos);
-            pos = new Posicao(pos.getI()-1, pos.getJ()-1);
-        }
-        
-        diagonalEsquerda = filtraJogadas(diagonalEsquerda);
-        
-        Posicao pos2 = new Posicao(posDama.getI()+1, posDama.getJ()+1);
-        while(posicaoValida(pos2, peca.getTime())){
-            diagonalEsquerda.add(pos2);
-            pos2 = new Posicao(pos2.getI()+1, pos2.getJ()+1);
-        }
-        
-        diagonalEsquerda = filtraJogadas(diagonalEsquerda);
-        
-        Posicao pos3 = new Posicao(posDama.getI()-1, posDama.getJ()+1);
-        while(posicaoValida(pos3, peca.getTime())){
-            diagonalDireita.add(pos3);
-            pos3 = new Posicao(pos3.getI()-1, pos3.getJ()+1);
-        }
-        
-        diagonalDireita = filtraJogadas(diagonalDireita);
-        
-        Posicao pos4 = new Posicao(posDama.getI()+1, posDama.getJ()-1);
-        while(posicaoValida(pos4, peca.getTime())){
-            diagonalDireita.add(pos4);
-            pos4 = new Posicao(pos4.getI()+1, pos4.getJ()-1);
-        }
-        
-        diagonalDireita = filtraJogadas(diagonalDireita);*/
         
         List<Jogada> capturasDireita = capturasPossiveis(diagonalDireita, peca);
         List<Jogada> capturasEsquerda = capturasPossiveis(diagonalEsquerda, peca);
@@ -299,7 +284,7 @@ public class Regras {
                 listAux.add(new Jogada(jogada.getPecaCapturada(), jogada.getPecaMovida(), jogada.getPosInicial(), pAux));
             }
             
-            break;
+            //break;
         }
         
         for(Jogada jogada : capturasEsquerda){
@@ -316,7 +301,7 @@ public class Regras {
                 listAux.add(new Jogada(jogada.getPecaCapturada(), jogada.getPecaMovida(), jogada.getPosInicial(), pAux));
             }
             
-            break;
+            //break;
         }
 
         List<Jogada> jogadas = new ArrayList<>();
