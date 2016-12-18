@@ -77,6 +77,8 @@ public class TabuleiroView extends GridLayout {
      */
     private OnClickTabuleiro onClickTabuleiro;
 
+    private int largura;
+
     /**
      * Construtor padrão quando a instancia da classe é feita via código.
      * @param context contexto na qual a classe é instanciada.
@@ -121,6 +123,10 @@ public class TabuleiroView extends GridLayout {
 
     @Override
     public void onMeasure(int width, int height){
+        int parentWidth = MeasureSpec.getSize(width);
+        int parentHeight = MeasureSpec.getSize(height);
+        largura = MeasureSpec.getSize(width);
+        this.setMeasuredDimension(parentWidth, parentHeight);
         super.onMeasure(
                 MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY));
@@ -152,6 +158,11 @@ public class TabuleiroView extends GridLayout {
 
     protected int larguraTabuleiro() {
         return LayoutUtil.getDisplay((Activity) getContext()).widthPixels;
+        //return largura;
+    }
+
+    public void setUltimaPecaSelecionada(Pos pos) {
+        this.ultimaPecaSelecionada = tabuleiroPecas[pos.getI()][pos.getJ()];
     }
 
     protected int larguraCasa() {
@@ -190,8 +201,10 @@ public class TabuleiroView extends GridLayout {
         }
 
         View view = tabuleiroPecas[i][j];
+        view.setVisibility(View.GONE);
+        tabuleiroPecas[i][j] = null;
 
-        removerPeca.setAnimationListener(new Animation.AnimationListener() {
+        /*removerPeca.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -209,7 +222,7 @@ public class TabuleiroView extends GridLayout {
             }
         });
 
-        view.startAnimation(removerPeca);
+        view.startAnimation(removerPeca);*/
     }
 
     /**
@@ -396,8 +409,8 @@ public class TabuleiroView extends GridLayout {
 
         FrameLayout frameLayout = new FrameLayout(getContext());
 
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(tamanho - 20, tamanho - 20, Gravity.CENTER);
-        params.setMargins(10, 10, 10, 10);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(tamanho, tamanho, Gravity.CENTER);
+        //params.setMargins(10, 10, 10, 10);
 
         ImageView piece = new ImageView(getContext());
         piece.setLayoutParams(params);
@@ -410,6 +423,14 @@ public class TabuleiroView extends GridLayout {
         frameLayout.addView(piece);
 
         return frameLayout;
+    }
+
+    public View getPeca(Pos pos){
+        return tabuleiroPecas[pos.getI()][pos.getJ()];
+    }
+
+    public View getCasa(Pos pos){
+        return getChildAt((pos.getI()*8) + pos.getJ());
     }
 
     /**
@@ -460,6 +481,18 @@ public class TabuleiroView extends GridLayout {
             }
         };
     }
+
+    public void movePeca(Pos posInicial, Pos posFim){
+        View view = tabuleiroPecas[posInicial.getI()][posInicial.getJ()];
+
+        tabuleiroPecas[posFim.getI()][posFim.getJ()] = tabuleiroPecas[posInicial.getI()][posInicial.getJ()];
+        tabuleiroPecas[posInicial.getI()][posInicial.getJ()] = null;
+
+        View casa = getChildAt((posFim.getI()*8) + posFim.getJ());
+
+        animMovimentoPeca(view, casa);
+    }
+
 
     /**
      * Move uma peca para um determinada posição.
@@ -584,6 +617,14 @@ public class TabuleiroView extends GridLayout {
 
         public void setJ(int j) {
             this.j = j;
+        }
+
+        @Override
+        public String toString() {
+            return "Pos{" +
+                    "i=" + i +
+                    ", j=" + j +
+                    '}';
         }
     }
 }
