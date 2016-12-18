@@ -115,6 +115,7 @@ public class Jogador {
         return time;
     }
     
-    
-    
+    public List<Jogada> getHistorico(){
+        return regras.getHistJogador1();
+    }
 }

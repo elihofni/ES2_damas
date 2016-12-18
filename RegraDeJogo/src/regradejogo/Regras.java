@@ -22,6 +22,8 @@ public class Regras {
     private int nPecasJogador2; //Quantidade de peças do jogador 2;
     private boolean jogoFinalizado;
     private List<Peca> pecasAptasCapturas;
+    private List<Jogada> historicoJogador1;
+    private List<Jogada> historicoJogador2;
     
     public Regras(){
         turnoAtual = 0;
@@ -30,6 +32,8 @@ public class Regras {
         nPecasJogador1 = 8;
         nPecasJogador2 = 8;
         pecasAptasCapturas = getPecasAptasDoJogadorAtual();
+        historicoJogador1 = new ArrayList<>();
+        historicoJogador2 = new ArrayList<>();
     }
     
     public Regras(String nomeArquivo) throws IOException{
@@ -37,6 +41,8 @@ public class Regras {
         tabuleiro = new Tabuleiro(nomeArquivo);
         jogadorAtual = 1;
         pecasAptasCapturas = getPecasAptasDoJogadorAtual();
+        historicoJogador1 = new ArrayList<>();
+        historicoJogador2 = new ArrayList<>();
     }
     
 
@@ -83,6 +89,12 @@ public class Regras {
         //Se não tiver contida, jogada é inválida.
         if(jogada == null){
             throw new JogadaInvalidaException("A posicao " + posFinal.toString() + " nao e uma jogada valida para esta peca " + tabuleiro.getPosicao(peca) + ".");
+        }
+        
+        if(jogadorAtual == JOGADOR_UM){
+            historicoJogador1.add(jogada);
+        }else{
+            historicoJogador2.add(jogada);
         }
         
         //Verifica se houve captura na jogada.
@@ -832,6 +844,21 @@ public class Regras {
     
     public int getJogadorAtual(){
         return jogadorAtual;
+    }
+    
+    protected List<Jogada> getHistorico(){
+        List<Jogada> jogadas = new ArrayList<>();
+        jogadas.addAll(historicoJogador1);
+        jogadas.addAll(historicoJogador2);
+        return jogadas;
+    }
+    
+    protected List<Jogada> getHistJogador1(){
+        return historicoJogador1;
+    }
+    
+    protected List<Jogada> getHistJogador2(){
+        return historicoJogador2;
     }
     
     /**

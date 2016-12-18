@@ -63,10 +63,12 @@ public class TabuleiroFragment extends Fragment {
             @Override
             public void jogadaFinalizada() {
                 Jogada jogada = bot.Jogar2();
-                Pos posInicial = new Pos(jogada.getPosInicial().getI(), jogada.getPosInicial().getJ());
-                Pos posFinal = new Pos(jogada.getPosFinal().getI(), jogada.getPosFinal().getJ());
-                tabuleiroView.getPeca(posInicial).performClick();
-                tabuleiroView.getCasa(posFinal).performClick();
+                if(jogada != null) {
+                    Pos posInicial = new Pos(jogada.getPosInicial().getI(), jogada.getPosInicial().getJ());
+                    Pos posFinal = new Pos(jogada.getPosFinal().getI(), jogada.getPosFinal().getJ());
+                    tabuleiroView.getPeca(posInicial).performClick();
+                    tabuleiroView.getCasa(posFinal).performClick();
+                }
             }
         });
 
