@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState == null) {
             TelaInicialFragment telaInicialFragment = new TelaInicialFragment();
+            //EscolherTimeFragment escolherTimeFragment = new EscolherTimeFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.containerMain, telaInicialFragment).commit();
         }
     }

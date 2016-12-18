@@ -2,15 +2,10 @@ package com.example.max.trabalhoes2.Interface.Fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
-import com.example.max.trabalhoes2.Interface.Layout.LayoutUtil;
 import com.example.max.trabalhoes2.Interface.Layout.TabuleiroView;
 import com.example.max.trabalhoes2.R;
 
@@ -19,6 +14,7 @@ import com.example.max.trabalhoes2.Interface.Layout.TabuleiroView.*;
 import java.util.List;
 
 import regradejogo.Bot;
+import regradejogo.Bot.*;
 import regradejogo.Humano;
 import regradejogo.Jogada;
 import regradejogo.Jogador;
@@ -40,7 +36,7 @@ public class TabuleiroFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_teste, container, false);
+        View view =  inflater.inflate(R.layout.fragment_tabuleiro, container, false);
 
         TabuleiroView tabuleiroView = (TabuleiroView) view.findViewById(R.id.tabuleiro);
 
@@ -48,12 +44,17 @@ public class TabuleiroFragment extends Fragment {
 
         Bundle bundle = getArguments();
         int modoDeJogo = bundle.getInt("modo");
+        int peca1 = bundle.getInt("peca1");
+        int peca2 = bundle.getInt("peca2");
+
+        tabuleiroView.setJogadorUmPeao(peca1);
+        tabuleiroView.setJogadorDoisPeao(peca2);
 
         if(modoDeJogo == ModoDeJogoFragment.JOGADOR_VS_JOGADOR){
             jogador = new Humano(regras, Regras.JOGADOR_UM);
         }else if(modoDeJogo == ModoDeJogoFragment.JOGADOR_VS_IA){
             jogador = new Humano(regras, Regras.JOGADOR_UM);
-            bot = new Bot(regras, Bot.Dificuldade.MEDIO, Regras.JOGADOR_DOIS);
+            bot = new Bot(regras, Dificuldade.MEDIO, Regras.JOGADOR_DOIS);
         }
 
 

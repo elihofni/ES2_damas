@@ -38,25 +38,27 @@ public class ModoDeJogoFragment extends Fragment {
 
         ImageView imageView = (ImageView) view.findViewById(R.id.imagem_fundo_modo_de_jogo);
         TextView textView = (TextView) view.findViewById(R.id.titulo_modo_de_jogo);
+        TextView textView1 = (TextView) view.findViewById(R.id.titulo_modo_de_jogo2);
 
         switch (modoDeJogo){
             case JOGADOR_VS_JOGADOR:
-                setResourcers(imageView, textView, R.drawable.jog_vs_jog, "Jogador x Jogador");
+                setResourcers(imageView, textView, textView1, R.drawable.jog_vs_jog, "Jogador", "Jogador");
                 break;
             case JOGADOR_VS_IA:
-                setResourcers(imageView, textView, R.drawable.jog_vs_ia, "Jogador x IA");
+                setResourcers(imageView, textView, textView1, R.drawable.jog_vs_ia, "Jogador", "BOT");
                 break;
             case IA_VS_IA:
-                setResourcers(imageView, textView, R.drawable.ia_vs_ia, "IA x IA");
+                setResourcers(imageView, textView, textView1, R.drawable.ia_vs_ia, "BOT", "BOT");
                 break;
         }
 
         return view;
     }
 
-    private void setResourcers(ImageView imageView, TextView textView, int image, String text){
+    private void setResourcers(ImageView imageView, TextView textView1, TextView textView2, int image, String text, String text2){
         imageView.setImageResource(image);
-        textView.setText(text);
+        textView1.setText(text);
+        textView2.setText(text2);
     }
 
     public int getModoDeJogo() {
