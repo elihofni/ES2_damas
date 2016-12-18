@@ -48,9 +48,17 @@ public class Bot extends Jogador {
         proximaJogada = null;
         regra_auxiliar = regras.copia();
         minMax(regra_auxiliar, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
-        System.out.println("Bot joga:" + proximaJogada.toString());
         regras.moverPeca(proximaJogada.getPosInicial(), proximaJogada.getPosFinal());
-
+    }
+    
+    public Jogada Jogar2() {
+        Regras regra_auxiliar;
+        proximaJogada = null;
+        regra_auxiliar = regras.copia();
+        minMax(regra_auxiliar, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
+        System.out.println("Bot joga:" + proximaJogada.toString());
+        return proximaJogada;
+        //regras.moverPeca(proximaJogada.getPosInicial(), proximaJogada.getPosFinal());
     }
 
     public int heuristica(Regras regra) {

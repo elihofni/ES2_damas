@@ -3,6 +3,7 @@ package com.example.max.trabalhoes2.Interface.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.example.max.trabalhoes2.Interface.Layout.TabuleiroView.*;
 
 import java.util.List;
 
+import regradejogo.Bot;
 import regradejogo.Humano;
 import regradejogo.Jogada;
 import regradejogo.Jogador;
@@ -26,8 +28,9 @@ import regradejogo.Tabuleiro;
 
 public class TabuleiroFragment extends Fragment {
 
-    Regras regras;
-    Jogador jogador;
+    private Regras regras;
+    private Jogador jogador;
+    private Bot bot;
 
     public TabuleiroFragment() {
         // Required empty public constructor
@@ -42,14 +45,36 @@ public class TabuleiroFragment extends Fragment {
         TabuleiroView tabuleiroView = (TabuleiroView) view.findViewById(R.id.tabuleiro);
 
         regras = new Regras();
-        jogador = new Humano(regras, Regras.JOGADOR_UM);
+
+        Bundle bundle = getArguments();
+        int modoDeJogo = bundle.getInt("modo");
+
+        if(modoDeJogo == ModoDeJogoFragment.JOGADOR_VS_JOGADOR){
+            jogador = new Humano(regras, Regras.JOGADOR_UM);
+        }else if(modoDeJogo == ModoDeJogoFragment.JOGADOR_VS_IA){
+            jogador = new Humano(regras, Regras.JOGADOR_UM);
+            bot = new Bot(regras, Bot.Dificuldade.MEDIO, Regras.JOGADOR_DOIS);
+        }
+
 
         carregaTabuleiro(tabuleiroView);
+
+        jogador.setJogadorListener(new Jogador.JogadorListener() {
+            @Override
+            public void jogadaFinalizada() {
+                Jogada jogada = bot.Jogar2();
+                Pos posInicial = new Pos(jogada.getPosInicial().getI(), jogada.getPosInicial().getJ());
+                Pos posFinal = new Pos(jogada.getPosFinal().getI(), jogada.getPosFinal().getJ());
+                tabuleiroView.getPeca(posInicial).performClick();
+                tabuleiroView.getCasa(posFinal).performClick();
+            }
+        });
 
         regras.setOnBoardChangedListener(new Regras.BoardChangedListener() {
             @Override
             public void onPieceMoved(Posicao posicao, Posicao posicao1) {
                 Pos pos = new Pos(posicao1.getI(), posicao1.getJ());
+                Pos pos2 = new Pos(posicao.getI(), posicao.getJ());
                 tabuleiroView.movePeca(pos);
             }
 
@@ -85,7 +110,7 @@ public class TabuleiroFragment extends Fragment {
                 try{
                     jogador.realizarJogada(posPeca.getI(), posPeca.getJ(), posCasa.getI(), posCasa.getJ());
                 }catch (Exception e){
-                    //TODO pintar posição da casa de vermelho e etc...
+                    e.printStackTrace();
                 }
             }
         });
