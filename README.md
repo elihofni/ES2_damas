@@ -29,16 +29,16 @@ Trabalho da disciplina de Engenharia de Software 2, turma de 2016.2.
 
 Chamada sempre que uma peça tem um movimento bem sucedido.
 
-`onPieceMoved();`
+`onPieceMoved(Posicao posInicial, Posicao posFinal);`
 
 Chamada sempre depois que o jogo termina.
 
-`onGameFinished();`
+`onGameFinished(int causa, int timeVencedor);`
 
 Chamada sempre que uma peça é removida do tabuleiro.
 
-`onPieceRemoved();`
+`onPieceRemoved(Posicao pos);`
 
 Chamada sempre que uma peça vira dama.
 
-`virouDama();`
+`virouDama(Posicao pos, int time);`
