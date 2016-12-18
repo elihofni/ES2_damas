@@ -111,13 +111,13 @@ public class Regras {
         
         tabuleiro.movePeca(peca, posFinal);
         
-        incrementaTurno();
-        verificaFimDeJogo();
-
         //Sempre que um movimento for bem sucedido, acionar o callback.
         if(boardChangedListener != null){
-            boardChangedListener.onPieceMoved(posFinal, posFinal);
+            boardChangedListener.onPieceMoved(posInicial, posFinal);
         }
+        
+        incrementaTurno();
+        verificaFimDeJogo();
     }
     
     protected List<Peca> getPecassssss(){
