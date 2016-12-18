@@ -27,7 +27,7 @@ public class Bot extends Jogador {
         
         switch(dificuldade){
             case FACIL:
-                numero_iteracoes = 1;
+                numero_iteracoes = 2;
                 break;
             case MEDIO:
                 numero_iteracoes = 4;
@@ -126,7 +126,11 @@ public class Bot extends Jogador {
                 Jogada jogadaCandidata = null;
                 List<Peca> pecasAptas = regra.getPecasAptasDoJogadorAtual();
                 for (Peca peca : pecasAptas) {
-                    List<Jogada> jogadasPossiveis = regra.jogadasPossiveis(peca);
+                    List<Jogada> jogadasPossiveis;
+                    if(peca.isDama())    
+                        jogadasPossiveis = regra.jogadasPossiveisDama(peca);
+                    else
+                        jogadasPossiveis = regra.jogadasPossiveis(peca);
                     for (Jogada jogada : jogadasPossiveis) {                        
                         regra_auxiliar = regra.copia();
                         try{
@@ -155,7 +159,11 @@ public class Bot extends Jogador {
             } else {
                 List<Peca> pecasAptas = regra.getPecasAptasDoJogadorAtual();
                 for (Peca peca : pecasAptas) {
-                    List<Jogada> jogadasPossiveis = regra.jogadasPossiveis(peca);
+                    List<Jogada> jogadasPossiveis;
+                    if(peca.isDama())    
+                        jogadasPossiveis = regra.jogadasPossiveisDama(peca);
+                    else
+                        jogadasPossiveis = regra.jogadasPossiveis(peca);
                     for (Jogada jogada : jogadasPossiveis) {
                         regra_auxiliar = regra.copia();
                         try{
