@@ -1,16 +1,15 @@
 # ES2_damas
-##Jogo de damas.
 
 ##Classe Regras:
 
        regras.setOnBoardChangedListener(new Regras.BoardChangedListener() {
             @Override
-            public void onPieceMoved(Posicao posicao, Posicao posicao1) {
+            public void onPieceMoved(Posicao posInicial, Posicao posFinal) {
             
             }
 
             @Override
-            public void onGameFinished(int i, int i1) {
+            public void onGameFinished(int causa, int timeVencedor) {
             
             }
 
@@ -20,7 +19,7 @@
             }
 
             @Override
-            public void virouDama(int i, int i1, int i2) {
+            public void virouDama(int i, int j, int time) {
             
             }
      });
