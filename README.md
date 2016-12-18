@@ -39,3 +39,25 @@ Chamada sempre que uma peça é removida do tabuleiro.
 Chamada sempre que uma peça vira dama.
 
 `virouDama(Posicao pos, int time);`
+
+## TabuleiroView
+       tabuleiroView.setOnClickTabuleiro(new TabuleiroView.OnClickTabuleiro() {
+            @Override
+            public void onClickPeca(Pos pos) {
+                
+            }
+
+            @Override
+            public void onClickCasa(Pos posPeca, Pos posCasa) {
+                
+            }
+           });
+           
+    
+Chamada sempre que uma peça é selecionada.
+
+`onClickPeca(Pos pos)`
+
+Chamada sempre que uma casa é selecionada.
+
+`onClickCasa(Pos pos)`
