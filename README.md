@@ -1,5 +1,28 @@
 # ES2_damas
 
+##Equipe
+###Elihofni Lima
+- Deisgn.
+- Programação das Regras.
+
+###Max Fratane
+- Programação Android.
+- Programaação das Regras.
+- Testes Unitários e de Integração.
+
+###Pablo Carvalho
+- Programação das Regras.
+- Inteligência Artificial.
+
+###Omar
+- Áudio.
+- Programação das Regras.
+
+###Gabriel Sommerlate
+- Gerente de Projeto.
+
+
+
 ##Classe Regras:
 
        regras.setOnBoardChangedListener(new Regras.BoardChangedListener() {
