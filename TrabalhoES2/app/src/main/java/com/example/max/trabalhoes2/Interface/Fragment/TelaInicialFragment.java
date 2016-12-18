@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.support.v7.widget.CardView;
 import android.widget.Button;
 
+import com.example.max.trabalhoes2.Interface.Activity.EscolherTimeActivity;
 import com.example.max.trabalhoes2.Interface.Activity.PartidaActivity;
 import com.example.max.trabalhoes2.Interface.Adapter.SwipeMain;
 import com.example.max.trabalhoes2.R;
@@ -38,7 +39,7 @@ public class TelaInicialFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PartidaActivity.class);
+                Intent intent = new Intent(getContext(), EscolherTimeActivity.class);
                 ModoDeJogoFragment frag1 = (ModoDeJogoFragment) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
                 intent.putExtra("modo", frag1.getModoDeJogo());
                 startActivity(intent);
