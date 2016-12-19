@@ -99,6 +99,17 @@ public class Regras {
             historicoJogador2.add(jogada);
         }
         
+        //Caso tenha chegado na borda.
+        int borda = tabuleiro.bordaSupInf(jogada.getPosFinal());
+        if(borda == peca.getTime() && !peca.isDama()){
+            viraDama(peca);
+            Posicao pos = tabuleiro.getPosicao(peca);
+            int timeAtual = jogadorAtual == JOGADOR_UM? JOGADOR_DOIS : JOGADOR_UM;
+            boardChangedListener.virouDama(pos.getI(), pos.getJ(), timeAtual);
+        }
+        
+        tabuleiro.movePeca(peca, posFinal);
+        
         //Verifica se houve captura na jogada.
         if (jogada.houveCaptura()) {
             removerPeca(jogada.getPecaCapturada());
@@ -115,17 +126,6 @@ public class Regras {
         } else {
             trocaJogadorAtual();
         }
-        
-        //Caso tenha chegado na borda.
-        int borda = tabuleiro.bordaSupInf(jogada.getPosFinal());
-        if(borda == peca.getTime() && !peca.isDama()){
-            viraDama(peca);
-            Posicao pos = tabuleiro.getPosicao(peca);
-            int timeAtual = jogadorAtual == JOGADOR_UM? JOGADOR_DOIS : JOGADOR_UM;
-            boardChangedListener.virouDama(pos.getI(), pos.getJ(), timeAtual);
-        }
-        
-        tabuleiro.movePeca(peca, posFinal);
         
         //Sempre que um movimento for bem sucedido, acionar o callback.
         if(boardChangedListener != null){
