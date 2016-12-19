@@ -379,7 +379,13 @@ public class Tabuleiro {
         for(int i = 0; i < DIMEN; i++){
         
             for(int j = 0; j < DIMEN; j++){
-                tabuleiroPecas[i][j] = tabuleiro[i][j];            
+                Peca original = tabuleiro[i][j];
+                if(original == null)
+                    tabuleiroPecas[i][j] = null;
+                else{
+                    Peca nova = new Peca(original.getTime(),original.isDama());
+                    tabuleiroPecas[i][j] = nova;
+                }            
             }            
         }        
         

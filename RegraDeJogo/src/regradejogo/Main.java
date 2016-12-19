@@ -63,7 +63,7 @@ public class Main {
 
     public static void jogarHumanoVsBot(Regras regras) {
 
-        Bot botPl2 = new Bot(regras, Bot.Dificuldade.MEDIO, Regras.JOGADOR_DOIS);
+        Bot botPl2 = new Bot(regras, Bot.Dificuldade.DIFICIL, Regras.JOGADOR_DOIS);
         Humano humanoPl1 = new Humano(regras, Regras.JOGADOR_UM);
 
         while (!regras.isJogoFinalizado()) {

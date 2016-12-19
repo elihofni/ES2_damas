@@ -1,11 +1,17 @@
 package com.example.max.trabalhoes2.Interface.Fragment;
 
+import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.example.max.trabalhoes2.Interface.Activity.PartidaActivity;
 import com.example.max.trabalhoes2.Interface.Layout.TabuleiroView;
 import com.example.max.trabalhoes2.R;
 
@@ -27,6 +33,8 @@ public class TabuleiroFragment extends Fragment {
     private Regras regras;
     private Jogador jogador;
     private Bot bot;
+    private TabuleiroView tabuleiroView;
+    private ImageView imageView;
 
     public TabuleiroFragment() {
         // Required empty public constructor
@@ -38,14 +46,18 @@ public class TabuleiroFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_tabuleiro, container, false);
 
-        TabuleiroView tabuleiroView = (TabuleiroView) view.findViewById(R.id.tabuleiro);
+        tabuleiroView = (TabuleiroView) view.findViewById(R.id.tabuleiro);
 
         regras = new Regras();
+
+        imageView = (ImageView) view.findViewById(R.id.imageView_jogadorAtual);
 
         Bundle bundle = getArguments();
         int modoDeJogo = bundle.getInt("modo");
         int peca1 = bundle.getInt("peca1");
         int peca2 = bundle.getInt("peca2");
+
+        imageView.setImageResource(peca1);
 
         tabuleiroView.setJogadorUmPeao(peca1);
         tabuleiroView.setJogadorDoisPeao(peca2);
@@ -54,24 +66,31 @@ public class TabuleiroFragment extends Fragment {
             jogador = new Humano(regras, Regras.JOGADOR_UM);
         }else if(modoDeJogo == ModoDeJogoFragment.JOGADOR_VS_IA){
             jogador = new Humano(regras, Regras.JOGADOR_UM);
-            bot = new Bot(regras, Dificuldade.MEDIO, Regras.JOGADOR_DOIS);
+            bot = new Bot(regras, Dificuldade.DIFICIL, Regras.JOGADOR_DOIS);
+
+            jogador.setJogadorListener(new Jogador.JogadorListener() {
+                @Override
+                public void jogadaFinalizada() {
+                    DataBaseTask dataBaseTask = new DataBaseTask();
+
+                    new CountDownTimer(500, 500) {
+
+                        public void onTick(long millisUntilFinished) {
+
+                        }
+
+                        public void onFinish() {
+                            if(regras.getJogadorAtual() != Regras.JOGADOR_UM) {
+                                ((PartidaActivity) getActivity()).trocarTituloTootal("Pensando...");
+                            }
+                            dataBaseTask.execute();
+                        }
+                    }.start();
+                }
+            });
         }
 
-
         carregaTabuleiro(tabuleiroView);
-
-        jogador.setJogadorListener(new Jogador.JogadorListener() {
-            @Override
-            public void jogadaFinalizada() {
-                Jogada jogada = bot.Jogar2();
-                if(jogada != null) {
-                    Pos posInicial = new Pos(jogada.getPosInicial().getI(), jogada.getPosInicial().getJ());
-                    Pos posFinal = new Pos(jogada.getPosFinal().getI(), jogada.getPosFinal().getJ());
-                    tabuleiroView.getPeca(posInicial).performClick();
-                    tabuleiroView.getCasa(posFinal).performClick();
-                }
-            }
-        });
 
         regras.setOnBoardChangedListener(new Regras.BoardChangedListener() {
             @Override
@@ -79,6 +98,9 @@ public class TabuleiroFragment extends Fragment {
                 Pos pos = new Pos(posicao1.getI(), posicao1.getJ());
                 Pos pos2 = new Pos(posicao.getI(), posicao.getJ());
                 tabuleiroView.movePeca(pos);
+                int img = regras.getJogadorAtual() == 1? peca1 : peca2;
+                imageView.setImageResource(img);
+                ((PartidaActivity) getActivity()).trocarTituloTootal("");
             }
 
             @Override
@@ -112,6 +134,7 @@ public class TabuleiroFragment extends Fragment {
             public void onClickCasa(Pos posPeca, Pos posCasa) {
                 try{
                     jogador.realizarJogada(posPeca.getI(), posPeca.getJ(), posCasa.getI(), posCasa.getJ());
+                    //((PartidaActivity) getActivity()).trocarTituloTootal("");
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -141,6 +164,28 @@ public class TabuleiroFragment extends Fragment {
                 if(pos == Tabuleiro.PECA_TIME2){
                     tabuleiroView.setPeca(i, j, 2, false);
                 }
+            }
+        }
+    }
+
+    private class DataBaseTask extends AsyncTask<Integer, Void, Jogada> {
+
+        @Override
+        protected Jogada doInBackground(Integer... params) {
+
+            Jogada jogada = bot.Jogar2();
+
+            return jogada;
+        }
+
+        @Override
+        protected void onPostExecute(Jogada jogada) {
+            super.onPostExecute(jogada);
+            if (jogada != null) {
+                Pos posInicial = new Pos(jogada.getPosInicial().getI(), jogada.getPosInicial().getJ());
+                Pos posFinal = new Pos(jogada.getPosFinal().getI(), jogada.getPosFinal().getJ());
+                tabuleiroView.getPeca(posInicial).performClick();
+                tabuleiroView.getCasa(posFinal).performClick();
             }
         }
     }
