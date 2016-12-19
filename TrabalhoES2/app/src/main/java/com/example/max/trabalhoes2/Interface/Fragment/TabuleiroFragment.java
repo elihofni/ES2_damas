@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ public class TabuleiroFragment extends Fragment {
         int modoDeJogo = bundle.getInt("modo");
         int peca1 = bundle.getInt("peca1");
         int peca2 = bundle.getInt("peca2");
+        int dificuldade2 = bundle.getInt("bot2");
 
         imageView.setImageResource(peca1);
 
@@ -66,7 +68,13 @@ public class TabuleiroFragment extends Fragment {
             jogador = new Humano(regras, Regras.JOGADOR_UM);
         }else if(modoDeJogo == ModoDeJogoFragment.JOGADOR_VS_IA){
             jogador = new Humano(regras, Regras.JOGADOR_UM);
-            bot = new Bot(regras, Dificuldade.DIFICIL, Regras.JOGADOR_DOIS);
+            if(dificuldade2 == 2) {
+                bot = new Bot(regras, Dificuldade.DIFICIL, Regras.JOGADOR_DOIS);
+            }else if(dificuldade2 == 1){
+                bot = new Bot(regras, Dificuldade.MEDIO, Regras.JOGADOR_DOIS);
+            }else{
+                bot = new Bot(regras, Dificuldade.FACIL, Regras.JOGADOR_DOIS);
+            }
 
             jogador.setJogadorListener(new Jogador.JogadorListener() {
                 @Override

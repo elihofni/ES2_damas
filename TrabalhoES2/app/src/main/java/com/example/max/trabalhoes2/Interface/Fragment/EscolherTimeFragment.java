@@ -180,6 +180,7 @@ public class EscolherTimeFragment extends Fragment {
             @Override
             public void dificuldadeSelected(int dificuldade) {
                 textView2.setText("BOT " + vetor[dificuldade]);
+                dificuldadeBot2 = dificuldade;
             }
         });
 
@@ -187,6 +188,7 @@ public class EscolherTimeFragment extends Fragment {
             @Override
             public void dificuldadeSelected(int dificuldade) {
                 textView1.setText("BOT " + vetor[dificuldade]);
+                dificuldadeBot1 = dificuldade;
             }
         });
 
