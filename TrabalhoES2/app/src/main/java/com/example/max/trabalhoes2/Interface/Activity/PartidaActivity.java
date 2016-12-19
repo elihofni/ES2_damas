@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.example.max.trabalhoes2.Interface.Fragment.BotVsBotFragment;
+import com.example.max.trabalhoes2.Interface.Fragment.ModoDeJogoFragment;
 import com.example.max.trabalhoes2.Interface.Fragment.TabuleiroFragment;
 import com.example.max.trabalhoes2.Interface.Fragment.TelaInicialFragment;
 import com.example.max.trabalhoes2.R;
@@ -18,10 +19,18 @@ public class PartidaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partida);
 
+        int modo = getIntent().getExtras().getInt("modo");
+
         if(savedInstanceState == null) {
-            TabuleiroFragment tabuleiroFragment = new TabuleiroFragment();
-            tabuleiroFragment.setArguments(getIntent().getExtras());
-            getSupportFragmentManager().beginTransaction().add(R.id.containerPartida, tabuleiroFragment).commit();
+            if(modo == ModoDeJogoFragment.IA_VS_IA){
+                BotVsBotFragment botVsBotFragment = new BotVsBotFragment();
+                botVsBotFragment.setArguments(getIntent().getExtras());
+                getSupportFragmentManager().beginTransaction().add(R.id.containerPartida, botVsBotFragment).commit();
+            }else {
+                TabuleiroFragment tabuleiroFragment = new TabuleiroFragment();
+                tabuleiroFragment.setArguments(getIntent().getExtras());
+                getSupportFragmentManager().beginTransaction().add(R.id.containerPartida, tabuleiroFragment).commit();
+            }
         }
 
         setUpToolBar("", R.id.toolbar1);
@@ -37,7 +46,7 @@ public class PartidaActivity extends AppCompatActivity {
         }
     }
 
-    public void trocarTituloTootal(String titulo){
+    public void trocarTituloToolbar(String titulo){
         getSupportActionBar().setTitle(titulo);
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
