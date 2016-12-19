@@ -27,7 +27,7 @@ public class Bot extends Jogador {
         
         switch(dificuldade){
             case FACIL:
-                numero_iteracoes = 1;
+                numero_iteracoes = 2;
                 break;
             case MEDIO:
                 numero_iteracoes = 4;
@@ -48,9 +48,17 @@ public class Bot extends Jogador {
         proximaJogada = null;
         regra_auxiliar = regras.copia();
         minMax(regra_auxiliar, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
-        System.out.println("Bot joga:" + proximaJogada.toString());
         regras.moverPeca(proximaJogada.getPosInicial(), proximaJogada.getPosFinal());
-
+    }
+    
+    public Jogada Jogar2() {
+        Regras regra_auxiliar;
+        proximaJogada = null;
+        regra_auxiliar = regras.copia();
+        minMax(regra_auxiliar, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
+        //System.out.println("Bot joga:" + proximaJogada.toString());
+        return proximaJogada;
+        //regras.moverPeca(proximaJogada.getPosInicial(), proximaJogada.getPosFinal());
     }
 
     public int heuristica(Regras regra) {
@@ -119,7 +127,11 @@ public class Bot extends Jogador {
                 Jogada jogadaCandidata = null;
                 List<Peca> pecasAptas = regra.getPecasAptasDoJogadorAtual();
                 for (Peca peca : pecasAptas) {
-                    List<Jogada> jogadasPossiveis = regra.jogadasPossiveis(peca);
+                    List<Jogada> jogadasPossiveis;
+                    if(peca.isDama())    
+                        jogadasPossiveis = regra.jogadasPossiveisDama(peca);
+                    else
+                        jogadasPossiveis = regra.jogadasPossiveis(peca);
                     for (Jogada jogada : jogadasPossiveis) {                        
                         regra_auxiliar = regra.copia();
                         try{
@@ -148,7 +160,11 @@ public class Bot extends Jogador {
             } else {
                 List<Peca> pecasAptas = regra.getPecasAptasDoJogadorAtual();
                 for (Peca peca : pecasAptas) {
-                    List<Jogada> jogadasPossiveis = regra.jogadasPossiveis(peca);
+                    List<Jogada> jogadasPossiveis;
+                    if(peca.isDama())    
+                        jogadasPossiveis = regra.jogadasPossiveisDama(peca);
+                    else
+                        jogadasPossiveis = regra.jogadasPossiveis(peca);
                     for (Jogada jogada : jogadasPossiveis) {
                         regra_auxiliar = regra.copia();
                         try{

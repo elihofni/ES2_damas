@@ -8,6 +8,7 @@ public class Jogador {
     //Instancia de Regra na qual o jogador está respeitando.
     protected final Regras regras;
     protected final int time;
+    private JogadorListener jogadorListener;
     
     public Jogador(Regras regras,int time){
         this.regras = regras;
@@ -15,10 +16,19 @@ public class Jogador {
         
     }
     
+    public interface JogadorListener{
+        public void jogadaFinalizada();
+    }
+    
+    public void setJogadorListener(JogadorListener jogadorListener){
+        this.jogadorListener = jogadorListener;
+    }
+    
     public void realizarJogada(int iIni, int jIni, int iFim, int jFim){
         Posicao posIni = new Posicao(iIni, jIni);
         Posicao posFim = new Posicao(iFim, jFim);
         regras.moverPeca(posIni, posFim);
+        jogadorListener.jogadaFinalizada();
     }
     
     public int consultarPosicao(int i, int j){
@@ -105,6 +115,7 @@ public class Jogador {
         return time;
     }
     
-    
-    
+    public List<Jogada> getHistorico(){
+        return regras.getHistJogador1();
+    }
 }

@@ -7,10 +7,13 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Regras regras = new Regras("teste.txt");
+        Regras regras = new Regras("./testesCaptura/testeCapturaSequencia1.txt");
 
         //jogarHumanoVsBot(regras);
         jogarHumanoVsHumano(regras);
+        //Jogador jogador = new Humano(regras, Regras.JOGADOR_UM);
+        //System.out.println(jogador.getJogadasPossiveis(new Posicao(0, 1)).toString());
+        //System.out.println(regras.jogadasPossiveisDama(regras.getTabuleiro().getPeca(new Posicao(2, 6))).toString());
 
         //System.out.println(regras.getTabuleiro().toString());
         //regras.moverPeca(new Posicao(5, 2), new Posicao(4, 3));
@@ -60,7 +63,7 @@ public class Main {
 
     public static void jogarHumanoVsBot(Regras regras) {
 
-        Bot botPl2 = new Bot(regras, Bot.Dificuldade.MEDIO, Regras.JOGADOR_DOIS);
+        Bot botPl2 = new Bot(regras, Bot.Dificuldade.DIFICIL, Regras.JOGADOR_DOIS);
         Humano humanoPl1 = new Humano(regras, Regras.JOGADOR_UM);
 
         while (!regras.isJogoFinalizado()) {

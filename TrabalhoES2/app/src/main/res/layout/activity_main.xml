@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/base_g"
+    android:orientation="vertical"
     tools:context="com.example.max.trabalhoes2.Interface.Activity.MainActivity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/black"
-        android:alpha="0.2">
-    </FrameLayout>
+    <include layout="@layout/include_toolbar"/>
 
-    <ScrollView
-        android:id="@+id/container_main"
+    <FrameLayout
+        android:id="@+id/containerMain"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"/>
-</RelativeLayout>
+        android:layout_height="match_parent">
+    </FrameLayout>
+</LinearLayout>
