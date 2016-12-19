@@ -53,6 +53,8 @@ public class Regras {
         this.nPecasJogador1 = nPecasJogador1;
         this.nPecasJogador2 = nPecasJogador2;
         this.pecasAptasCapturas = getPecasAptasDoJogadorAtual();
+        historicoJogador1 = new ArrayList<>();
+        historicoJogador2 = new ArrayList<>();
     }
     
     /**
