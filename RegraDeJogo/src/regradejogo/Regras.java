@@ -108,6 +108,8 @@ public class Regras {
                 if(!possuiCaptura(capturasPecaAtual)){
                     trocaJogadorAtual();
                 }
+            }else{
+                trocaJogadorAtual();
             }
 
         } else {
