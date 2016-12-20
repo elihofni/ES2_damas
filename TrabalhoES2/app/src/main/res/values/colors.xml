@@ -7,7 +7,7 @@
     <color name="colorRoxo">#8a00bd</color>
     <color name="colorPlay">#4CAF50</color>
     <color name="colorAmarelo">#ec9b00</color>
-
+    <color name="colorBackground">#fec99a</color>
     <color name="TextColorPrimary">#e7e7e7</color>
     <color name="TextColorWhite">#FFFFFF</color>
     <color name="TextColorSecondary">#757575</color>
