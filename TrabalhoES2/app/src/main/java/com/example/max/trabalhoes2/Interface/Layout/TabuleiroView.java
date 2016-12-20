@@ -72,12 +72,12 @@ public class TabuleiroView extends GridLayout {
     private Animation removerPeca = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
     private Animation virarDama = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
 
+    private boolean clickEnabled = true;
+
     /**
      * Interface de Callback.
      */
     private OnClickTabuleiro onClickTabuleiro;
-
-    private int largura;
 
     /**
      * Construtor padrão quando a instancia da classe é feita via código.
@@ -125,7 +125,6 @@ public class TabuleiroView extends GridLayout {
     public void onMeasure(int width, int height){
         int parentWidth = MeasureSpec.getSize(width);
         int parentHeight = MeasureSpec.getSize(height);
-        largura = MeasureSpec.getSize(width);
         this.setMeasuredDimension(parentWidth, parentHeight);
         super.onMeasure(
                 MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
@@ -441,6 +440,10 @@ public class TabuleiroView extends GridLayout {
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isClickEnabled()){
+                    return;
+                }
+
                 ultimaPecaSelecionada = v;
 
                 desmarcaTodasCasas();
@@ -462,6 +465,10 @@ public class TabuleiroView extends GridLayout {
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!isClickEnabled()){
+                    return;
+                }
+
                 if(casasMarcadas.indexOf(v) == -1){
                     return;
                 }
@@ -565,6 +572,14 @@ public class TabuleiroView extends GridLayout {
     private boolean posValida(int i, int j){
         int max  = DIMENSAO_TABULEIRO - 1;
         return !((i < 0 || i > max) || (j < 0 || j > max));
+    }
+
+    public boolean isClickEnabled() {
+        return clickEnabled;
+    }
+
+    public void setClickEnabled(boolean clickEnabled) {
+        this.clickEnabled = clickEnabled;
     }
 
     public void setOnClickTabuleiro(OnClickTabuleiro onClickTabuleiro) {

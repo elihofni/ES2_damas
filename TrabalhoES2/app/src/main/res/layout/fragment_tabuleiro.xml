@@ -36,6 +36,19 @@
                 android:layout_gravity="start"
                 android:src="@drawable/pt_peao_2"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/realizarJogadaBot"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:text="Realizar jogada do BOT"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <com.example.max.trabalhoes2.Interface.Layout.TabuleiroView

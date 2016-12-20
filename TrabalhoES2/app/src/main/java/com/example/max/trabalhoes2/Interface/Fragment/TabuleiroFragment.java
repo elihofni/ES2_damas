@@ -1,12 +1,9 @@
 package com.example.max.trabalhoes2.Interface.Fragment;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +31,8 @@ import regradejogo.Tabuleiro;
 
 public class TabuleiroFragment extends Fragment {
 
-    private Regras regras;
-    private Jogador jogador;
+    protected Regras regras;
+    protected Jogador jogador;
     private Bot bot;
     private TabuleiroView tabuleiroView;
     private ImageView imageView;
@@ -80,6 +77,10 @@ public class TabuleiroFragment extends Fragment {
                 bot = new Bot(regras, Dificuldade.FACIL, peca2);
             }
 
+            /**
+             * Timer pro bot jogar.
+             * Pra não ficar logo depois que o jogador joga.
+             */
             jogador.setJogadorListener(new Jogador.JogadorListener() {
                 @Override
                 public void jogadaFinalizada() {
@@ -93,8 +94,9 @@ public class TabuleiroFragment extends Fragment {
 
                         public void onFinish() {
                             if(regras.getJogadorAtual() != Regras.JOGADOR_UM) {
-                                ((PartidaActivity) getActivity()).trocarTituloTootal("Pensando...");
+                                ((PartidaActivity) getActivity()).trocarTituloToolbar("Pensando...");
                             }
+                            tabuleiroView.setClickEnabled(false);
                             dataBaseTask.execute();
                         }
                     }.start();
@@ -112,7 +114,7 @@ public class TabuleiroFragment extends Fragment {
                 tabuleiroView.movePeca(pos);
                 int img = regras.getJogadorAtual() == 1? layoutUtil.peoes[peca1] : layoutUtil.peoes[peca2];
                 imageView.setImageResource(img);
-                ((PartidaActivity) getActivity()).trocarTituloTootal("");
+                ((PartidaActivity) getActivity()).trocarTituloToolbar("");
             }
 
             @Override
@@ -167,7 +169,7 @@ public class TabuleiroFragment extends Fragment {
             public void onClickCasa(Pos posPeca, Pos posCasa) {
                 try{
                     jogador.realizarJogada(posPeca.getI(), posPeca.getJ(), posCasa.getI(), posCasa.getJ());
-                    //((PartidaActivity) getActivity()).trocarTituloTootal("");
+                    //((PartidaActivity) getActivity()).trocarTituloToolbar("");
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -177,7 +179,7 @@ public class TabuleiroFragment extends Fragment {
         return view;
     }
 
-    private void carregaTabuleiro(TabuleiroView tabuleiroView){
+    public void carregaTabuleiro(TabuleiroView tabuleiroView){
         for(int i = 0; i < TabuleiroView.DIMENSAO_TABULEIRO; i++){
             for(int j = 0; j < TabuleiroView.DIMENSAO_TABULEIRO; j++){
                 int pos = jogador.consultarPosicao(i, j);
@@ -205,7 +207,6 @@ public class TabuleiroFragment extends Fragment {
 
         @Override
         protected Jogada doInBackground(Integer... params) {
-
             Jogada jogada = bot.Jogar2();
 
             return jogada;
@@ -214,6 +215,7 @@ public class TabuleiroFragment extends Fragment {
         @Override
         protected void onPostExecute(Jogada jogada) {
             super.onPostExecute(jogada);
+            tabuleiroView.setClickEnabled(true);
             if (jogada != null) {
                 Pos posInicial = new Pos(jogada.getPosInicial().getI(), jogada.getPosInicial().getJ());
                 Pos posFinal = new Pos(jogada.getPosFinal().getI(), jogada.getPosFinal().getJ());
