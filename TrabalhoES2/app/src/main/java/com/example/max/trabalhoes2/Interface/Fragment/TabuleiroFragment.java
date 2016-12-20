@@ -10,10 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.max.trabalhoes2.Interface.Activity.PartidaActivity;
 import com.example.max.trabalhoes2.Interface.Layout.TabuleiroView;
+import com.example.max.trabalhoes2.Interface.Layout.LayoutUtil;
 import com.example.max.trabalhoes2.R;
 
 import com.example.max.trabalhoes2.Interface.Layout.TabuleiroView.*;
@@ -36,6 +39,7 @@ public class TabuleiroFragment extends Fragment {
     private Bot bot;
     private TabuleiroView tabuleiroView;
     private ImageView imageView;
+    private LayoutUtil layoutUtil = new LayoutUtil();
 
     public TabuleiroFragment() {
         // Required empty public constructor
@@ -59,21 +63,21 @@ public class TabuleiroFragment extends Fragment {
         int peca2 = bundle.getInt("peca2");
         int dificuldade2 = bundle.getInt("bot2");
 
-        imageView.setImageResource(peca1);
+        imageView.setImageResource(layoutUtil.peoes[peca1]);
 
-        tabuleiroView.setJogadorUmPeao(peca1);
-        tabuleiroView.setJogadorDoisPeao(peca2);
+        tabuleiroView.setJogadorUmPeao(layoutUtil.peoes[peca1]);
+        tabuleiroView.setJogadorDoisPeao(layoutUtil.peoes[peca2]);
 
         if(modoDeJogo == ModoDeJogoFragment.JOGADOR_VS_JOGADOR){
-            jogador = new Humano(regras, Regras.JOGADOR_UM);
+            jogador = new Humano(regras, peca1);
         }else if(modoDeJogo == ModoDeJogoFragment.JOGADOR_VS_IA){
-            jogador = new Humano(regras, Regras.JOGADOR_UM);
+            jogador = new Humano(regras, peca2);
             if(dificuldade2 == 2) {
-                bot = new Bot(regras, Dificuldade.DIFICIL, Regras.JOGADOR_DOIS);
+                bot = new Bot(regras, Dificuldade.DIFICIL, peca2);
             }else if(dificuldade2 == 1){
-                bot = new Bot(regras, Dificuldade.MEDIO, Regras.JOGADOR_DOIS);
+                bot = new Bot(regras, Dificuldade.MEDIO, peca2);
             }else{
-                bot = new Bot(regras, Dificuldade.FACIL, Regras.JOGADOR_DOIS);
+                bot = new Bot(regras, Dificuldade.FACIL, peca2);
             }
 
             jogador.setJogadorListener(new Jogador.JogadorListener() {
@@ -106,14 +110,35 @@ public class TabuleiroFragment extends Fragment {
                 Pos pos = new Pos(posicao1.getI(), posicao1.getJ());
                 Pos pos2 = new Pos(posicao.getI(), posicao.getJ());
                 tabuleiroView.movePeca(pos);
-                int img = regras.getJogadorAtual() == 1? peca1 : peca2;
+                int img = regras.getJogadorAtual() == 1? layoutUtil.peoes[peca1] : layoutUtil.peoes[peca2];
                 imageView.setImageResource(img);
                 ((PartidaActivity) getActivity()).trocarTituloTootal("");
             }
 
             @Override
-            public void onGameFinished(int i, int i1) {
-                //TODO
+            public void onGameFinished(int i, int i1) { //vencedor, motivo
+                FrameLayout telaFimJogo = (FrameLayout) view.findViewById(R.id.TabuleiroFrag_TelaFimJogo);
+                FrameLayout bgColor = (FrameLayout) view.findViewById(R.id.TabuleiroFrag_BackgroundColorFimJogo);
+                TextView mensagem = (TextView) view.findViewById(R.id.TabuleiroFrag_MensagemFim);
+                ImageView bandeira = (ImageView) view.findViewById(R.id.TabuleiroFrag_BandeiraFimJogo);
+                ImageView peca = (ImageView) view.findViewById(R.id.TabuleiroFrag_PecaFimJogo);
+                ImageView imgFim = (ImageView) view.findViewById(R.id.TabuleiroFrag_ImagemFim);
+
+                jogador.getTime();
+                if(i == Regras.JOGADOR_UM){ //jogador1 venceu
+                    bgColor.setBackgroundColor(getResources().getColor(R.color.colorPlay));
+                    mensagem.setText("VITORIA");
+                    bandeira.setImageResource(layoutUtil.bandeiras[jogador.getTime()]); //Ó pai
+                    peca.setImageResource(layoutUtil.peoes[jogador.getTime()]);
+                    imgFim.setImageResource(layoutUtil.imgFim[1]); //Imagem de vitoria
+                }else { //jogador2 venceu
+                    bgColor.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    mensagem.setText("DERROTA");
+                    bandeira.setImageResource(layoutUtil.bandeiras[bot.getTime()]);
+                    peca.setImageResource(layoutUtil.peoes[bot.getTime()]);
+                    imgFim.setImageResource(layoutUtil.imgFim[0]); //Imagem de derrota
+                }
+                telaFimJogo.setVisibility(View.VISIBLE);
             }
 
             @Override

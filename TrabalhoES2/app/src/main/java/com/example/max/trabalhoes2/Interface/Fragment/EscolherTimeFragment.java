@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.media.midi.MidiOutputPort;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.max.trabalhoes2.Interface.Activity.PartidaActivity;
+import com.example.max.trabalhoes2.Interface.Layout.LayoutUtil;
 import com.example.max.trabalhoes2.R;
 
 /**
@@ -35,9 +37,7 @@ public class EscolherTimeFragment extends Fragment {
     private int index2 = -1;
     private int dificuldadeBot1 = 1;
     private int dificuldadeBot2 = 1;
-
-    private int pecas[] = {R.drawable.pen_peao, R.drawable.pp_peao, R.drawable.democratas_peao,
-    R.drawable.psb_peao, R.drawable.pt_peao_2};
+    private LayoutUtil layoutUtil = new LayoutUtil();
 
     public EscolherTimeFragment() {
         // Required empty public constructor
@@ -66,7 +66,8 @@ public class EscolherTimeFragment extends Fragment {
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 if(!carregouGrid1) {
                     for (int i = 0; i < maximoTimes; i++) {
-                        gridJogador1.addView(criaPeca(pecas[i], gridJogador1, 1));
+                        Log.d("carregaPeoes", "onLayoutChange: " + String.valueOf(i));
+                        gridJogador1.addView(criaPeca(layoutUtil.peoes[i], gridJogador1, 1));
                     }
                     carregouGrid1 = true;
                 }
@@ -78,7 +79,7 @@ public class EscolherTimeFragment extends Fragment {
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 if(!carregouGrid2) {
                     for (int i = 0; i < maximoTimes; i++) {
-                        gridJogador2.addView(criaPeca(pecas[i], gridJogador2, 2));
+                        gridJogador2.addView(criaPeca(layoutUtil.peoes[i], gridJogador2, 2));
                     }
                     carregouGrid2 = true;
                 }
@@ -93,8 +94,8 @@ public class EscolherTimeFragment extends Fragment {
                 }
 
                 Intent intent = new Intent(getContext(), PartidaActivity.class);
-                intent.putExtra("peca1", pecas[index1]);
-                intent.putExtra("peca2", pecas[index2]);
+                intent.putExtra("peca1", index1);
+                intent.putExtra("peca2", index2);
                 intent.putExtra("modo", getArguments().getInt("modo"));
                 intent.putExtra("bot1", dificuldadeBot1);
                 intent.putExtra("bot2", dificuldadeBot2);
