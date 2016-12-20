@@ -44,7 +44,7 @@ public class TesteUnitario1 {
     // public void hello() {}
     
     @Test
-    public void diagonal(){
+    public void jogadasPossiveisDama(){
         
     }
 }

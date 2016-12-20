@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -59,6 +60,8 @@ public class EscolherTimeFragment extends Fragment {
 
         int modo = bundle.getInt("modo");
 
+        EditText editText = (EditText) view.findViewById(R.id.nomeSave);
+
         setTextViews(modo, view);
 
         gridJogador1.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -92,12 +95,17 @@ public class EscolherTimeFragment extends Fragment {
                     return;
                 }
 
+                if(editText.getText().toString().equals("")){
+                    return;
+                }
+
                 Intent intent = new Intent(getContext(), PartidaActivity.class);
                 intent.putExtra("peca1", pecas[index1]);
                 intent.putExtra("peca2", pecas[index2]);
                 intent.putExtra("modo", getArguments().getInt("modo"));
                 intent.putExtra("bot1", dificuldadeBot1);
                 intent.putExtra("bot2", dificuldadeBot2);
+                intent.putExtra("save", editText.getText().toString());
                 startActivity(intent);
             }
         });

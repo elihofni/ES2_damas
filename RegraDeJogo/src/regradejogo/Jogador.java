@@ -118,4 +118,8 @@ public class Jogador {
     public List<Jogada> getHistorico(){
         return regras.getHistJogador1();
     }
+    
+    public String getStringTabuleiro(){
+        return regras.getStringTabuleiro();
+    }
 }

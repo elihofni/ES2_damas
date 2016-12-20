@@ -11,10 +11,13 @@ import android.widget.ImageView;
 
 import com.example.max.trabalhoes2.Interface.Activity.PartidaActivity;
 import com.example.max.trabalhoes2.Interface.Layout.TabuleiroView;
+import com.example.max.trabalhoes2.Interface.Util.SalvarCarregarUtil;
+import com.example.max.trabalhoes2.Interface.Util.SalvarCarregarUtil.*;
 import com.example.max.trabalhoes2.R;
 
 import com.example.max.trabalhoes2.Interface.Layout.TabuleiroView.*;
 
+import java.io.IOException;
 import java.util.List;
 
 import regradejogo.Bot;
@@ -33,6 +36,7 @@ public class TabuleiroFragment extends Fragment {
     private Bot bot;
     private TabuleiroView tabuleiroView;
     private ImageView imageView;
+    private SalvarCarregarUtil salvarCarregarUtil;
 
     public TabuleiroFragment() {
         // Required empty public constructor
@@ -46,7 +50,7 @@ public class TabuleiroFragment extends Fragment {
 
         tabuleiroView = (TabuleiroView) view.findViewById(R.id.tabuleiro);
 
-        regras = new Regras();
+        salvarCarregarUtil = new SalvarCarregarUtil(getContext());
 
         imageView = (ImageView) view.findViewById(R.id.imageView_jogadorAtual);
 
@@ -55,14 +59,47 @@ public class TabuleiroFragment extends Fragment {
         int peca1 = bundle.getInt("peca1");
         int peca2 = bundle.getInt("peca2");
         int dificuldade2 = bundle.getInt("bot2");
+        String nomeArquivo = bundle.getString("arquivoJogoSalvo");
+        String nomeSave = bundle.getString("save");
+
+        if(nomeArquivo != null){
+            try {
+                SalvarCarregarUtil.JogoSalvo salvo = salvarCarregarUtil.carregarJogo(nomeArquivo);
+                regras = new Regras(salvo.getInputStream());
+                regras.setJogadorAtual(salvo.getJogadorAtual());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            regras = new Regras();
+        }
 
         imageView.setImageResource(peca1);
 
         tabuleiroView.setJogadorUmPeao(peca1);
         tabuleiroView.setJogadorDoisPeao(peca2);
 
+        /*try {
+            JogoSalvo jogoSalvo = salvarCarregarUtil.carregarJogo("jogo1");
+            regras = new Regras(jogoSalvo.getInputStream());
+            System.out.println(jogoSalvo.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
         if(modoDeJogo == ModoDeJogoFragment.JOGADOR_VS_JOGADOR){
             jogador = new Humano(regras, Regras.JOGADOR_UM);
+            jogador.setJogadorListener(new Jogador.JogadorListener() {
+                @Override
+                public void jogadaFinalizada() {
+                    try {
+                        salvarCarregarUtil.salvarJogo(nomeSave, jogador.getTurno(), regras.getJogadorAtual(), peca1,
+                                peca2, jogador.getStringTabuleiro(), modoDeJogo, 0, dificuldade2);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }else if(modoDeJogo == ModoDeJogoFragment.JOGADOR_VS_IA){
             jogador = new Humano(regras, Regras.JOGADOR_UM);
             if(dificuldade2 == 2) {
@@ -81,6 +118,13 @@ public class TabuleiroFragment extends Fragment {
                 @Override
                 public void jogadaFinalizada() {
                     DataBaseTask dataBaseTask = new DataBaseTask();
+
+                    try {
+                        salvarCarregarUtil.salvarJogo(nomeSave, jogador.getTurno(), regras.getJogadorAtual(), peca1,
+                                peca2, jogador.getStringTabuleiro(), modoDeJogo, 0, dificuldade2);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     new CountDownTimer(500, 500) {
 

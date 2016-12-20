@@ -13,8 +13,10 @@ import android.widget.ImageView;
 
 import com.example.max.trabalhoes2.Interface.Activity.PartidaActivity;
 import com.example.max.trabalhoes2.Interface.Layout.TabuleiroView;
+import com.example.max.trabalhoes2.Interface.Util.SalvarCarregarUtil;
 import com.example.max.trabalhoes2.R;
 
+import java.io.IOException;
 import java.util.List;
 
 import regradejogo.Bot;
@@ -55,13 +57,27 @@ public class BotVsBotFragment extends Fragment {
         int peca2 = bundle.getInt("peca2");
         int dificuldadeBot1 = bundle.getInt("bot1");
         int dificuldadeBot2 = bundle.getInt("bot2");
+        String nomeArquivo = bundle.getString("arquivoJogoSalvo");
+        String nomeSave = bundle.getString("save");
 
         tabuleiroView.setJogadorUmPeao(peca1);
         tabuleiroView.setJogadorDoisPeao(peca2);
 
         tabuleiroView.setClickEnabled(false);
 
-        regras = new Regras();
+        SalvarCarregarUtil salvarCarregarUtil = new SalvarCarregarUtil(getContext());
+
+        if(nomeArquivo != null){
+            try {
+                SalvarCarregarUtil.JogoSalvo salvo = salvarCarregarUtil.carregarJogo(nomeArquivo);
+                regras = new Regras(salvo.getInputStream());
+                regras.setJogadorAtual(salvo.getJogadorAtual());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            regras = new Regras();
+        }
         jogador = new Bot(regras, vet[dificuldadeBot1], Regras.JOGADOR_UM);
         jogador2 = new Bot(regras, vet[dificuldadeBot2], Regras.JOGADOR_DOIS);
 
@@ -74,6 +90,13 @@ public class BotVsBotFragment extends Fragment {
             public void jogadaFinalizada() {
                 ((PartidaActivity) getActivity()).trocarTituloToolbar("");
                 imageView.setImageResource(peca2);
+
+                try {
+                    salvarCarregarUtil.salvarJogo(nomeSave, jogador.getTurno(), regras.getJogadorAtual(), peca1,
+                            peca2, jogador.getStringTabuleiro(), ModoDeJogoFragment.IA_VS_IA, dificuldadeBot1, dificuldadeBot2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -82,6 +105,13 @@ public class BotVsBotFragment extends Fragment {
             public void jogadaFinalizada() {
                 ((PartidaActivity) getActivity()).trocarTituloToolbar("");
                 imageView.setImageResource(peca1);
+
+                try {
+                    salvarCarregarUtil.salvarJogo(nomeSave, jogador.getTurno(), regras.getJogadorAtual(), peca1,
+                            peca2, jogador.getStringTabuleiro(), ModoDeJogoFragment.IA_VS_IA, dificuldadeBot1, dificuldadeBot2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
