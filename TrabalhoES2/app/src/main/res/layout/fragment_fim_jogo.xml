@@ -33,7 +33,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="VITÓRIA"
-                android:textAppearance="@style/Titulo_FimJogo"
                 android:layout_gravity="center" />
         </FrameLayout>
 

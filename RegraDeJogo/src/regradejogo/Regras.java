@@ -45,6 +45,15 @@ public class Regras {
         historicoJogador2 = new ArrayList<>();
     }
     
+    public Regras(InputStream inputStream) throws IOException{
+        turnoAtual = 0;
+        tabuleiro = new Tabuleiro(inputStream);
+        jogadorAtual = 1;
+        pecasAptasCapturas = getPecasAptasDoJogadorAtual();
+        historicoJogador1 = new ArrayList<>();
+        historicoJogador2 = new ArrayList<>();
+    }
+    
 
     public Regras(Tabuleiro tabuleiro, int turnoAtual, int jogadorAtual, int nPecasJogador1, int nPecasJogador2) {
         this.tabuleiro = tabuleiro;
@@ -917,6 +926,18 @@ public class Regras {
 
     public boolean isJogoFinalizado() {
         return jogoFinalizado;
+    }
+    
+    protected String getStringTabuleiro(){
+        return tabuleiro.toString();
+    }
+    
+    public void setJogadorAtual(int jogadorAtual){
+        /*if(jogadorAtual != JOGADOR_UM || jogadorAtual != JOGADOR_DOIS){
+            throw new IllegalArgumentException("Numero do time invalido.");
+        }*/
+        
+        this.jogadorAtual = jogadorAtual;
     }
 
     public Regras copia() {

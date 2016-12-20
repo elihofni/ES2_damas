@@ -1,9 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/base_g"
     tools:context="com.example.max.trabalhoes2.Interface.Fragment.TabuleiroFragment">
 
     <LinearLayout
@@ -54,65 +53,7 @@
     <com.example.max.trabalhoes2.Interface.Layout.TabuleiroView
         android:id="@+id/tabuleiro"
         android:layout_width="match_parent"
-        android:layout_centerInParent="true"
         android:layout_height="0dp">
     </com.example.max.trabalhoes2.Interface.Layout.TabuleiroView>
 
-    <FrameLayout
-        android:id="@+id/TabuleiroFrag_TelaFimJogo"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <FrameLayout
-            android:id="@+id/TabuleiroFrag_BackgroundColorFimJogo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPlay"
-            android:alpha="0.8">
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/balao_titulo"/>
-
-            <TextView
-                android:id="@+id/TabuleiroFrag_MensagemFim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="VITÓRIA"
-                android:textAppearance="@style/Titulo_FimJogo"
-                android:layout_gravity="center" />
-        </FrameLayout>
-
-        <ImageView
-            android:id="@+id/TabuleiroFrag_BandeiraFimJogo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/bandeira_psb"
-            android:layout_gravity="center"/>
-
-        <ImageView
-            android:id="@+id/TabuleiroFrag_PecaFimJogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@android:color/transparent"
-            android:src="@drawable/psb_dama"/>
-
-        <ImageView
-            android:id="@+id/TabuleiroFrag_ImagemFim"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="-50dp"
-            android:src="@drawable/vitoria"/>
-    </FrameLayout>
-
-</RelativeLayout>
+</LinearLayout>

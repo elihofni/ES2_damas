@@ -19,8 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Interface.Activity.PartidaActivity" />
-        <activity
-            android:name=".Interface.Activity.EscolherTimeActivity" />
+        <activity android:name=".Interface.Activity.EscolherTimeActivity" />
+        <activity android:name=".Interface.Activity.JogoSalvoActivity"></activity>
     </application>
 
 </manifest>

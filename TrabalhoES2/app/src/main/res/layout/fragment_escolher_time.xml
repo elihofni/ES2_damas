@@ -83,6 +83,27 @@
         </GridLayout>
     </LinearLayout>
 
+    <TextView
+        android:text="Nome do save: "
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/nomeSave"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
+        android:textColor="@color/TextColorWhite"
+        android:textColorHighlight="@color/colorAmarelo"
+        android:background="@color/colorPrimaryDark"/>
+
     <Button
         android:id="@+id/button_jogador_escolherTime"
         android:layout_width="100dp"
