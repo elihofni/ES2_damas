@@ -1,22 +1,29 @@
-            public void onPieceMoved(Posicao posInicial, Posicao posFinal) {
-            
-            }
+# ES2_damas
 
-            @Override
-            public void onGameFinished(int causa, int timeVencedor) {
-            
-            }
+##Equipe
+###Elihofni Lima
+- Deisgn.
+- Programação das Regras.
 
-            @Override
-            public void onPieceRemoved(Posicao posicao) {
-            
-            }
+###Max Fratane
+- Programação Android.
+- Programaação das Regras.
+- Testes Unitários e de Integração.
 
-            @Override
-            public void virouDama(int i, int j, int time) {
-            
-            }
-     });
+###Pablo Carvalho
+- Programação das Regras.
+- Inteligência Artificial.
+
+###Omar
+- Áudio.
+- Programação das Regras.
+
+###Gabriel Sommerlate
+- Gerente de Projeto.
+
+
+
+##Classe Regras:
 
 Chamada sempre que uma peça tem um movimento bem sucedido.
 
