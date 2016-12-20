@@ -1,5 +1,7 @@
 # ES2_damas
 
+# MUITO OBRIGADO GITHUG, 7H DE TRABALHO JOGADAS NO LIXO!!!!!!!!
+
 ##Equipe
 ###Elihofni Lima
 - Deisgn.
