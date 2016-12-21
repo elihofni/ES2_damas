@@ -10,7 +10,7 @@
 - Programaação das Regras.
 - Testes Unitários e de Integração.
 
-###Pablo Carvalho
+###Pablo Moreira
 - Programação das Regras.
 - Inteligência Artificial.
 
