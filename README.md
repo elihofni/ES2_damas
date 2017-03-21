@@ -1,7 +1,7 @@
 # ES2_damas
 
-# #Equipe
-###Elihofni Lima
+## Equipe
+### Elihofni Lima
 - Deisgn.
 - Programação das Regras.
 
@@ -46,7 +46,9 @@
             
             }
      });
-     ```
+```
+
+
 
 Chamada sempre que uma peça tem um movimento bem sucedido.
 
