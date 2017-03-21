@@ -1,32 +1,30 @@
 # ES2_damas
 
-##Equipe
+# #Equipe
 ###Elihofni Lima
 - Deisgn.
 - Programação das Regras.
 
-###Max Fratane
+### Max Fratane
 - Programação Android.
 - Programaação das Regras.
 - Testes Unitários e de Integração.
 
-###Pablo Moreira
+### Pablo Moreira
 - Programação das Regras.
 - Inteligência Artificial.
 
-###Omar
+### Omar
 - Áudio.
 - Programação das Regras.
 
-###Gabriel Sommerlate
+### Gabriel Sommerlate
 - Gerente de Projeto.
 
 
 
-##Classe Regras:
-
-##Classe Regras:
-
+## Classe Regras:
+```java
        regras.setOnBoardChangedListener(new Regras.BoardChangedListener() {
             @Override
             public void onPieceMoved(Posicao posInicial, Posicao posFinal) {
@@ -48,6 +46,7 @@
             
             }
      });
+     ```
 
 Chamada sempre que uma peça tem um movimento bem sucedido.
 
@@ -66,6 +65,7 @@ Chamada sempre que uma peça vira dama.
 `virouDama(Posicao pos, int time);`
 
 ## TabuleiroView
+```java
        tabuleiroView.setOnClickTabuleiro(new TabuleiroView.OnClickTabuleiro() {
             @Override
             public void onClickPeca(Pos pos) {
@@ -77,7 +77,7 @@ Chamada sempre que uma peça vira dama.
                 
             }
            });
-           
+```
     
 Chamada sempre que uma peça é selecionada.
 
